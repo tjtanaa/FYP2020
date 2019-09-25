@@ -6,3 +6,5 @@ The data path that we will be using is `~/../../mnt/external2/tunjian/`. This is
 To activate anaconda (that is when you do not see (base) on the command line), `source anaconda3/bin/activate`. To list out the available environments, run `conda info --envs`. Run `conda activate <environment name>`.
 
 Remember to use `tmux` or `screen` to run your training script.
+
+To run HEVC (H.265) codec compressed video, install [this](https://www.microsoft.com/en-us/p/hevc-video-extensions-from-device-manufacturer/9n4wgh0z6vhq?activetab=pivot%3Aregionofsystemrequirementstab)
