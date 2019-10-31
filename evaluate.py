@@ -1,18 +1,13 @@
 '''
-several running examples, run with
-python3 run.py 1 # the last number is the run case number
+    This script is used to run single evaluation cycle to
+    calculate the metrics, and save the numbers in csv.
 
-runcase == 1    inference a trained model
-runcase == 2    calculate the metrics, and save the numbers in csv
-runcase == 3    training TecoGAN
-runcase == 4    training FRVSR
-runcase == ...  coming... data preparation and so on...
 '''
 import os, subprocess, sys, datetime, signal, shutil
 
 hdd_dir = "../../../mnt/external2/tunjian"
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 # runcase = int(sys.argv[1])
 # print ("Testing test case %d" % runcase)
 
@@ -42,16 +37,26 @@ def mycall(cmd, block=False):
 #     return path
 
 if __name__ == "__main__":
-    testpre = ["calendar"] # just put more scenes to evaluate all of them
-    dirstr = "/home/tunjian/oriTecoGAN/results/"  # the outputs
-    tarstr = hdd_dir+"/HR/"       # the GT
+    # testpre = ["calendar"] # just put more scenes to evaluate all of them
+    # dirstr = "/home/tunjian/oriTecoGAN/results/"  # the outputs
+    # tarstr = hdd_dir+"/HR/"       # the GT
 
-    tar_list = [(tarstr+_) for _ in testpre]
-    out_list = [(dirstr+_) for _ in testpre]
+    tarstr = 'D:\\Github\\SuperResolutionOutputFromServer\\EDVR\\Vid4\\edvr150k'
+    dirstr = 'D:\\Github\\SuperResolutionOutputFromServer\\EDVR\\Vid4\\edvr50k'
+
+    # tar_list = [(tarstr+_) for _ in testpre]
+    # out_list = [(dirstr+_) for _ in testpre]
+    tar_list = tarstr
+    out_list = dirstr
     cmd1 = ["python", "metrics.py",
         "--output", dirstr+"metric_log/",
-        "--results", ",".join(out_list),
-        "--targets", ",".join(tar_list),
+        "--results", out_list,
+        "--targets", tar_list,
     ]
+    # cmd1 = ["python", "metrics.py",
+    #     "--output", dirstr+"metric_log/",
+    #     "--results", ",".join(out_list),
+    #     "--targets", ",".join(tar_list),
+    # ]
     mycall(cmd1).communicate()
  

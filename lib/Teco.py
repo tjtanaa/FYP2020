@@ -85,8 +85,19 @@ def TecoGAN(r_inputs, r_targets, FLAGS, GAN_Flag=True):
         inputimages = FLAGS.RNN_N * 2 - 1
     
     # output_channel, the last channel number
-    output_channel = r_targets.get_shape().as_list()[-1]
+    # print(11, list(r_targets.get_shape()))
+    # print(r_inputs.get_shape())
+    # print(r_inputs.shape)
+    # with tf.Session() as sess:
+    #      print(11, list(sess.run(r_targets.get_shape())))
+    # print("type:", type(r_targets))
+    # output_channel = r_targets.get_shape().as_list()[-1]
+    output_channel = r_targets.shape[-1]
     
+    # output_channel = tf.shape(r_targets)[-1]
+    print("output", output_channel)
+    # with tf.Session() as sess:
+    #      print(11, sess.run(output_channel))
     # list for all outputs, and warped previous frames
     gen_outputs, gen_warppre = [], []
     # gen_warppre is not necessary, just for showing in tensorboard
