@@ -1,2 +1,3 @@
-dataset/
+tecogan_video_data/*
+dataset/*
 video_analysis/*

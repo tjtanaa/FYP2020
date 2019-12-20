@@ -7,19 +7,21 @@ from lib.data import video
 import subprocess
 
 "python dataPrepare.py --start_id 2000 --duration 120 --process 1"
+# D:\\Github\\tecogan_video_data\\train_video
 
 # ------------------------------------parameters------------------------------#
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--start_id', default=2000, type=int, help='starting scene index')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument('--disk_path', default=".\\tecogan_video_data\\train_video", help='the path to save the dataset')
+parser.add_argument('--disk_path', default="D:\\Github\\tecogan_video_data\\train_video", help='the path to save the dataset')
 parser.add_argument('--summary_dir', default="", help='the path to save the log')
 parser.add_argument('--REMOVE', action='store_true', help='whether to remove the original video file after data preparation')
 parser.add_argument('--TEST', action='store_true', help='verify video links, save information in log, no real video downloading!')
-parser.add_argument('--disk_compressed_path', default=".\\tecogan_video_data\\train_compressed_video", help='the path to save the dataset')
-parser.add_argument('--disk_frames_path', default=".\\tecogan_video_data\\train_frames", help='the path to save the dataset')
-parser.add_argument('--disk_resize_path', default=".\\tecogan_video_data\\train_resized_video", help='the path to save the dataset')
-parser.add_argument('--video_bitrate', default="100k", help='video_bitrate')
+parser.add_argument('--disk_compressed_path', default="D:\\Github\\tecogan_video_data\\train_compressed_video", help='the path to save the dataset')
+parser.add_argument('--disk_frames_path', default="D:\\Github\\tecogan_video_data\\train_frames", help='the path to save the dataset')
+parser.add_argument('--disk_resize_path', default="D:\\Github\\tecogan_video_data\\train_resized_video", help='the path to save the dataset')
+parser.add_argument('--disk_resize_by_4_path', default="D:\\Github\\tecogan_video_data\\train_resized_video_by_4", help='the path to save the dataset')
+parser.add_argument('--video_bitrate', default="40k", help='video_bitrate')
 parser.add_argument('--process', default=1, type=int, help='run process 0: download video 1: compress video 2: generate frames')
 Flags = parser.parse_args()
 
@@ -34,16 +36,16 @@ video_data_dict = {
 # We select frames to make sure that there is no scene switching in the data
 # We assume that the Flags.duration is 120
     "121649159" : [0, 310,460,720,860], #1
-    # "40439273"  : [90,520,700,1760,2920,3120,3450,4750,4950,5220,6500,6900,9420,9750], #2
-    # "87389090"  : [100,300,500,800,1000,1200,1500,1900,2050,2450,2900], #3
-    # "335874600" : [287, 308, 621, 1308, 1538, 1768, 2036, 2181, 2544, 2749, 2867, 3404, 3543, 3842, 4318, 4439,
-    #                 4711, 4900, 7784, 8811, 9450],  # new, old #[4,6,13,14,19] 404
-    # "114053015" : [30,1150,2160,2340,3190,3555], #5 
-    # "160578133" : [550,940,1229,1460,2220,2900, 3180, 4080, 4340, 4612, 4935, 
-    #                 5142, 5350, 5533, 7068], # new, old #[20,21,27,29,30,35] 404
-    # "148058982" : [80,730,970,1230,1470,1740], #7
-    # "150225201" : [0,560,1220,1590,1780], #8
-    # "145096806" : [0,300,550,800,980,1500], #9
+    "40439273"  : [90,520,700,1760,2920,3120,3450,4750,4950,5220,6500,6900,9420,9750], #2
+    "87389090"  : [100,300,500,800,1000,1200,1500,1900,2050,2450,2900], #3
+    "335874600" : [287, 308, 621, 1308, 1538, 1768, 2036, 2181, 2544, 2749, 2867, 3404, 3543, 3842, 4318, 4439,
+                    4711, 4900, 7784, 8811, 9450],  # new, old #[4,6,13,14,19] 404
+    "114053015" : [30,1150,2160,2340,3190,3555], #5 
+    "160578133" : [550,940,1229,1460,2220,2900, 3180, 4080, 4340, 4612, 4935, 
+                    5142, 5350, 5533, 7068], # new, old #[20,21,27,29,30,35] 404
+    "148058982" : [80,730,970,1230,1470,1740], #7
+    "150225201" : [0,560,1220,1590,1780], #8
+    "145096806" : [0,300,550,800,980,1500], #9
     # "125621327" : [240,900,1040,1300,1970,2130,2530,3020,3300,3620,3830,4300,4700,4960], #10
     # "162166758" : [120,350,540,750,950,1130,1320,1530,1730,1930], #11
     # "115829238" : [140,450,670,910,1100,1380,1520,1720], #12
@@ -281,6 +283,48 @@ def prepare_frames(hr_input_dir=None):
             gen_frames(lr_input_video_path, tar_dir, lr_width, lr_height, start_fr, Flags.duration)
             cur_id = cur_id+1
 
+
+
+def prepare_meta_data(input_video_path=None, verbose=True):
+    # # check if the video exists
+    # if(not os.path.exists(input_video_path)): raise FileNotFoundError
+
+    # check if the video exists
+    if (not os.path.isfile(input_video_path)):
+        print("Skipped invalid link or other error:" + input_video_path)
+        raise FileNotFoundError
+
+    # define the output directory
+    split_name = input_video_path.split(os.path.sep)
+    print("splitname: " ,split_name)
+    output_dir = split_name[:-1]
+
+    output_dir = os.path.join('.',os.path.join(*output_dir))
+    video_name = split_name[-1]
+    print('Video name: ', video_name)
+    json_name = video_name.split('.')[0] + ".json"
+    if(verbose):
+        print("output_dir: ", output_dir, '\t output_file: ', json_name)
+    # input_video_path = os.path.join(input_dir, video_name)
+    input_json_path = os.path.join(output_dir, json_name)
+    input_json_path =  input_json_path[:2] + os.path.sep + input_json_path[2:]
+
+    cmd = ['ffprobe', '-v', 'quiet', \
+            '-print_format', 'json', \
+            '-show_format', '-show_streams', '-select_streams', 'v', input_video_path]
+
+    meta_data = subprocess.check_output(cmd)
+
+    meta_data_json = json.loads(meta_data.decode('utf-8'))
+    print(meta_data_json)
+    print("Bitrate of {} : {}".format(video_name, meta_data_json["streams"][0]["bit_rate"]))
+    # exit()
+    with open(input_json_path, "w+") as outfile:
+        json.dump(meta_data_json, outfile, indent=4)
+        print("Obtained information from a valid input video: %s > %s"%(input_video_path, input_json_path))
+
+
+
 def resize_videos(output_dir=None):
 # ------------------------------------main------------------------------#
     cur_id, valid_video, try_num = Flags.start_id, 0, 0
@@ -333,6 +377,61 @@ def resize_videos(output_dir=None):
         print("Compressed %d valid input video: %s"%(valid_video, input_video_path))
         print("Compressed %d valid output video: %s"%(valid_video, output_video_path))
 
+def resize_videos_by_4(output_dir=None):
+# ------------------------------------main------------------------------#
+    cur_id, valid_video, try_num = Flags.start_id, 0, 0
+
+    input_dir = Flags.disk_path
+    if output_dir is None:
+        output_dir = Flags.disk_resize_path
+
+    for keys in video_data_dict:
+        try_num += len(video_data_dict[keys])
+    print("Try loading %dx%d."%(try_num, Flags.duration))
+    
+    if(not os.path.exists(input_dir)): raise FileNotFoundError
+
+    if(not os.path.exists(output_dir)): os.mkdir(output_dir)
+
+    for key in video_data_dict.keys():
+        video_name = key + ".mp4"
+        input_video_path = os.path.join(input_dir, video_name) 
+        output_video_path = os.path.join(output_dir, video_name)
+        # check the downloaded video
+        if (not os.path.isfile(input_video_path)):
+            print("Skipped invalid link or other error:" + input_video_path)
+            continue
+        print("input_video_path: {}".format(input_video_path))
+
+        vcap = cv.VideoCapture(input_video_path) # 0=camera
+        width = -1
+        height = -1
+        if vcap.isOpened(): 
+            # get vcap property 
+            width = int(vcap.get(cv.CAP_PROP_FRAME_WIDTH))   # float
+            height = int(vcap.get(cv.CAP_PROP_FRAME_HEIGHT)) # float
+            print("Resolution: {} x {}".format(int(width), int(height)))
+        assert width >0 and height >0
+
+        if width < 1080 or height < 720:
+            # skip is the video resolution is too small
+            continue
+        # aspect_ratio = '720x480'
+        aspect_ratio = '{}x{}'.format(width//4, height//4)
+        video_codec = 'libx264'
+        audio_codec = 'copy'
+
+        cmd = ['ffmpeg', '-i', input_video_path, 
+        '-s', aspect_ratio,
+        '-vcodec', video_codec,
+        '-acodec', audio_codec,
+        output_video_path]
+
+        subprocess.call(cmd)
+
+        valid_video = valid_video + 1
+        print("Compressed %d valid input video: %s"%(valid_video, input_video_path))
+        print("Compressed %d valid output video: %s"%(valid_video, output_video_path))
 
 
 if __name__ == '__main__':
@@ -350,3 +449,13 @@ if __name__ == '__main__':
         prepare_frames(hr_input_dir=Flags.disk_resize_path)
     elif(Flags.process == 6): # Need to specify the bitrate
         compress_videos(input_dir=Flags.disk_resize_path, video_bitrate=Flags.video_bitrate)
+    elif(Flags.process == 7): 
+        # Prepare the GT for artifacts removal network AND
+        # Input of video super resolution
+
+        
+        
+        resize_videos_by_4(output_dir = Flags.disk_resize_by_4_path)
+    elif(Flags.process == 8):
+        pass
+
