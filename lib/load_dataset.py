@@ -184,7 +184,7 @@ def preprocess_ARTN_dataset(input_dir, gt_dir):
     gt_img_patch = None
 
     dataset_count = 0
-    dataset_threshold = 5000
+    dataset_threshold = 50000
 
     # search for scene_ folder
     for subfolder in os.listdir(input_dir):
@@ -251,7 +251,7 @@ def preprocess_ARTN_dataset(input_dir, gt_dir):
                         break
                     for hind in range(0, H//macro_block_stride):
 
-                        if np.random.rand() < 0.8:
+                        if np.random.rand() < 0.5:
                             continue
 
                         x1 = macro_block_stride * wind

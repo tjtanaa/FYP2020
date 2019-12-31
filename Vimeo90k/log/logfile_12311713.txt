@@ -1,0 +1,14 @@
+[Configurations]:
+	start_id: 2000
+	duration: 120
+	disk_path: ./Vimeo90K
+	summary_dir: ./Vimeo90K\log/
+	REMOVE: False
+	TEST: False
+	disk_compressed_path: D:\Github\tecogan_video_data\train_compressed_video
+	disk_frames_path: D:\Github\tecogan_video_data\train_frames
+	disk_resize_path: D:\Github\tecogan_video_data\train_resized_video
+	disk_resize_by_4_path: D:\Github\tecogan_video_data\train_resized_video_by_4
+	video_bitrate: 40k
+	process: 0
+End of configuration

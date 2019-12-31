@@ -1,0 +1,4996 @@
+[Configurations]:
+	start_id: 2000
+	duration: 120
+	disk_path: ./Vimeo90K
+	summary_dir: ./Vimeo90K\log/
+	REMOVE: False
+	TEST: False
+	disk_compressed_path: D:\Github\tecogan_video_data\train_compressed_video
+	disk_frames_path: D:\Github\tecogan_video_data\train_frames
+	disk_resize_path: D:\Github\tecogan_video_data\train_resized_video
+	disk_resize_by_4_path: D:\Github\tecogan_video_data\train_resized_video_by_4
+	video_bitrate: 40k
+	process: 0
+End of configuration
+downloaded_video_links open
+tar_vid_input:  https://vimeo.com/100001237
+
+downloaded
+tar_vid_input:  https://vimeo.com/100002264
+
+downloaded
+tar_vid_input:  https://vimeo.com/100002397
+
+downloaded
+tar_vid_input:  https://vimeo.com/100011344
+
+downloaded
+tar_vid_input:  https://vimeo.com/100014835
+
+downloaded
+tar_vid_input:  https://vimeo.com/100077517
+
+downloaded
+tar_vid_input:  https://vimeo.com/100081472
+
+downloaded
+tar_vid_input:  https://vimeo.com/100117753
+
+downloaded
+tar_vid_input:  https://vimeo.com/100131372
+
+downloaded
+tar_vid_input:  https://vimeo.com/100140544
+
+downloaded
+tar_vid_input:  https://vimeo.com/100146635
+
+downloaded
+tar_vid_input:  https://vimeo.com/100153779
+
+downloaded
+tar_vid_input:  https://vimeo.com/100176951
+
+downloaded
+tar_vid_input:  https://vimeo.com/100199211
+
+downloaded
+tar_vid_input:  https://vimeo.com/100202674
+
+downloaded
+tar_vid_input:  https://vimeo.com/100209265
+
+downloaded
+tar_vid_input:  https://vimeo.com/100224678
+
+downloaded
+tar_vid_input:  https://vimeo.com/100229878
+
+downloaded
+tar_vid_input:  https://vimeo.com/100249399
+
+downloaded
+tar_vid_input:  https://vimeo.com/100266638
+
+downloaded
+tar_vid_input:  https://vimeo.com/100280012
+
+downloaded
+tar_vid_input:  https://vimeo.com/100293247
+
+downloaded
+tar_vid_input:  https://vimeo.com/100299381
+
+downloaded
+tar_vid_input:  https://vimeo.com/100312989
+
+downloaded
+tar_vid_input:  https://vimeo.com/100354460
+
+downloaded
+tar_vid_input:  https://vimeo.com/100360092
+
+downloaded
+tar_vid_input:  https://vimeo.com/100362172
+
+downloaded
+tar_vid_input:  https://vimeo.com/100364573
+
+downloaded
+tar_vid_input:  https://vimeo.com/100364843
+
+downloaded
+tar_vid_input:  https://vimeo.com/100364885
+
+downloaded
+tar_vid_input:  https://vimeo.com/100366615
+
+downloaded
+tar_vid_input:  https://vimeo.com/100366834
+
+downloaded
+tar_vid_input:  https://vimeo.com/100397024
+
+downloaded
+tar_vid_input:  https://vimeo.com/100445787
+
+downloaded
+tar_vid_input:  https://vimeo.com/100446330
+
+downloaded
+tar_vid_input:  https://vimeo.com/100457108
+
+downloaded
+tar_vid_input:  https://vimeo.com/100458281
+
+downloaded
+tar_vid_input:  https://vimeo.com/100475707
+
+downloaded
+tar_vid_input:  https://vimeo.com/100483730
+
+downloaded
+tar_vid_input:  https://vimeo.com/100494682
+
+downloaded
+tar_vid_input:  https://vimeo.com/100504544
+
+downloaded
+tar_vid_input:  https://vimeo.com/100509931
+
+downloaded
+tar_vid_input:  https://vimeo.com/10051035
+
+downloaded
+tar_vid_input:  https://vimeo.com/100512588
+
+downloaded
+tar_vid_input:  https://vimeo.com/10052029
+
+downloaded
+tar_vid_input:  https://vimeo.com/100520487
+
+downloaded
+tar_vid_input:  https://vimeo.com/100561672
+
+downloaded
+tar_vid_input:  https://vimeo.com/100562177
+
+downloaded
+tar_vid_input:  https://vimeo.com/100626144
+
+downloaded
+tar_vid_input:  https://vimeo.com/100626145
+
+downloaded
+tar_vid_input:  https://vimeo.com/100629929
+
+downloaded
+tar_vid_input:  https://vimeo.com/100640779
+
+downloaded
+tar_vid_input:  https://vimeo.com/100642275
+
+downloaded
+tar_vid_input:  https://vimeo.com/100649167
+
+downloaded
+tar_vid_input:  https://vimeo.com/100733142
+
+downloaded
+tar_vid_input:  https://vimeo.com/100742368
+
+downloaded
+tar_vid_input:  https://vimeo.com/100743390
+
+downloaded
+tar_vid_input:  https://vimeo.com/100777394
+
+downloaded
+tar_vid_input:  https://vimeo.com/100791452
+
+downloaded
+tar_vid_input:  https://vimeo.com/100800531
+
+downloaded
+tar_vid_input:  https://vimeo.com/100803512
+
+downloaded
+tar_vid_input:  https://vimeo.com/100804175
+
+downloaded
+tar_vid_input:  https://vimeo.com/100804176
+
+downloaded
+tar_vid_input:  https://vimeo.com/100812648
+
+downloaded
+tar_vid_input:  https://vimeo.com/100822933
+
+downloaded
+tar_vid_input:  https://vimeo.com/100825968
+
+downloaded
+tar_vid_input:  https://vimeo.com/100843696
+
+downloaded
+tar_vid_input:  https://vimeo.com/100876771
+
+downloaded
+tar_vid_input:  https://vimeo.com/100876773
+
+downloaded
+tar_vid_input:  https://vimeo.com/100906353
+
+downloaded
+tar_vid_input:  https://vimeo.com/100912124
+
+downloaded
+tar_vid_input:  https://vimeo.com/100912125
+
+downloaded
+tar_vid_input:  https://vimeo.com/100912126
+
+downloaded
+tar_vid_input:  https://vimeo.com/100923368
+
+downloaded
+tar_vid_input:  https://vimeo.com/100923370
+
+downloaded
+tar_vid_input:  https://vimeo.com/100923372
+
+downloaded
+tar_vid_input:  https://vimeo.com/100924100
+
+downloaded
+tar_vid_input:  https://vimeo.com/100954161
+
+downloaded
+tar_vid_input:  https://vimeo.com/101057757
+
+downloaded
+tar_vid_input:  https://vimeo.com/101060673
+
+downloaded
+tar_vid_input:  https://vimeo.com/101092181
+
+downloaded
+tar_vid_input:  https://vimeo.com/101094248
+
+downloaded
+tar_vid_input:  https://vimeo.com/101107614
+
+downloaded
+tar_vid_input:  https://vimeo.com/101111032
+
+downloaded
+tar_vid_input:  https://vimeo.com/101128416
+
+downloaded
+tar_vid_input:  https://vimeo.com/101136413
+
+downloaded
+tar_vid_input:  https://vimeo.com/101170291
+
+downloaded
+tar_vid_input:  https://vimeo.com/101186514
+
+downloaded
+tar_vid_input:  https://vimeo.com/101221101
+
+downloaded
+tar_vid_input:  https://vimeo.com/101224055
+
+downloaded
+tar_vid_input:  https://vimeo.com/101224877
+
+downloaded
+tar_vid_input:  https://vimeo.com/101244242
+
+downloaded
+tar_vid_input:  https://vimeo.com/101244243
+
+downloaded
+tar_vid_input:  https://vimeo.com/101248018
+
+downloaded
+tar_vid_input:  https://vimeo.com/101250699
+
+downloaded
+tar_vid_input:  https://vimeo.com/101252960
+
+downloaded
+tar_vid_input:  https://vimeo.com/101255018
+
+downloaded
+tar_vid_input:  https://vimeo.com/101256216
+
+downloaded
+tar_vid_input:  https://vimeo.com/101301088
+
+downloaded
+tar_vid_input:  https://vimeo.com/101301089
+
+downloaded
+tar_vid_input:  https://vimeo.com/101310160
+
+downloaded
+tar_vid_input:  https://vimeo.com/101324085
+
+downloaded
+tar_vid_input:  https://vimeo.com/101330695
+
+downloaded
+tar_vid_input:  https://vimeo.com/101334115
+
+downloaded
+tar_vid_input:  https://vimeo.com/101355796
+
+downloaded
+tar_vid_input:  https://vimeo.com/101358333
+
+downloaded
+tar_vid_input:  https://vimeo.com/101410869
+
+downloaded
+tar_vid_input:  https://vimeo.com/101526406
+
+downloaded
+tar_vid_input:  https://vimeo.com/101527284
+
+downloaded
+tar_vid_input:  https://vimeo.com/101539720
+
+downloaded
+tar_vid_input:  https://vimeo.com/101559417
+
+downloaded
+tar_vid_input:  https://vimeo.com/101571086
+
+downloaded
+tar_vid_input:  https://vimeo.com/101630408
+
+downloaded
+tar_vid_input:  https://vimeo.com/101630714
+
+downloaded
+tar_vid_input:  https://vimeo.com/101643988
+
+downloaded
+tar_vid_input:  https://vimeo.com/101654008
+
+downloaded
+tar_vid_input:  https://vimeo.com/101659013
+
+downloaded
+tar_vid_input:  https://vimeo.com/101662496
+
+downloaded
+tar_vid_input:  https://vimeo.com/101665319
+
+downloaded
+tar_vid_input:  https://vimeo.com/101682307
+
+downloaded
+tar_vid_input:  https://vimeo.com/101712012
+
+downloaded
+tar_vid_input:  https://vimeo.com/101722128
+
+downloaded
+tar_vid_input:  https://vimeo.com/101724557
+
+downloaded
+tar_vid_input:  https://vimeo.com/101820095
+
+downloaded
+tar_vid_input:  https://vimeo.com/101841496
+
+downloaded
+tar_vid_input:  https://vimeo.com/101846462
+
+downloaded
+tar_vid_input:  https://vimeo.com/101852361
+
+downloaded
+tar_vid_input:  https://vimeo.com/101876858
+
+downloaded
+tar_vid_input:  https://vimeo.com/101890319
+
+downloaded
+tar_vid_input:  https://vimeo.com/101896202
+
+downloaded
+tar_vid_input:  https://vimeo.com/101905660
+
+downloaded
+tar_vid_input:  https://vimeo.com/101909728
+
+downloaded
+tar_vid_input:  https://vimeo.com/101954544
+
+downloaded
+tar_vid_input:  https://vimeo.com/101961619
+
+downloaded
+tar_vid_input:  https://vimeo.com/101966093
+
+downloaded
+tar_vid_input:  https://vimeo.com/102037622
+
+downloaded
+tar_vid_input:  https://vimeo.com/102040621
+
+downloaded
+tar_vid_input:  https://vimeo.com/102040622
+
+downloaded
+tar_vid_input:  https://vimeo.com/102040623
+
+downloaded
+tar_vid_input:  https://vimeo.com/102042507
+
+downloaded
+tar_vid_input:  https://vimeo.com/102044838
+
+downloaded
+tar_vid_input:  https://vimeo.com/102048812
+
+downloaded
+tar_vid_input:  https://vimeo.com/102137557
+
+downloaded
+tar_vid_input:  https://vimeo.com/102144809
+
+downloaded
+tar_vid_input:  https://vimeo.com/102149990
+
+downloaded
+tar_vid_input:  https://vimeo.com/102217533
+
+downloaded
+tar_vid_input:  https://vimeo.com/102218126
+
+downloaded
+tar_vid_input:  https://vimeo.com/102218144
+
+downloaded
+tar_vid_input:  https://vimeo.com/102219551
+
+downloaded
+tar_vid_input:  https://vimeo.com/102227637
+
+downloaded
+tar_vid_input:  https://vimeo.com/102233383
+
+downloaded
+tar_vid_input:  https://vimeo.com/102233384
+
+downloaded
+tar_vid_input:  https://vimeo.com/102252780
+
+downloaded
+tar_vid_input:  https://vimeo.com/102256247
+
+downloaded
+tar_vid_input:  https://vimeo.com/102257413
+
+downloaded
+tar_vid_input:  https://vimeo.com/102286545
+
+downloaded
+tar_vid_input:  https://vimeo.com/102296071
+
+downloaded
+tar_vid_input:  https://vimeo.com/102321460
+
+downloaded
+tar_vid_input:  https://vimeo.com/102353531
+
+downloaded
+tar_vid_input:  https://vimeo.com/102354539
+
+downloaded
+tar_vid_input:  https://vimeo.com/102375969
+
+downloaded
+tar_vid_input:  https://vimeo.com/102427831
+
+downloaded
+tar_vid_input:  https://vimeo.com/102434319
+
+downloaded
+tar_vid_input:  https://vimeo.com/102470391
+
+downloaded
+tar_vid_input:  https://vimeo.com/102504511
+
+downloaded
+tar_vid_input:  https://vimeo.com/102510872
+
+downloaded
+tar_vid_input:  https://vimeo.com/102510884
+
+downloaded
+tar_vid_input:  https://vimeo.com/102511293
+
+downloaded
+tar_vid_input:  https://vimeo.com/102526672
+
+downloaded
+tar_vid_input:  https://vimeo.com/102528627
+
+downloaded
+tar_vid_input:  https://vimeo.com/102537193
+
+downloaded
+tar_vid_input:  https://vimeo.com/102542798
+
+downloaded
+tar_vid_input:  https://vimeo.com/102558506
+
+downloaded
+tar_vid_input:  https://vimeo.com/102568206
+
+downloaded
+tar_vid_input:  https://vimeo.com/102574522
+
+downloaded
+tar_vid_input:  https://vimeo.com/102598844
+
+downloaded
+tar_vid_input:  https://vimeo.com/102632323
+
+downloaded
+tar_vid_input:  https://vimeo.com/102634902
+
+downloaded
+tar_vid_input:  https://vimeo.com/102635604
+
+downloaded
+tar_vid_input:  https://vimeo.com/102646150
+
+downloaded
+tar_vid_input:  https://vimeo.com/102664731
+
+downloaded
+tar_vid_input:  https://vimeo.com/102666136
+
+downloaded
+tar_vid_input:  https://vimeo.com/102680730
+
+downloaded
+tar_vid_input:  https://vimeo.com/102692163
+
+downloaded
+tar_vid_input:  https://vimeo.com/102734274
+
+downloaded
+tar_vid_input:  https://vimeo.com/102776434
+
+downloaded
+tar_vid_input:  https://vimeo.com/102776435
+
+downloaded
+tar_vid_input:  https://vimeo.com/102776436
+
+downloaded
+tar_vid_input:  https://vimeo.com/102776966
+
+downloaded
+tar_vid_input:  https://vimeo.com/102790728
+
+downloaded
+tar_vid_input:  https://vimeo.com/102797995
+
+downloaded
+tar_vid_input:  https://vimeo.com/102797996
+
+downloaded
+tar_vid_input:  https://vimeo.com/102797997
+
+downloaded
+tar_vid_input:  https://vimeo.com/102832433
+
+downloaded
+tar_vid_input:  https://vimeo.com/102850676
+
+downloaded
+tar_vid_input:  https://vimeo.com/102883194
+
+downloaded
+tar_vid_input:  https://vimeo.com/102899134
+
+downloaded
+tar_vid_input:  https://vimeo.com/102946244
+
+downloaded
+tar_vid_input:  https://vimeo.com/102980683
+
+downloaded
+tar_vid_input:  https://vimeo.com/102986035
+
+downloaded
+tar_vid_input:  https://vimeo.com/103001250
+
+downloaded
+tar_vid_input:  https://vimeo.com/103001252
+
+downloaded
+tar_vid_input:  https://vimeo.com/103016934
+
+downloaded
+tar_vid_input:  https://vimeo.com/103018448
+
+downloaded
+tar_vid_input:  https://vimeo.com/103021808
+
+downloaded
+tar_vid_input:  https://vimeo.com/103028500
+
+downloaded
+tar_vid_input:  https://vimeo.com/103087376
+
+downloaded
+tar_vid_input:  https://vimeo.com/103098431
+
+downloaded
+tar_vid_input:  https://vimeo.com/103110362
+
+downloaded
+tar_vid_input:  https://vimeo.com/103135702
+
+downloaded
+tar_vid_input:  https://vimeo.com/103138762
+
+downloaded
+tar_vid_input:  https://vimeo.com/103164838
+
+downloaded
+tar_vid_input:  https://vimeo.com/103167342
+
+downloaded
+tar_vid_input:  https://vimeo.com/103181933
+
+downloaded
+tar_vid_input:  https://vimeo.com/103194814
+
+downloaded
+tar_vid_input:  https://vimeo.com/103211606
+
+downloaded
+tar_vid_input:  https://vimeo.com/103212045
+
+downloaded
+tar_vid_input:  https://vimeo.com/103217773
+
+downloaded
+tar_vid_input:  https://vimeo.com/103236156
+
+downloaded
+tar_vid_input:  https://vimeo.com/103236157
+
+downloaded
+tar_vid_input:  https://vimeo.com/103236158
+
+downloaded
+tar_vid_input:  https://vimeo.com/103243457
+
+downloaded
+tar_vid_input:  https://vimeo.com/103249800
+
+downloaded
+tar_vid_input:  https://vimeo.com/103278642
+
+downloaded
+tar_vid_input:  https://vimeo.com/103285867
+
+downloaded
+tar_vid_input:  https://vimeo.com/103297924
+
+downloaded
+tar_vid_input:  https://vimeo.com/103304504
+
+downloaded
+tar_vid_input:  https://vimeo.com/103305190
+
+downloaded
+tar_vid_input:  https://vimeo.com/103305603
+
+downloaded
+tar_vid_input:  https://vimeo.com/103312959
+
+downloaded
+tar_vid_input:  https://vimeo.com/103342670
+
+downloaded
+tar_vid_input:  https://vimeo.com/103348964
+
+downloaded
+tar_vid_input:  https://vimeo.com/103384304
+
+downloaded
+tar_vid_input:  https://vimeo.com/103385011
+
+downloaded
+tar_vid_input:  https://vimeo.com/103390271
+
+downloaded
+tar_vid_input:  https://vimeo.com/103398746
+
+downloaded
+tar_vid_input:  https://vimeo.com/103425690
+
+downloaded
+tar_vid_input:  https://vimeo.com/103448601
+
+downloaded
+tar_vid_input:  https://vimeo.com/103448602
+
+downloaded
+tar_vid_input:  https://vimeo.com/103448603
+
+downloaded
+tar_vid_input:  https://vimeo.com/103452049
+
+downloaded
+tar_vid_input:  https://vimeo.com/103518694
+
+downloaded
+tar_vid_input:  https://vimeo.com/103544171
+
+downloaded
+tar_vid_input:  https://vimeo.com/103557530
+
+downloaded
+tar_vid_input:  https://vimeo.com/103560141
+
+downloaded
+tar_vid_input:  https://vimeo.com/103560143
+
+downloaded
+tar_vid_input:  https://vimeo.com/103561089
+
+downloaded
+tar_vid_input:  https://vimeo.com/103573676
+
+downloaded
+tar_vid_input:  https://vimeo.com/103604430
+
+downloaded
+tar_vid_input:  https://vimeo.com/103615402
+
+downloaded
+tar_vid_input:  https://vimeo.com/103619946
+
+downloaded
+tar_vid_input:  https://vimeo.com/103624177
+
+downloaded
+tar_vid_input:  https://vimeo.com/103636693
+
+downloaded
+tar_vid_input:  https://vimeo.com/103724357
+
+downloaded
+tar_vid_input:  https://vimeo.com/103724718
+
+downloaded
+tar_vid_input:  https://vimeo.com/103748242
+
+downloaded
+tar_vid_input:  https://vimeo.com/103755893
+
+downloaded
+tar_vid_input:  https://vimeo.com/103757754
+
+downloaded
+tar_vid_input:  https://vimeo.com/103771996
+
+downloaded
+tar_vid_input:  https://vimeo.com/103777784
+
+downloaded
+tar_vid_input:  https://vimeo.com/103788504
+
+downloaded
+tar_vid_input:  https://vimeo.com/103788738
+
+downloaded
+tar_vid_input:  https://vimeo.com/103799371
+
+downloaded
+tar_vid_input:  https://vimeo.com/103811690
+
+downloaded
+tar_vid_input:  https://vimeo.com/103840962
+
+downloaded
+tar_vid_input:  https://vimeo.com/103843654
+
+downloaded
+tar_vid_input:  https://vimeo.com/103845181
+
+downloaded
+tar_vid_input:  https://vimeo.com/103865826
+
+downloaded
+tar_vid_input:  https://vimeo.com/103870917
+
+downloaded
+tar_vid_input:  https://vimeo.com/103879054
+
+downloaded
+tar_vid_input:  https://vimeo.com/103928950
+
+downloaded
+tar_vid_input:  https://vimeo.com/103928951
+
+downloaded
+tar_vid_input:  https://vimeo.com/103939117
+
+downloaded
+tar_vid_input:  https://vimeo.com/103942353
+
+downloaded
+tar_vid_input:  https://vimeo.com/103961450
+
+downloaded
+tar_vid_input:  https://vimeo.com/103970529
+
+downloaded
+tar_vid_input:  https://vimeo.com/103976113
+
+downloaded
+tar_vid_input:  https://vimeo.com/104059121
+
+downloaded
+tar_vid_input:  https://vimeo.com/104059122
+
+downloaded
+tar_vid_input:  https://vimeo.com/104059123
+
+downloaded
+tar_vid_input:  https://vimeo.com/104070089
+
+downloaded
+tar_vid_input:  https://vimeo.com/104103094
+
+downloaded
+tar_vid_input:  https://vimeo.com/104128199
+
+downloaded
+tar_vid_input:  https://vimeo.com/104140563
+
+downloaded
+tar_vid_input:  https://vimeo.com/104142916
+
+downloaded
+tar_vid_input:  https://vimeo.com/104149990
+
+downloaded
+tar_vid_input:  https://vimeo.com/104163230
+
+downloaded
+tar_vid_input:  https://vimeo.com/104183689
+
+downloaded
+tar_vid_input:  https://vimeo.com/104183690
+
+downloaded
+tar_vid_input:  https://vimeo.com/104183691
+
+downloaded
+tar_vid_input:  https://vimeo.com/104190035
+
+downloaded
+tar_vid_input:  https://vimeo.com/104227009
+
+downloaded
+tar_vid_input:  https://vimeo.com/104254302
+
+downloaded
+tar_vid_input:  https://vimeo.com/104264666
+
+downloaded
+tar_vid_input:  https://vimeo.com/104268302
+
+downloaded
+tar_vid_input:  https://vimeo.com/104301985
+
+downloaded
+tar_vid_input:  https://vimeo.com/104302392
+
+downloaded
+tar_vid_input:  https://vimeo.com/104303922
+
+downloaded
+tar_vid_input:  https://vimeo.com/104333928
+
+downloaded
+tar_vid_input:  https://vimeo.com/104338421
+
+downloaded
+tar_vid_input:  https://vimeo.com/104357411
+
+downloaded
+tar_vid_input:  https://vimeo.com/104358751
+
+downloaded
+tar_vid_input:  https://vimeo.com/104362774
+
+downloaded
+tar_vid_input:  https://vimeo.com/104373280
+
+downloaded
+tar_vid_input:  https://vimeo.com/104378749
+
+downloaded
+tar_vid_input:  https://vimeo.com/104384843
+
+downloaded
+tar_vid_input:  https://vimeo.com/104399860
+
+downloaded
+tar_vid_input:  https://vimeo.com/104415044
+
+downloaded
+tar_vid_input:  https://vimeo.com/104423874
+
+downloaded
+tar_vid_input:  https://vimeo.com/104425894
+
+downloaded
+tar_vid_input:  https://vimeo.com/104426946
+
+downloaded
+tar_vid_input:  https://vimeo.com/104447405
+
+downloaded
+tar_vid_input:  https://vimeo.com/104449840
+
+downloaded
+tar_vid_input:  https://vimeo.com/104450871
+
+downloaded
+tar_vid_input:  https://vimeo.com/104453980
+
+downloaded
+tar_vid_input:  https://vimeo.com/104460296
+
+downloaded
+tar_vid_input:  https://vimeo.com/104461369
+
+downloaded
+tar_vid_input:  https://vimeo.com/104485263
+
+downloaded
+tar_vid_input:  https://vimeo.com/104494963
+
+downloaded
+tar_vid_input:  https://vimeo.com/104498702
+
+downloaded
+tar_vid_input:  https://vimeo.com/104517973
+
+downloaded
+tar_vid_input:  https://vimeo.com/104529968
+
+downloaded
+tar_vid_input:  https://vimeo.com/104534672
+
+downloaded
+tar_vid_input:  https://vimeo.com/104592342
+
+downloaded
+tar_vid_input:  https://vimeo.com/104628157
+
+downloaded
+tar_vid_input:  https://vimeo.com/104634581
+
+downloaded
+tar_vid_input:  https://vimeo.com/104640656
+
+downloaded
+tar_vid_input:  https://vimeo.com/104656813
+
+downloaded
+tar_vid_input:  https://vimeo.com/104662354
+
+downloaded
+tar_vid_input:  https://vimeo.com/104665902
+
+downloaded
+tar_vid_input:  https://vimeo.com/104675221
+
+downloaded
+tar_vid_input:  https://vimeo.com/104688084
+
+downloaded
+tar_vid_input:  https://vimeo.com/104700166
+
+downloaded
+tar_vid_input:  https://vimeo.com/104714251
+
+downloaded
+tar_vid_input:  https://vimeo.com/104716725
+
+downloaded
+tar_vid_input:  https://vimeo.com/104741671
+
+downloaded
+tar_vid_input:  https://vimeo.com/104786087
+
+downloaded
+tar_vid_input:  https://vimeo.com/104801961
+
+downloaded
+tar_vid_input:  https://vimeo.com/104801962
+
+downloaded
+tar_vid_input:  https://vimeo.com/104820561
+
+downloaded
+tar_vid_input:  https://vimeo.com/104829910
+
+downloaded
+tar_vid_input:  https://vimeo.com/104918710
+
+downloaded
+tar_vid_input:  https://vimeo.com/104961731
+
+downloaded
+tar_vid_input:  https://vimeo.com/104966037
+
+downloaded
+tar_vid_input:  https://vimeo.com/104971630
+
+downloaded
+tar_vid_input:  https://vimeo.com/104974596
+
+downloaded
+tar_vid_input:  https://vimeo.com/104984048
+
+downloaded
+tar_vid_input:  https://vimeo.com/104999400
+
+downloaded
+tar_vid_input:  https://vimeo.com/105001901
+
+downloaded
+tar_vid_input:  https://vimeo.com/105039754
+
+downloaded
+tar_vid_input:  https://vimeo.com/105052720
+
+downloaded
+tar_vid_input:  https://vimeo.com/105052721
+
+downloaded
+tar_vid_input:  https://vimeo.com/105052723
+
+downloaded
+tar_vid_input:  https://vimeo.com/105064140
+
+downloaded
+tar_vid_input:  https://vimeo.com/105070320
+
+downloaded
+tar_vid_input:  https://vimeo.com/105085837
+
+downloaded
+tar_vid_input:  https://vimeo.com/105178810
+
+downloaded
+tar_vid_input:  https://vimeo.com/105180543
+
+downloaded
+tar_vid_input:  https://vimeo.com/105189820
+
+downloaded
+tar_vid_input:  https://vimeo.com/105190253
+
+downloaded
+tar_vid_input:  https://vimeo.com/105207940
+
+downloaded
+tar_vid_input:  https://vimeo.com/105231342
+
+downloaded
+tar_vid_input:  https://vimeo.com/105240956
+
+downloaded
+tar_vid_input:  https://vimeo.com/105247208
+
+downloaded
+tar_vid_input:  https://vimeo.com/105254303
+
+downloaded
+tar_vid_input:  https://vimeo.com/105257678
+
+downloaded
+tar_vid_input:  https://vimeo.com/105292866
+
+downloaded
+tar_vid_input:  https://vimeo.com/105297790
+
+downloaded
+tar_vid_input:  https://vimeo.com/105314226
+
+downloaded
+tar_vid_input:  https://vimeo.com/105324790
+
+downloaded
+tar_vid_input:  https://vimeo.com/105329527
+
+downloaded
+tar_vid_input:  https://vimeo.com/105362930
+
+downloaded
+tar_vid_input:  https://vimeo.com/105394829
+
+downloaded
+tar_vid_input:  https://vimeo.com/105431281
+
+downloaded
+tar_vid_input:  https://vimeo.com/105436449
+
+downloaded
+tar_vid_input:  https://vimeo.com/105470056
+
+downloaded
+tar_vid_input:  https://vimeo.com/105476492
+
+downloaded
+tar_vid_input:  https://vimeo.com/105495431
+
+downloaded
+tar_vid_input:  https://vimeo.com/105515840
+
+downloaded
+tar_vid_input:  https://vimeo.com/10553289
+
+downloaded
+tar_vid_input:  https://vimeo.com/105544647
+
+downloaded
+tar_vid_input:  https://vimeo.com/105548158
+
+downloaded
+tar_vid_input:  https://vimeo.com/105558315
+
+downloaded
+tar_vid_input:  https://vimeo.com/105558408
+
+downloaded
+tar_vid_input:  https://vimeo.com/105565718
+
+downloaded
+tar_vid_input:  https://vimeo.com/105580094
+
+downloaded
+tar_vid_input:  https://vimeo.com/105607463
+
+downloaded
+tar_vid_input:  https://vimeo.com/105624375
+
+downloaded
+tar_vid_input:  https://vimeo.com/105698572
+
+downloaded
+tar_vid_input:  https://vimeo.com/105726968
+
+downloaded
+tar_vid_input:  https://vimeo.com/105728658
+
+downloaded
+tar_vid_input:  https://vimeo.com/105773481
+
+downloaded
+tar_vid_input:  https://vimeo.com/105773482
+
+downloaded
+tar_vid_input:  https://vimeo.com/105773483
+
+downloaded
+tar_vid_input:  https://vimeo.com/105773486
+
+downloaded
+tar_vid_input:  https://vimeo.com/105787788
+
+downloaded
+tar_vid_input:  https://vimeo.com/105796727
+
+downloaded
+tar_vid_input:  https://vimeo.com/105796987
+
+downloaded
+tar_vid_input:  https://vimeo.com/105836585
+
+downloaded
+tar_vid_input:  https://vimeo.com/105847025
+
+downloaded
+tar_vid_input:  https://vimeo.com/105886759
+
+downloaded
+tar_vid_input:  https://vimeo.com/105901680
+
+downloaded
+tar_vid_input:  https://vimeo.com/105905415
+
+downloaded
+tar_vid_input:  https://vimeo.com/105918615
+
+downloaded
+tar_vid_input:  https://vimeo.com/105934115
+
+downloaded
+tar_vid_input:  https://vimeo.com/105946067
+
+downloaded
+tar_vid_input:  https://vimeo.com/105959183
+
+downloaded
+tar_vid_input:  https://vimeo.com/105977164
+
+downloaded
+tar_vid_input:  https://vimeo.com/105984824
+
+downloaded
+tar_vid_input:  https://vimeo.com/105996808
+
+downloaded
+tar_vid_input:  https://vimeo.com/106012232
+
+downloaded
+tar_vid_input:  https://vimeo.com/106021453
+
+downloaded
+tar_vid_input:  https://vimeo.com/106021559
+
+downloaded
+tar_vid_input:  https://vimeo.com/106095837
+
+downloaded
+tar_vid_input:  https://vimeo.com/106099853
+
+downloaded
+tar_vid_input:  https://vimeo.com/106137497
+
+downloaded
+tar_vid_input:  https://vimeo.com/106140730
+
+downloaded
+tar_vid_input:  https://vimeo.com/106178476
+
+downloaded
+tar_vid_input:  https://vimeo.com/106210529
+
+downloaded
+tar_vid_input:  https://vimeo.com/106210530
+
+downloaded
+tar_vid_input:  https://vimeo.com/106221690
+
+downloaded
+tar_vid_input:  https://vimeo.com/106233047
+
+downloaded
+tar_vid_input:  https://vimeo.com/106238806
+
+downloaded
+tar_vid_input:  https://vimeo.com/106266913
+
+downloaded
+tar_vid_input:  https://vimeo.com/106306705
+
+downloaded
+tar_vid_input:  https://vimeo.com/106308149
+
+downloaded
+tar_vid_input:  https://vimeo.com/106308150
+
+downloaded
+tar_vid_input:  https://vimeo.com/106308151
+
+downloaded
+tar_vid_input:  https://vimeo.com/106310219
+
+downloaded
+tar_vid_input:  https://vimeo.com/106312481
+
+downloaded
+tar_vid_input:  https://vimeo.com/106312606
+
+downloaded
+tar_vid_input:  https://vimeo.com/106325734
+
+downloaded
+tar_vid_input:  https://vimeo.com/106369385
+
+downloaded
+tar_vid_input:  https://vimeo.com/106369787
+
+downloaded
+tar_vid_input:  https://vimeo.com/106369810
+
+downloaded
+tar_vid_input:  https://vimeo.com/106438789
+
+downloaded
+tar_vid_input:  https://vimeo.com/106449896
+
+downloaded
+tar_vid_input:  https://vimeo.com/106453541
+
+downloaded
+tar_vid_input:  https://vimeo.com/106461042
+
+downloaded
+tar_vid_input:  https://vimeo.com/106501635
+
+downloaded
+tar_vid_input:  https://vimeo.com/106520952
+
+downloaded
+tar_vid_input:  https://vimeo.com/106545284
+
+downloaded
+tar_vid_input:  https://vimeo.com/106548562
+
+downloaded
+tar_vid_input:  https://vimeo.com/106549724
+
+downloaded
+tar_vid_input:  https://vimeo.com/106566080
+
+downloaded
+tar_vid_input:  https://vimeo.com/106619044
+
+downloaded
+tar_vid_input:  https://vimeo.com/106628302
+
+downloaded
+tar_vid_input:  https://vimeo.com/106638858
+
+downloaded
+tar_vid_input:  https://vimeo.com/106643231
+
+downloaded
+tar_vid_input:  https://vimeo.com/106678329
+
+downloaded
+tar_vid_input:  https://vimeo.com/106678330
+
+downloaded
+tar_vid_input:  https://vimeo.com/106678331
+
+downloaded
+tar_vid_input:  https://vimeo.com/106678333
+
+downloaded
+tar_vid_input:  https://vimeo.com/106744621
+
+downloaded
+tar_vid_input:  https://vimeo.com/106783237
+
+downloaded
+tar_vid_input:  https://vimeo.com/106790545
+
+downloaded
+tar_vid_input:  https://vimeo.com/106806817
+
+downloaded
+tar_vid_input:  https://vimeo.com/106819013
+
+downloaded
+tar_vid_input:  https://vimeo.com/106826377
+
+downloaded
+tar_vid_input:  https://vimeo.com/106870767
+
+downloaded
+tar_vid_input:  https://vimeo.com/106883097
+
+downloaded
+tar_vid_input:  https://vimeo.com/106908866
+
+downloaded
+tar_vid_input:  https://vimeo.com/106932204
+
+downloaded
+tar_vid_input:  https://vimeo.com/106940165
+
+downloaded
+tar_vid_input:  https://vimeo.com/106943393
+
+downloaded
+tar_vid_input:  https://vimeo.com/106943958
+
+downloaded
+tar_vid_input:  https://vimeo.com/106966649
+
+downloaded
+tar_vid_input:  https://vimeo.com/106975093
+
+downloaded
+tar_vid_input:  https://vimeo.com/106977311
+
+downloaded
+tar_vid_input:  https://vimeo.com/106986181
+
+downloaded
+tar_vid_input:  https://vimeo.com/106986182
+
+downloaded
+tar_vid_input:  https://vimeo.com/106986183
+
+downloaded
+tar_vid_input:  https://vimeo.com/106993739
+
+downloaded
+tar_vid_input:  https://vimeo.com/106999734
+
+downloaded
+tar_vid_input:  https://vimeo.com/107002176
+
+downloaded
+tar_vid_input:  https://vimeo.com/107002177
+
+downloaded
+tar_vid_input:  https://vimeo.com/107002179
+
+downloaded
+tar_vid_input:  https://vimeo.com/107002180
+
+downloaded
+tar_vid_input:  https://vimeo.com/107004588
+
+downloaded
+tar_vid_input:  https://vimeo.com/107060459
+
+downloaded
+tar_vid_input:  https://vimeo.com/107081899
+
+downloaded
+tar_vid_input:  https://vimeo.com/107098310
+
+downloaded
+tar_vid_input:  https://vimeo.com/107132164
+
+downloaded
+tar_vid_input:  https://vimeo.com/107145819
+
+downloaded
+tar_vid_input:  https://vimeo.com/107179091
+
+downloaded
+tar_vid_input:  https://vimeo.com/107191669
+
+downloaded
+tar_vid_input:  https://vimeo.com/107201812
+
+downloaded
+tar_vid_input:  https://vimeo.com/107224001
+
+downloaded
+tar_vid_input:  https://vimeo.com/107244206
+
+downloaded
+tar_vid_input:  https://vimeo.com/107244572
+
+downloaded
+tar_vid_input:  https://vimeo.com/107244986
+
+downloaded
+tar_vid_input:  https://vimeo.com/107246741
+
+downloaded
+tar_vid_input:  https://vimeo.com/107249117
+
+downloaded
+tar_vid_input:  https://vimeo.com/107257762
+
+downloaded
+tar_vid_input:  https://vimeo.com/107280403
+
+downloaded
+tar_vid_input:  https://vimeo.com/107301692
+
+downloaded
+tar_vid_input:  https://vimeo.com/107313183
+
+downloaded
+tar_vid_input:  https://vimeo.com/107417811
+
+downloaded
+tar_vid_input:  https://vimeo.com/107473473
+
+downloaded
+tar_vid_input:  https://vimeo.com/107498144
+
+downloaded
+tar_vid_input:  https://vimeo.com/107501168
+
+downloaded
+tar_vid_input:  https://vimeo.com/107514013
+
+downloaded
+tar_vid_input:  https://vimeo.com/107525843
+
+downloaded
+tar_vid_input:  https://vimeo.com/107540226
+
+downloaded
+tar_vid_input:  https://vimeo.com/107545556
+
+downloaded
+tar_vid_input:  https://vimeo.com/107592366
+
+downloaded
+tar_vid_input:  https://vimeo.com/107592565
+
+downloaded
+tar_vid_input:  https://vimeo.com/107592567
+
+downloaded
+tar_vid_input:  https://vimeo.com/107608369
+
+downloaded
+tar_vid_input:  https://vimeo.com/107622047
+
+downloaded
+tar_vid_input:  https://vimeo.com/107631125
+
+downloaded
+tar_vid_input:  https://vimeo.com/107636899
+
+downloaded
+tar_vid_input:  https://vimeo.com/107655563
+
+downloaded
+tar_vid_input:  https://vimeo.com/107672479
+
+downloaded
+tar_vid_input:  https://vimeo.com/107675176
+
+downloaded
+tar_vid_input:  https://vimeo.com/107754178
+
+downloaded
+tar_vid_input:  https://vimeo.com/107762996
+
+downloaded
+tar_vid_input:  https://vimeo.com/107811199
+
+downloaded
+tar_vid_input:  https://vimeo.com/107863021
+
+downloaded
+tar_vid_input:  https://vimeo.com/107868459
+
+downloaded
+tar_vid_input:  https://vimeo.com/107873432
+
+downloaded
+tar_vid_input:  https://vimeo.com/107910006
+
+downloaded
+tar_vid_input:  https://vimeo.com/107911515
+
+downloaded
+tar_vid_input:  https://vimeo.com/107925972
+
+downloaded
+tar_vid_input:  https://vimeo.com/107937922
+
+downloaded
+tar_vid_input:  https://vimeo.com/107953539
+
+downloaded
+tar_vid_input:  https://vimeo.com/107957884
+
+downloaded
+tar_vid_input:  https://vimeo.com/107966430
+
+downloaded
+tar_vid_input:  https://vimeo.com/107990876
+
+downloaded
+tar_vid_input:  https://vimeo.com/107995820
+
+downloaded
+tar_vid_input:  https://vimeo.com/107997873
+
+downloaded
+tar_vid_input:  https://vimeo.com/108017253
+
+downloaded
+tar_vid_input:  https://vimeo.com/108017254
+
+downloaded
+tar_vid_input:  https://vimeo.com/108017255
+
+downloaded
+tar_vid_input:  https://vimeo.com/108017256
+
+downloaded
+tar_vid_input:  https://vimeo.com/108023290
+
+downloaded
+tar_vid_input:  https://vimeo.com/108030477
+
+downloaded
+tar_vid_input:  https://vimeo.com/108036387
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052304
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052305
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052307
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052310
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052311
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052978
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052981
+
+downloaded
+tar_vid_input:  https://vimeo.com/108052987
+
+downloaded
+tar_vid_input:  https://vimeo.com/108053031
+
+downloaded
+tar_vid_input:  https://vimeo.com/108061283
+
+downloaded
+tar_vid_input:  https://vimeo.com/108069756
+
+downloaded
+tar_vid_input:  https://vimeo.com/108092429
+
+downloaded
+tar_vid_input:  https://vimeo.com/108107976
+
+downloaded
+tar_vid_input:  https://vimeo.com/108111606
+
+downloaded
+tar_vid_input:  https://vimeo.com/108122652
+
+downloaded
+tar_vid_input:  https://vimeo.com/108131371
+
+downloaded
+tar_vid_input:  https://vimeo.com/108137271
+
+downloaded
+tar_vid_input:  https://vimeo.com/108137272
+
+downloaded
+tar_vid_input:  https://vimeo.com/108138334
+
+downloaded
+tar_vid_input:  https://vimeo.com/108172315
+
+downloaded
+tar_vid_input:  https://vimeo.com/108173868
+
+downloaded
+tar_vid_input:  https://vimeo.com/108177288
+
+downloaded
+tar_vid_input:  https://vimeo.com/108178782
+
+downloaded
+tar_vid_input:  https://vimeo.com/108185572
+
+downloaded
+tar_vid_input:  https://vimeo.com/108187061
+
+downloaded
+tar_vid_input:  https://vimeo.com/108204139
+
+downloaded
+tar_vid_input:  https://vimeo.com/108219088
+
+downloaded
+tar_vid_input:  https://vimeo.com/108220515
+
+downloaded
+tar_vid_input:  https://vimeo.com/108242510
+
+downloaded
+tar_vid_input:  https://vimeo.com/108263489
+
+downloaded
+tar_vid_input:  https://vimeo.com/108282986
+
+downloaded
+tar_vid_input:  https://vimeo.com/108283714
+
+downloaded
+tar_vid_input:  https://vimeo.com/108284456
+
+downloaded
+tar_vid_input:  https://vimeo.com/108285702
+
+downloaded
+tar_vid_input:  https://vimeo.com/108292567
+
+downloaded
+tar_vid_input:  https://vimeo.com/108292570
+
+downloaded
+tar_vid_input:  https://vimeo.com/108292572
+
+downloaded
+tar_vid_input:  https://vimeo.com/108292575
+
+downloaded
+tar_vid_input:  https://vimeo.com/108305495
+
+downloaded
+tar_vid_input:  https://vimeo.com/108375943
+
+downloaded
+tar_vid_input:  https://vimeo.com/108413964
+
+downloaded
+tar_vid_input:  https://vimeo.com/108426265
+
+downloaded
+tar_vid_input:  https://vimeo.com/108442509
+
+downloaded
+tar_vid_input:  https://vimeo.com/108442614
+
+downloaded
+tar_vid_input:  https://vimeo.com/108462273
+
+downloaded
+tar_vid_input:  https://vimeo.com/108474611
+
+downloaded
+tar_vid_input:  https://vimeo.com/108476382
+
+downloaded
+tar_vid_input:  https://vimeo.com/108486311
+
+downloaded
+tar_vid_input:  https://vimeo.com/108496633
+
+downloaded
+tar_vid_input:  https://vimeo.com/108523734
+
+downloaded
+tar_vid_input:  https://vimeo.com/108527758
+
+downloaded
+tar_vid_input:  https://vimeo.com/108563654
+
+downloaded
+tar_vid_input:  https://vimeo.com/108584323
+
+downloaded
+tar_vid_input:  https://vimeo.com/108592367
+
+downloaded
+tar_vid_input:  https://vimeo.com/108608448
+
+downloaded
+tar_vid_input:  https://vimeo.com/108620147
+
+downloaded
+tar_vid_input:  https://vimeo.com/108620149
+
+downloaded
+tar_vid_input:  https://vimeo.com/108620151
+
+downloaded
+tar_vid_input:  https://vimeo.com/108620152
+
+downloaded
+tar_vid_input:  https://vimeo.com/108626165
+
+downloaded
+tar_vid_input:  https://vimeo.com/108645314
+
+downloaded
+tar_vid_input:  https://vimeo.com/108689045
+
+downloaded
+tar_vid_input:  https://vimeo.com/108706772
+
+downloaded
+tar_vid_input:  https://vimeo.com/108711854
+
+downloaded
+tar_vid_input:  https://vimeo.com/108722445
+
+downloaded
+tar_vid_input:  https://vimeo.com/108725591
+
+downloaded
+tar_vid_input:  https://vimeo.com/108746543
+
+downloaded
+tar_vid_input:  https://vimeo.com/108749482
+
+downloaded
+tar_vid_input:  https://vimeo.com/108775709
+
+downloaded
+tar_vid_input:  https://vimeo.com/108807760
+
+downloaded
+tar_vid_input:  https://vimeo.com/108814806
+
+downloaded
+tar_vid_input:  https://vimeo.com/108816909
+
+downloaded
+tar_vid_input:  https://vimeo.com/108826106
+
+downloaded
+tar_vid_input:  https://vimeo.com/108829908
+
+downloaded
+tar_vid_input:  https://vimeo.com/108835168
+
+downloaded
+tar_vid_input:  https://vimeo.com/108839158
+
+downloaded
+tar_vid_input:  https://vimeo.com/108848234
+
+downloaded
+tar_vid_input:  https://vimeo.com/108857187
+
+downloaded
+tar_vid_input:  https://vimeo.com/108863888
+
+downloaded
+tar_vid_input:  https://vimeo.com/108864040
+
+downloaded
+tar_vid_input:  https://vimeo.com/108865843
+
+downloaded
+tar_vid_input:  https://vimeo.com/108875115
+
+downloaded
+tar_vid_input:  https://vimeo.com/108891175
+
+downloaded
+tar_vid_input:  https://vimeo.com/108921230
+
+downloaded
+tar_vid_input:  https://vimeo.com/108941856
+
+downloaded
+tar_vid_input:  https://vimeo.com/108947784
+
+downloaded
+tar_vid_input:  https://vimeo.com/108973836
+
+downloaded
+tar_vid_input:  https://vimeo.com/108986224
+
+downloaded
+tar_vid_input:  https://vimeo.com/108990979
+
+downloaded
+tar_vid_input:  https://vimeo.com/108994100
+
+downloaded
+tar_vid_input:  https://vimeo.com/108994101
+
+downloaded
+tar_vid_input:  https://vimeo.com/109004776
+
+downloaded
+tar_vid_input:  https://vimeo.com/109013658
+
+downloaded
+tar_vid_input:  https://vimeo.com/109037717
+
+downloaded
+tar_vid_input:  https://vimeo.com/109052374
+
+downloaded
+tar_vid_input:  https://vimeo.com/109057981
+
+downloaded
+tar_vid_input:  https://vimeo.com/109058390
+
+downloaded
+tar_vid_input:  https://vimeo.com/109058495
+
+downloaded
+tar_vid_input:  https://vimeo.com/109090409
+
+downloaded
+tar_vid_input:  https://vimeo.com/109090952
+
+downloaded
+tar_vid_input:  https://vimeo.com/109113151
+
+downloaded
+tar_vid_input:  https://vimeo.com/109127209
+
+downloaded
+tar_vid_input:  https://vimeo.com/109132550
+
+downloaded
+tar_vid_input:  https://vimeo.com/109137691
+
+downloaded
+tar_vid_input:  https://vimeo.com/109155150
+
+downloaded
+tar_vid_input:  https://vimeo.com/109180391
+
+downloaded
+tar_vid_input:  https://vimeo.com/109183144
+
+downloaded
+tar_vid_input:  https://vimeo.com/109184682
+
+downloaded
+tar_vid_input:  https://vimeo.com/109186707
+
+downloaded
+tar_vid_input:  https://vimeo.com/109188087
+
+downloaded
+tar_vid_input:  https://vimeo.com/109193884
+
+downloaded
+tar_vid_input:  https://vimeo.com/109203805
+
+downloaded
+tar_vid_input:  https://vimeo.com/109208332
+
+downloaded
+tar_vid_input:  https://vimeo.com/109209109
+
+downloaded
+tar_vid_input:  https://vimeo.com/109229702
+
+downloaded
+tar_vid_input:  https://vimeo.com/109235057
+
+downloaded
+tar_vid_input:  https://vimeo.com/109281940
+
+downloaded
+tar_vid_input:  https://vimeo.com/109290315
+
+downloaded
+tar_vid_input:  https://vimeo.com/109307633
+
+downloaded
+tar_vid_input:  https://vimeo.com/109325843
+
+downloaded
+tar_vid_input:  https://vimeo.com/109345273
+
+downloaded
+tar_vid_input:  https://vimeo.com/109359930
+
+downloaded
+tar_vid_input:  https://vimeo.com/109393178
+
+downloaded
+tar_vid_input:  https://vimeo.com/109414623
+
+downloaded
+tar_vid_input:  https://vimeo.com/109415465
+
+downloaded
+tar_vid_input:  https://vimeo.com/109430905
+
+downloaded
+tar_vid_input:  https://vimeo.com/109449825
+
+downloaded
+tar_vid_input:  https://vimeo.com/109484255
+
+downloaded
+tar_vid_input:  https://vimeo.com/109485709
+
+downloaded
+tar_vid_input:  https://vimeo.com/109494466
+
+downloaded
+tar_vid_input:  https://vimeo.com/109549086
+
+downloaded
+tar_vid_input:  https://vimeo.com/109550271
+
+downloaded
+tar_vid_input:  https://vimeo.com/109606929
+
+downloaded
+tar_vid_input:  https://vimeo.com/109606930
+
+downloaded
+tar_vid_input:  https://vimeo.com/109606931
+
+downloaded
+tar_vid_input:  https://vimeo.com/109613041
+
+downloaded
+tar_vid_input:  https://vimeo.com/109620728
+
+downloaded
+tar_vid_input:  https://vimeo.com/109625543
+
+downloaded
+tar_vid_input:  https://vimeo.com/109630809
+
+downloaded
+tar_vid_input:  https://vimeo.com/109682239
+
+downloaded
+tar_vid_input:  https://vimeo.com/109692159
+
+downloaded
+tar_vid_input:  https://vimeo.com/109692161
+
+downloaded
+tar_vid_input:  https://vimeo.com/109693605
+
+downloaded
+tar_vid_input:  https://vimeo.com/109694449
+
+downloaded
+tar_vid_input:  https://vimeo.com/109757026
+
+downloaded
+tar_vid_input:  https://vimeo.com/109775937
+
+downloaded
+tar_vid_input:  https://vimeo.com/109782012
+
+downloaded
+tar_vid_input:  https://vimeo.com/109800722
+
+downloaded
+tar_vid_input:  https://vimeo.com/109803796
+
+downloaded
+tar_vid_input:  https://vimeo.com/109811113
+
+downloaded
+tar_vid_input:  https://vimeo.com/109903497
+
+downloaded
+tar_vid_input:  https://vimeo.com/109908659
+
+downloaded
+tar_vid_input:  https://vimeo.com/109948165
+
+downloaded
+tar_vid_input:  https://vimeo.com/110016195
+
+downloaded
+tar_vid_input:  https://vimeo.com/110029943
+
+downloaded
+tar_vid_input:  https://vimeo.com/110077204
+
+downloaded
+tar_vid_input:  https://vimeo.com/110103142
+
+downloaded
+tar_vid_input:  https://vimeo.com/110128212
+
+downloaded
+tar_vid_input:  https://vimeo.com/110134838
+
+downloaded
+tar_vid_input:  https://vimeo.com/110212454
+
+downloaded
+tar_vid_input:  https://vimeo.com/110257661
+
+downloaded
+tar_vid_input:  https://vimeo.com/110263708
+
+downloaded
+tar_vid_input:  https://vimeo.com/110265380
+
+downloaded
+tar_vid_input:  https://vimeo.com/110277558
+
+downloaded
+tar_vid_input:  https://vimeo.com/110282618
+
+downloaded
+tar_vid_input:  https://vimeo.com/110283651
+
+downloaded
+tar_vid_input:  https://vimeo.com/110283652
+
+downloaded
+tar_vid_input:  https://vimeo.com/110306208
+
+downloaded
+tar_vid_input:  https://vimeo.com/110337282
+
+downloaded
+tar_vid_input:  https://vimeo.com/110368176
+
+downloaded
+tar_vid_input:  https://vimeo.com/110371793
+
+downloaded
+tar_vid_input:  https://vimeo.com/110371794
+
+downloaded
+tar_vid_input:  https://vimeo.com/110371795
+
+downloaded
+tar_vid_input:  https://vimeo.com/110371796
+
+downloaded
+tar_vid_input:  https://vimeo.com/110388311
+
+downloaded
+tar_vid_input:  https://vimeo.com/110404881
+
+downloaded
+tar_vid_input:  https://vimeo.com/110422807
+
+downloaded
+tar_vid_input:  https://vimeo.com/110435742
+
+downloaded
+tar_vid_input:  https://vimeo.com/110460230
+
+downloaded
+tar_vid_input:  https://vimeo.com/110481442
+
+downloaded
+tar_vid_input:  https://vimeo.com/110481443
+
+downloaded
+tar_vid_input:  https://vimeo.com/110481444
+
+downloaded
+tar_vid_input:  https://vimeo.com/110498281
+
+downloaded
+tar_vid_input:  https://vimeo.com/110501462
+
+downloaded
+tar_vid_input:  https://vimeo.com/110506586
+
+downloaded
+tar_vid_input:  https://vimeo.com/110508165
+
+downloaded
+tar_vid_input:  https://vimeo.com/110510735
+
+downloaded
+tar_vid_input:  https://vimeo.com/110511439
+
+downloaded
+tar_vid_input:  https://vimeo.com/110514041
+
+downloaded
+tar_vid_input:  https://vimeo.com/110533983
+
+downloaded
+tar_vid_input:  https://vimeo.com/110536371
+
+downloaded
+tar_vid_input:  https://vimeo.com/110543721
+
+downloaded
+tar_vid_input:  https://vimeo.com/110546056
+
+downloaded
+tar_vid_input:  https://vimeo.com/110557224
+
+downloaded
+tar_vid_input:  https://vimeo.com/110560915
+
+downloaded
+tar_vid_input:  https://vimeo.com/110567884
+
+downloaded
+tar_vid_input:  https://vimeo.com/110598645
+
+downloaded
+tar_vid_input:  https://vimeo.com/110600101
+
+downloaded
+tar_vid_input:  https://vimeo.com/110634101
+
+downloaded
+tar_vid_input:  https://vimeo.com/110646583
+
+downloaded
+tar_vid_input:  https://vimeo.com/110656903
+
+downloaded
+tar_vid_input:  https://vimeo.com/110678266
+
+downloaded
+tar_vid_input:  https://vimeo.com/110701559
+
+downloaded
+tar_vid_input:  https://vimeo.com/110705405
+
+downloaded
+tar_vid_input:  https://vimeo.com/110717112
+
+downloaded
+tar_vid_input:  https://vimeo.com/110726467
+
+downloaded
+tar_vid_input:  https://vimeo.com/110755205
+
+downloaded
+tar_vid_input:  https://vimeo.com/110764182
+
+downloaded
+tar_vid_input:  https://vimeo.com/110766038
+
+downloaded
+tar_vid_input:  https://vimeo.com/110767818
+
+downloaded
+tar_vid_input:  https://vimeo.com/110780437
+
+downloaded
+tar_vid_input:  https://vimeo.com/110790011
+
+downloaded
+tar_vid_input:  https://vimeo.com/110794096
+
+downloaded
+tar_vid_input:  https://vimeo.com/110803474
+
+downloaded
+tar_vid_input:  https://vimeo.com/110808592
+
+downloaded
+tar_vid_input:  https://vimeo.com/110816567
+
+downloaded
+tar_vid_input:  https://vimeo.com/110833361
+
+downloaded
+tar_vid_input:  https://vimeo.com/110849335
+
+downloaded
+tar_vid_input:  https://vimeo.com/110852030
+
+downloaded
+tar_vid_input:  https://vimeo.com/110864795
+
+downloaded
+tar_vid_input:  https://vimeo.com/110864796
+
+downloaded
+tar_vid_input:  https://vimeo.com/110864797
+
+downloaded
+tar_vid_input:  https://vimeo.com/110864798
+
+downloaded
+tar_vid_input:  https://vimeo.com/110864799
+
+downloaded
+tar_vid_input:  https://vimeo.com/110867000
+
+downloaded
+tar_vid_input:  https://vimeo.com/110918461
+
+downloaded
+tar_vid_input:  https://vimeo.com/110938234
+
+downloaded
+tar_vid_input:  https://vimeo.com/110961177
+
+downloaded
+tar_vid_input:  https://vimeo.com/110972543
+
+downloaded
+tar_vid_input:  https://vimeo.com/110975666
+
+downloaded
+tar_vid_input:  https://vimeo.com/110982748
+
+downloaded
+tar_vid_input:  https://vimeo.com/110987657
+
+downloaded
+tar_vid_input:  https://vimeo.com/110995983
+
+downloaded
+tar_vid_input:  https://vimeo.com/111009417
+
+downloaded
+tar_vid_input:  https://vimeo.com/111017740
+
+downloaded
+tar_vid_input:  https://vimeo.com/111023781
+
+downloaded
+tar_vid_input:  https://vimeo.com/111055424
+
+downloaded
+tar_vid_input:  https://vimeo.com/111101388
+
+downloaded
+tar_vid_input:  https://vimeo.com/111106637
+
+downloaded
+tar_vid_input:  https://vimeo.com/111111449
+
+downloaded
+tar_vid_input:  https://vimeo.com/111114259
+
+downloaded
+tar_vid_input:  https://vimeo.com/111116373
+
+downloaded
+tar_vid_input:  https://vimeo.com/111121319
+
+downloaded
+tar_vid_input:  https://vimeo.com/111138433
+
+downloaded
+tar_vid_input:  https://vimeo.com/111141948
+
+downloaded
+tar_vid_input:  https://vimeo.com/111142223
+
+downloaded
+tar_vid_input:  https://vimeo.com/111144436
+
+downloaded
+tar_vid_input:  https://vimeo.com/111147494
+
+downloaded
+tar_vid_input:  https://vimeo.com/111170153
+
+downloaded
+tar_vid_input:  https://vimeo.com/111199909
+
+downloaded
+tar_vid_input:  https://vimeo.com/111201787
+
+downloaded
+tar_vid_input:  https://vimeo.com/111205107
+
+downloaded
+tar_vid_input:  https://vimeo.com/111226052
+
+downloaded
+tar_vid_input:  https://vimeo.com/111226639
+
+downloaded
+tar_vid_input:  https://vimeo.com/111247392
+
+downloaded
+tar_vid_input:  https://vimeo.com/111248894
+
+downloaded
+tar_vid_input:  https://vimeo.com/111252620
+
+downloaded
+tar_vid_input:  https://vimeo.com/111257539
+
+downloaded
+tar_vid_input:  https://vimeo.com/111281866
+
+downloaded
+tar_vid_input:  https://vimeo.com/111294685
+
+downloaded
+tar_vid_input:  https://vimeo.com/111298082
+
+downloaded
+tar_vid_input:  https://vimeo.com/111358612
+
+downloaded
+tar_vid_input:  https://vimeo.com/111388356
+
+downloaded
+tar_vid_input:  https://vimeo.com/111415843
+
+downloaded
+tar_vid_input:  https://vimeo.com/111436036
+
+downloaded
+tar_vid_input:  https://vimeo.com/111438323
+
+downloaded
+tar_vid_input:  https://vimeo.com/111451355
+
+downloaded
+tar_vid_input:  https://vimeo.com/111463084
+
+downloaded
+tar_vid_input:  https://vimeo.com/111463863
+
+downloaded
+tar_vid_input:  https://vimeo.com/111466492
+
+downloaded
+tar_vid_input:  https://vimeo.com/111484534
+
+downloaded
+tar_vid_input:  https://vimeo.com/111504000
+
+downloaded
+tar_vid_input:  https://vimeo.com/111514046
+
+downloaded
+tar_vid_input:  https://vimeo.com/111514047
+
+downloaded
+tar_vid_input:  https://vimeo.com/111514048
+
+downloaded
+tar_vid_input:  https://vimeo.com/111514862
+
+downloaded
+tar_vid_input:  https://vimeo.com/111547044
+
+downloaded
+tar_vid_input:  https://vimeo.com/111594944
+
+downloaded
+tar_vid_input:  https://vimeo.com/111604565
+
+downloaded
+tar_vid_input:  https://vimeo.com/111614300
+
+downloaded
+tar_vid_input:  https://vimeo.com/111654355
+
+downloaded
+tar_vid_input:  https://vimeo.com/111655102
+
+downloaded
+tar_vid_input:  https://vimeo.com/111655824
+
+downloaded
+tar_vid_input:  https://vimeo.com/111658590
+
+downloaded
+tar_vid_input:  https://vimeo.com/111670051
+
+downloaded
+tar_vid_input:  https://vimeo.com/111674853
+
+downloaded
+tar_vid_input:  https://vimeo.com/111674886
+
+downloaded
+tar_vid_input:  https://vimeo.com/111709984
+
+downloaded
+tar_vid_input:  https://vimeo.com/111721505
+
+downloaded
+tar_vid_input:  https://vimeo.com/111723857
+
+downloaded
+tar_vid_input:  https://vimeo.com/111729211
+
+downloaded
+tar_vid_input:  https://vimeo.com/111734118
+
+downloaded
+tar_vid_input:  https://vimeo.com/111761629
+
+downloaded
+tar_vid_input:  https://vimeo.com/111765171
+
+downloaded
+tar_vid_input:  https://vimeo.com/111775180
+
+downloaded
+tar_vid_input:  https://vimeo.com/111790441
+
+downloaded
+tar_vid_input:  https://vimeo.com/111792587
+
+downloaded
+tar_vid_input:  https://vimeo.com/111795264
+
+downloaded
+tar_vid_input:  https://vimeo.com/111798367
+
+downloaded
+tar_vid_input:  https://vimeo.com/111798738
+
+downloaded
+tar_vid_input:  https://vimeo.com/111803439
+
+downloaded
+tar_vid_input:  https://vimeo.com/111831617
+
+downloaded
+tar_vid_input:  https://vimeo.com/111842054
+
+downloaded
+tar_vid_input:  https://vimeo.com/111849522
+
+downloaded
+tar_vid_input:  https://vimeo.com/111863405
+
+downloaded
+tar_vid_input:  https://vimeo.com/111879472
+
+downloaded
+tar_vid_input:  https://vimeo.com/111883525
+
+downloaded
+tar_vid_input:  https://vimeo.com/111904910
+
+downloaded
+tar_vid_input:  https://vimeo.com/111908078
+
+downloaded
+tar_vid_input:  https://vimeo.com/111947770
+
+downloaded
+tar_vid_input:  https://vimeo.com/111953392
+
+downloaded
+tar_vid_input:  https://vimeo.com/111981759
+
+downloaded
+tar_vid_input:  https://vimeo.com/111983263
+
+downloaded
+tar_vid_input:  https://vimeo.com/111999265
+
+downloaded
+tar_vid_input:  https://vimeo.com/112004933
+
+downloaded
+tar_vid_input:  https://vimeo.com/112009798
+
+downloaded
+tar_vid_input:  https://vimeo.com/112033505
+
+downloaded
+tar_vid_input:  https://vimeo.com/112047457
+
+downloaded
+tar_vid_input:  https://vimeo.com/11205777
+
+downloaded
+tar_vid_input:  https://vimeo.com/112077975
+
+downloaded
+tar_vid_input:  https://vimeo.com/112081308
+
+downloaded
+tar_vid_input:  https://vimeo.com/112086670
+
+downloaded
+tar_vid_input:  https://vimeo.com/112110402
+
+downloaded
+tar_vid_input:  https://vimeo.com/112137482
+
+downloaded
+tar_vid_input:  https://vimeo.com/112138916
+
+downloaded
+tar_vid_input:  https://vimeo.com/112139803
+
+downloaded
+tar_vid_input:  https://vimeo.com/112142911
+
+downloaded
+tar_vid_input:  https://vimeo.com/112184926
+
+downloaded
+tar_vid_input:  https://vimeo.com/112186702
+
+downloaded
+tar_vid_input:  https://vimeo.com/112197207
+
+downloaded
+tar_vid_input:  https://vimeo.com/112206087
+
+downloaded
+tar_vid_input:  https://vimeo.com/112215570
+
+downloaded
+tar_vid_input:  https://vimeo.com/112217883
+
+downloaded
+tar_vid_input:  https://vimeo.com/112228850
+
+downloaded
+tar_vid_input:  https://vimeo.com/112233163
+
+downloaded
+tar_vid_input:  https://vimeo.com/112233733
+
+downloaded
+tar_vid_input:  https://vimeo.com/112236996
+
+downloaded
+tar_vid_input:  https://vimeo.com/112268851
+
+downloaded
+tar_vid_input:  https://vimeo.com/112269254
+
+downloaded
+tar_vid_input:  https://vimeo.com/112278357
+
+downloaded
+tar_vid_input:  https://vimeo.com/112293578
+
+downloaded
+tar_vid_input:  https://vimeo.com/112296301
+
+downloaded
+tar_vid_input:  https://vimeo.com/112312416
+
+downloaded
+tar_vid_input:  https://vimeo.com/112329707
+
+downloaded
+tar_vid_input:  https://vimeo.com/112331035
+
+downloaded
+tar_vid_input:  https://vimeo.com/112334658
+
+downloaded
+tar_vid_input:  https://vimeo.com/112356712
+
+downloaded
+tar_vid_input:  https://vimeo.com/112371102
+
+downloaded
+tar_vid_input:  https://vimeo.com/112371105
+
+downloaded
+tar_vid_input:  https://vimeo.com/112371110
+
+downloaded
+tar_vid_input:  https://vimeo.com/112371112
+
+downloaded
+tar_vid_input:  https://vimeo.com/112371113
+
+downloaded
+tar_vid_input:  https://vimeo.com/112402374
+
+downloaded
+tar_vid_input:  https://vimeo.com/112417649
+
+downloaded
+tar_vid_input:  https://vimeo.com/112428125
+
+downloaded
+tar_vid_input:  https://vimeo.com/112428705
+
+downloaded
+tar_vid_input:  https://vimeo.com/112438275
+
+downloaded
+tar_vid_input:  https://vimeo.com/112445788
+
+downloaded
+tar_vid_input:  https://vimeo.com/112447933
+
+downloaded
+tar_vid_input:  https://vimeo.com/112448431
+
+downloaded
+tar_vid_input:  https://vimeo.com/112500481
+
+downloaded
+tar_vid_input:  https://vimeo.com/112501784
+
+downloaded
+tar_vid_input:  https://vimeo.com/112508074
+
+downloaded
+tar_vid_input:  https://vimeo.com/112527024
+
+downloaded
+tar_vid_input:  https://vimeo.com/112577467
+
+downloaded
+tar_vid_input:  https://vimeo.com/112602196
+
+downloaded
+tar_vid_input:  https://vimeo.com/112611677
+
+downloaded
+tar_vid_input:  https://vimeo.com/112612299
+
+downloaded
+tar_vid_input:  https://vimeo.com/112613369
+
+downloaded
+tar_vid_input:  https://vimeo.com/112642534
+
+downloaded
+tar_vid_input:  https://vimeo.com/112645513
+
+downloaded
+tar_vid_input:  https://vimeo.com/112647038
+
+downloaded
+tar_vid_input:  https://vimeo.com/11264959
+
+downloaded
+tar_vid_input:  https://vimeo.com/112662938
+
+downloaded
+tar_vid_input:  https://vimeo.com/112699788
+
+downloaded
+tar_vid_input:  https://vimeo.com/112733956
+
+downloaded
+tar_vid_input:  https://vimeo.com/112827623
+
+downloaded
+tar_vid_input:  https://vimeo.com/112832256
+
+downloaded
+tar_vid_input:  https://vimeo.com/112838449
+
+downloaded
+tar_vid_input:  https://vimeo.com/112838453
+
+downloaded
+tar_vid_input:  https://vimeo.com/112838454
+
+downloaded
+tar_vid_input:  https://vimeo.com/112838455
+
+downloaded
+tar_vid_input:  https://vimeo.com/112843241
+
+downloaded
+tar_vid_input:  https://vimeo.com/112867726
+
+downloaded
+tar_vid_input:  https://vimeo.com/112868738
+
+downloaded
+tar_vid_input:  https://vimeo.com/112880997
+
+downloaded
+tar_vid_input:  https://vimeo.com/11288116
+
+downloaded
+tar_vid_input:  https://vimeo.com/112897407
+
+downloaded
+tar_vid_input:  https://vimeo.com/112906145
+
+downloaded
+tar_vid_input:  https://vimeo.com/112906146
+
+downloaded
+tar_vid_input:  https://vimeo.com/112906315
+
+downloaded
+tar_vid_input:  https://vimeo.com/112929509
+
+downloaded
+tar_vid_input:  https://vimeo.com/112929510
+
+downloaded
+tar_vid_input:  https://vimeo.com/112965761
+
+downloaded
+tar_vid_input:  https://vimeo.com/113007937
+
+downloaded
+tar_vid_input:  https://vimeo.com/113009277
+
+downloaded
+tar_vid_input:  https://vimeo.com/113011238
+
+downloaded
+tar_vid_input:  https://vimeo.com/113028469
+
+downloaded
+tar_vid_input:  https://vimeo.com/113037707
+
+downloaded
+tar_vid_input:  https://vimeo.com/113040345
+
+downloaded
+tar_vid_input:  https://vimeo.com/113042675
+
+downloaded
+tar_vid_input:  https://vimeo.com/113042676
+
+downloaded
+tar_vid_input:  https://vimeo.com/113059864
+
+downloaded
+tar_vid_input:  https://vimeo.com/113084430
+
+downloaded
+tar_vid_input:  https://vimeo.com/113095834
+
+downloaded
+tar_vid_input:  https://vimeo.com/113099179
+
+downloaded
+tar_vid_input:  https://vimeo.com/113109432
+
+downloaded
+tar_vid_input:  https://vimeo.com/113122861
+
+downloaded
+tar_vid_input:  https://vimeo.com/113165001
+
+downloaded
+tar_vid_input:  https://vimeo.com/113166196
+
+downloaded
+tar_vid_input:  https://vimeo.com/113229534
+
+downloaded
+tar_vid_input:  https://vimeo.com/113242006
+
+downloaded
+tar_vid_input:  https://vimeo.com/113259449
+
+downloaded
+tar_vid_input:  https://vimeo.com/113261970
+
+downloaded
+tar_vid_input:  https://vimeo.com/113295059
+
+downloaded
+tar_vid_input:  https://vimeo.com/113296466
+
+downloaded
+tar_vid_input:  https://vimeo.com/113317550
+
+downloaded
+tar_vid_input:  https://vimeo.com/113343340
+
+downloaded
+tar_vid_input:  https://vimeo.com/113362753
+
+downloaded
+tar_vid_input:  https://vimeo.com/113389605
+
+downloaded
+tar_vid_input:  https://vimeo.com/113393042
+
+downloaded
+tar_vid_input:  https://vimeo.com/113399966
+
+downloaded
+tar_vid_input:  https://vimeo.com/113402467
+
+downloaded
+tar_vid_input:  https://vimeo.com/113412894
+
+downloaded
+tar_vid_input:  https://vimeo.com/113422993
+
+downloaded
+tar_vid_input:  https://vimeo.com/113443764
+
+downloaded
+tar_vid_input:  https://vimeo.com/113449136
+
+downloaded
+tar_vid_input:  https://vimeo.com/113449137
+
+downloaded
+tar_vid_input:  https://vimeo.com/113449138
+
+downloaded
+tar_vid_input:  https://vimeo.com/113449139
+
+downloaded
+tar_vid_input:  https://vimeo.com/113455532
+
+downloaded
+tar_vid_input:  https://vimeo.com/113455533
+
+downloaded
+tar_vid_input:  https://vimeo.com/113463235
+
+downloaded
+tar_vid_input:  https://vimeo.com/113465025
+
+downloaded
+tar_vid_input:  https://vimeo.com/113467821
+
+downloaded
+tar_vid_input:  https://vimeo.com/113483638
+
+downloaded
+tar_vid_input:  https://vimeo.com/113506787
+
+downloaded
+tar_vid_input:  https://vimeo.com/113507330
+
+downloaded
+tar_vid_input:  https://vimeo.com/113533185
+
+downloaded
+tar_vid_input:  https://vimeo.com/113558772
+
+downloaded
+tar_vid_input:  https://vimeo.com/113562893
+
+downloaded
+tar_vid_input:  https://vimeo.com/113580732
+
+downloaded
+tar_vid_input:  https://vimeo.com/113582813
+
+downloaded
+tar_vid_input:  https://vimeo.com/113584832
+
+downloaded
+tar_vid_input:  https://vimeo.com/113589503
+
+downloaded
+tar_vid_input:  https://vimeo.com/113631979
+
+downloaded
+tar_vid_input:  https://vimeo.com/113638939
+
+downloaded
+tar_vid_input:  https://vimeo.com/113652747
+
+downloaded
+tar_vid_input:  https://vimeo.com/113652748
+
+downloaded
+tar_vid_input:  https://vimeo.com/113664120
+
+downloaded
+tar_vid_input:  https://vimeo.com/113739684
+
+downloaded
+tar_vid_input:  https://vimeo.com/113745394
+
+downloaded
+tar_vid_input:  https://vimeo.com/113755247
+
+downloaded
+tar_vid_input:  https://vimeo.com/113837390
+
+downloaded
+tar_vid_input:  https://vimeo.com/113840734
+
+downloaded
+tar_vid_input:  https://vimeo.com/113842502
+
+downloaded
+tar_vid_input:  https://vimeo.com/113856693
+
+downloaded
+tar_vid_input:  https://vimeo.com/113886553
+
+downloaded
+tar_vid_input:  https://vimeo.com/113889507
+
+downloaded
+tar_vid_input:  https://vimeo.com/113890053
+
+downloaded
+tar_vid_input:  https://vimeo.com/113921301
+
+downloaded
+tar_vid_input:  https://vimeo.com/113972128
+
+downloaded
+tar_vid_input:  https://vimeo.com/113992697
+
+downloaded
+tar_vid_input:  https://vimeo.com/114023146
+
+downloaded
+tar_vid_input:  https://vimeo.com/114028363
+
+downloaded
+tar_vid_input:  https://vimeo.com/114043783
+
+downloaded
+tar_vid_input:  https://vimeo.com/114054075
+
+downloaded
+tar_vid_input:  https://vimeo.com/114200563
+
+downloaded
+tar_vid_input:  https://vimeo.com/114225291
+
+downloaded
+tar_vid_input:  https://vimeo.com/114243156
+
+downloaded
+tar_vid_input:  https://vimeo.com/114246707
+
+downloaded
+tar_vid_input:  https://vimeo.com/114271912
+
+downloaded
+tar_vid_input:  https://vimeo.com/114272181
+
+downloaded
+tar_vid_input:  https://vimeo.com/114292006
+
+downloaded
+tar_vid_input:  https://vimeo.com/114292197
+
+downloaded
+tar_vid_input:  https://vimeo.com/114322069
+
+downloaded
+tar_vid_input:  https://vimeo.com/114328732
+
+downloaded
+tar_vid_input:  https://vimeo.com/114329734
+
+downloaded
+tar_vid_input:  https://vimeo.com/114353480
+
+downloaded
+tar_vid_input:  https://vimeo.com/114354905
+
+downloaded
+tar_vid_input:  https://vimeo.com/114375619
+
+downloaded
+tar_vid_input:  https://vimeo.com/114380140
+
+downloaded
+tar_vid_input:  https://vimeo.com/114381017
+
+downloaded
+tar_vid_input:  https://vimeo.com/114402319
+
+downloaded
+tar_vid_input:  https://vimeo.com/114419059
+
+downloaded
+tar_vid_input:  https://vimeo.com/114431470
+
+downloaded
+tar_vid_input:  https://vimeo.com/114439551
+
+downloaded
+tar_vid_input:  https://vimeo.com/114454903
+
+downloaded
+tar_vid_input:  https://vimeo.com/114529064
+
+downloaded
+tar_vid_input:  https://vimeo.com/114534001
+
+downloaded
+tar_vid_input:  https://vimeo.com/114566241
+
+downloaded
+tar_vid_input:  https://vimeo.com/114566242
+
+downloaded
+tar_vid_input:  https://vimeo.com/114569564
+
+downloaded
+tar_vid_input:  https://vimeo.com/114569565
+
+downloaded
+tar_vid_input:  https://vimeo.com/114569567
+
+downloaded
+tar_vid_input:  https://vimeo.com/114570696
+
+downloaded
+tar_vid_input:  https://vimeo.com/114571837
+
+downloaded
+tar_vid_input:  https://vimeo.com/114571838
+
+downloaded
+tar_vid_input:  https://vimeo.com/114571839
+
+downloaded
+tar_vid_input:  https://vimeo.com/114571844
+
+downloaded
+tar_vid_input:  https://vimeo.com/114585686
+
+downloaded
+tar_vid_input:  https://vimeo.com/114597160
+
+downloaded
+tar_vid_input:  https://vimeo.com/114607001
+
+downloaded
+tar_vid_input:  https://vimeo.com/114608977
+
+downloaded
+tar_vid_input:  https://vimeo.com/114628697
+
+downloaded
+tar_vid_input:  https://vimeo.com/114639511
+
+downloaded
+tar_vid_input:  https://vimeo.com/114641932
+
+downloaded
+tar_vid_input:  https://vimeo.com/114645852
+
+downloaded
+tar_vid_input:  https://vimeo.com/114651311
+
+downloaded
+tar_vid_input:  https://vimeo.com/114658705
+
+downloaded
+tar_vid_input:  https://vimeo.com/114662840
+
+downloaded
+tar_vid_input:  https://vimeo.com/114663579
+
+downloaded
+tar_vid_input:  https://vimeo.com/114673224
+
+downloaded
+tar_vid_input:  https://vimeo.com/114674220
+
+downloaded
+tar_vid_input:  https://vimeo.com/114682400
+
+downloaded
+tar_vid_input:  https://vimeo.com/114689109
+
+downloaded
+tar_vid_input:  https://vimeo.com/114691962
+
+downloaded
+tar_vid_input:  https://vimeo.com/114719639
+
+downloaded
+tar_vid_input:  https://vimeo.com/114768665
+
+downloaded
+tar_vid_input:  https://vimeo.com/114787400
+
+downloaded
+tar_vid_input:  https://vimeo.com/114796787
+
+downloaded
+tar_vid_input:  https://vimeo.com/114838825
+
+downloaded
+tar_vid_input:  https://vimeo.com/114865390
+
+downloaded
+tar_vid_input:  https://vimeo.com/114900085
+
+downloaded
+tar_vid_input:  https://vimeo.com/114918675
+
+downloaded
+tar_vid_input:  https://vimeo.com/114930465
+
+downloaded
+tar_vid_input:  https://vimeo.com/114970140
+
+downloaded
+tar_vid_input:  https://vimeo.com/114994539
+
+downloaded
+tar_vid_input:  https://vimeo.com/115004882
+
+downloaded
+tar_vid_input:  https://vimeo.com/115006394
+
+downloaded
+tar_vid_input:  https://vimeo.com/115006595
+
+downloaded
+tar_vid_input:  https://vimeo.com/115016380
+
+downloaded
+tar_vid_input:  https://vimeo.com/115022396
+
+downloaded
+tar_vid_input:  https://vimeo.com/115024686
+
+downloaded
+tar_vid_input:  https://vimeo.com/115028946
+
+downloaded
+tar_vid_input:  https://vimeo.com/115052120
+
+downloaded
+tar_vid_input:  https://vimeo.com/115083455
+
+downloaded
+tar_vid_input:  https://vimeo.com/115085483
+
+downloaded
+tar_vid_input:  https://vimeo.com/115149694
+
+downloaded
+tar_vid_input:  https://vimeo.com/115153372
+
+downloaded
+tar_vid_input:  https://vimeo.com/115155691
+
+downloaded
+tar_vid_input:  https://vimeo.com/115156856
+
+downloaded
+tar_vid_input:  https://vimeo.com/115175810
+
+downloaded
+tar_vid_input:  https://vimeo.com/115193051
+
+downloaded
+tar_vid_input:  https://vimeo.com/115193052
+
+downloaded
+tar_vid_input:  https://vimeo.com/115193053
+
+downloaded
+tar_vid_input:  https://vimeo.com/115193056
+
+downloaded
+tar_vid_input:  https://vimeo.com/115193057
+
+downloaded
+tar_vid_input:  https://vimeo.com/115202034
+
+downloaded
+tar_vid_input:  https://vimeo.com/115206360
+
+downloaded
+tar_vid_input:  https://vimeo.com/115212728
+
+downloaded
+tar_vid_input:  https://vimeo.com/115220395
+
+downloaded
+tar_vid_input:  https://vimeo.com/115225919
+
+downloaded
+tar_vid_input:  https://vimeo.com/115252637
+
+downloaded
+tar_vid_input:  https://vimeo.com/115285056
+
+downloaded
+tar_vid_input:  https://vimeo.com/115293539
+
+downloaded
+tar_vid_input:  https://vimeo.com/115294214
+
+downloaded
+tar_vid_input:  https://vimeo.com/115294545
+
+downloaded
+tar_vid_input:  https://vimeo.com/115295406
+
+downloaded
+tar_vid_input:  https://vimeo.com/115295531
+
+downloaded
+tar_vid_input:  https://vimeo.com/115295955
+
+downloaded
+tar_vid_input:  https://vimeo.com/115298749
+
+downloaded
+tar_vid_input:  https://vimeo.com/115303295
+
+downloaded
+tar_vid_input:  https://vimeo.com/115308942
+
+downloaded
+tar_vid_input:  https://vimeo.com/115310219
+
+downloaded
+tar_vid_input:  https://vimeo.com/115313815
+
+downloaded
+tar_vid_input:  https://vimeo.com/115358522
+
+downloaded
+tar_vid_input:  https://vimeo.com/115409221
+
+downloaded
+tar_vid_input:  https://vimeo.com/115436420
+
+downloaded
+tar_vid_input:  https://vimeo.com/115436421
+
+downloaded
+tar_vid_input:  https://vimeo.com/115436422
+
+downloaded
+tar_vid_input:  https://vimeo.com/115436423
+
+downloaded
+tar_vid_input:  https://vimeo.com/115436424
+
+downloaded
+tar_vid_input:  https://vimeo.com/115437593
+
+downloaded
+tar_vid_input:  https://vimeo.com/115437595
+
+downloaded
+tar_vid_input:  https://vimeo.com/115442346
+
+downloaded
+tar_vid_input:  https://vimeo.com/115495585
+
+downloaded
+tar_vid_input:  https://vimeo.com/115509809
+
+downloaded
+tar_vid_input:  https://vimeo.com/115520056
+
+downloaded
+tar_vid_input:  https://vimeo.com/115542612
+
+downloaded
+tar_vid_input:  https://vimeo.com/115542613
+
+downloaded
+tar_vid_input:  https://vimeo.com/115542614
+
+downloaded
+tar_vid_input:  https://vimeo.com/115542615
+
+downloaded
+tar_vid_input:  https://vimeo.com/115588440
+
+downloaded
+tar_vid_input:  https://vimeo.com/115590868
+
+downloaded
+tar_vid_input:  https://vimeo.com/115603434
+
+downloaded
+tar_vid_input:  https://vimeo.com/115617040
+
+downloaded
+tar_vid_input:  https://vimeo.com/115625139
+
+downloaded
+tar_vid_input:  https://vimeo.com/115640710
+
+downloaded
+tar_vid_input:  https://vimeo.com/115644206
+
+downloaded
+tar_vid_input:  https://vimeo.com/115645474
+
+downloaded
+tar_vid_input:  https://vimeo.com/115649908
+
+downloaded
+tar_vid_input:  https://vimeo.com/115651857
+
+downloaded
+tar_vid_input:  https://vimeo.com/115652407
+
+downloaded
+tar_vid_input:  https://vimeo.com/115672192
+
+downloaded
+tar_vid_input:  https://vimeo.com/115677226
+
+downloaded
+tar_vid_input:  https://vimeo.com/115689482
+
+downloaded
+tar_vid_input:  https://vimeo.com/115690161
+
+downloaded
+tar_vid_input:  https://vimeo.com/115755110
+
+downloaded
+tar_vid_input:  https://vimeo.com/115766224
+
+downloaded
+tar_vid_input:  https://vimeo.com/115782500
+
+downloaded
+tar_vid_input:  https://vimeo.com/115782501
+
+downloaded
+tar_vid_input:  https://vimeo.com/115788065
+
+downloaded
+tar_vid_input:  https://vimeo.com/115806848
+
+downloaded
+tar_vid_input:  https://vimeo.com/115806849
+
+downloaded
+tar_vid_input:  https://vimeo.com/115806850
+
+downloaded
+tar_vid_input:  https://vimeo.com/115806852
+
+downloaded
+tar_vid_input:  https://vimeo.com/115806853
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807413
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807414
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807418
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807420
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807422
+
+downloaded
+tar_vid_input:  https://vimeo.com/115807889
+
+downloaded
+tar_vid_input:  https://vimeo.com/115808081
+
+downloaded
+tar_vid_input:  https://vimeo.com/115808083
+
+downloaded
+tar_vid_input:  https://vimeo.com/115808085
+
+downloaded
+tar_vid_input:  https://vimeo.com/115808467
+
+downloaded
+tar_vid_input:  https://vimeo.com/115808468
+
+downloaded
+tar_vid_input:  https://vimeo.com/115825458
+
+downloaded
+tar_vid_input:  https://vimeo.com/115828608
+
+downloaded
+tar_vid_input:  https://vimeo.com/115828767
+
+downloaded
+tar_vid_input:  https://vimeo.com/115830091
+
+downloaded
+tar_vid_input:  https://vimeo.com/115835300
+
+downloaded
+tar_vid_input:  https://vimeo.com/115836708
+
+downloaded
+tar_vid_input:  https://vimeo.com/115869835
+
+downloaded
+tar_vid_input:  https://vimeo.com/115874792
+
+downloaded
+tar_vid_input:  https://vimeo.com/115883805
+
+downloaded
+tar_vid_input:  https://vimeo.com/115884776
+
+downloaded
+tar_vid_input:  https://vimeo.com/115885790
+
+downloaded
+tar_vid_input:  https://vimeo.com/115897029
+
+downloaded
+tar_vid_input:  https://vimeo.com/115926610
+
+downloaded
+tar_vid_input:  https://vimeo.com/115942083
+
+downloaded
+tar_vid_input:  https://vimeo.com/115950662
+
+downloaded
+tar_vid_input:  https://vimeo.com/115950663
+
+downloaded
+tar_vid_input:  https://vimeo.com/115950982
+
+downloaded
+tar_vid_input:  https://vimeo.com/115959032
+
+downloaded
+tar_vid_input:  https://vimeo.com/115961480
+
+downloaded
+tar_vid_input:  https://vimeo.com/115997119
+
+downloaded
+tar_vid_input:  https://vimeo.com/116000458
+
+downloaded
+tar_vid_input:  https://vimeo.com/116004273
+
+downloaded
+tar_vid_input:  https://vimeo.com/116009724
+
+downloaded
+tar_vid_input:  https://vimeo.com/116026963
+
+downloaded
+tar_vid_input:  https://vimeo.com/116029998
+
+downloaded
+tar_vid_input:  https://vimeo.com/116029999
+
+downloaded
+tar_vid_input:  https://vimeo.com/116030000
+
+downloaded
+tar_vid_input:  https://vimeo.com/116030001
+
+downloaded
+tar_vid_input:  https://vimeo.com/116035991
+
+downloaded
+tar_vid_input:  https://vimeo.com/116044944
+
+downloaded
+tar_vid_input:  https://vimeo.com/116084328
+
+downloaded
+tar_vid_input:  https://vimeo.com/116089900
+
+downloaded
+tar_vid_input:  https://vimeo.com/116102029
+
+downloaded
+tar_vid_input:  https://vimeo.com/116129155
+
+downloaded
+tar_vid_input:  https://vimeo.com/116160914
+
+downloaded
+tar_vid_input:  https://vimeo.com/116207909
+
+downloaded
+tar_vid_input:  https://vimeo.com/116208510
+
+downloaded
+tar_vid_input:  https://vimeo.com/116218171
+
+downloaded
+tar_vid_input:  https://vimeo.com/116297095
+
+downloaded
+tar_vid_input:  https://vimeo.com/116305241
+
+downloaded
+tar_vid_input:  https://vimeo.com/116325630
+
+downloaded
+tar_vid_input:  https://vimeo.com/116325824
+
+downloaded
+tar_vid_input:  https://vimeo.com/116327575
+
+downloaded
+tar_vid_input:  https://vimeo.com/116329421
+
+downloaded
+tar_vid_input:  https://vimeo.com/116330139
+
+downloaded
+tar_vid_input:  https://vimeo.com/116340413
+
+downloaded
+tar_vid_input:  https://vimeo.com/116344847
+
+downloaded
+tar_vid_input:  https://vimeo.com/116348507
+
+downloaded
+tar_vid_input:  https://vimeo.com/116348629
+
+downloaded
+tar_vid_input:  https://vimeo.com/116348832
+
+downloaded
+tar_vid_input:  https://vimeo.com/116352922
+
+downloaded
+tar_vid_input:  https://vimeo.com/116386731
+
+downloaded
+tar_vid_input:  https://vimeo.com/116389205
+
+downloaded
+tar_vid_input:  https://vimeo.com/116400035
+
+downloaded
+tar_vid_input:  https://vimeo.com/116422917
+
+downloaded
+tar_vid_input:  https://vimeo.com/116440029
+
+downloaded
+tar_vid_input:  https://vimeo.com/116468946
+
+downloaded
+tar_vid_input:  https://vimeo.com/116494879
+
+downloaded
+tar_vid_input:  https://vimeo.com/116525017
+
+downloaded
+tar_vid_input:  https://vimeo.com/116532915
+
+downloaded
+tar_vid_input:  https://vimeo.com/116533622
+
+downloaded
+tar_vid_input:  https://vimeo.com/116553240
+
+downloaded
+tar_vid_input:  https://vimeo.com/116561407
+
+downloaded
+tar_vid_input:  https://vimeo.com/116595987
+
+downloaded
+tar_vid_input:  https://vimeo.com/116601171
+
+downloaded
+tar_vid_input:  https://vimeo.com/116618655
+
+downloaded
+tar_vid_input:  https://vimeo.com/116627510
+
+downloaded
+tar_vid_input:  https://vimeo.com/116652444
+
+downloaded
+tar_vid_input:  https://vimeo.com/116656409
+
+downloaded
+tar_vid_input:  https://vimeo.com/116662916
+
+downloaded
+tar_vid_input:  https://vimeo.com/116670961
+
+downloaded
+tar_vid_input:  https://vimeo.com/116678120
+
+downloaded
+tar_vid_input:  https://vimeo.com/116682472
+
+downloaded
+tar_vid_input:  https://vimeo.com/116701637
+
+downloaded
+tar_vid_input:  https://vimeo.com/116704512
+
+downloaded
+tar_vid_input:  https://vimeo.com/116712412
+
+downloaded
+tar_vid_input:  https://vimeo.com/116719554
+
+downloaded
+tar_vid_input:  https://vimeo.com/116719877
+
+downloaded
+tar_vid_input:  https://vimeo.com/116739310
+
+downloaded
+tar_vid_input:  https://vimeo.com/116754284
+
+downloaded
+tar_vid_input:  https://vimeo.com/116835138
+
+downloaded
+tar_vid_input:  https://vimeo.com/116851394
+
+downloaded
+tar_vid_input:  https://vimeo.com/116853657
+
+downloaded
+tar_vid_input:  https://vimeo.com/116853658
+
+downloaded
+tar_vid_input:  https://vimeo.com/116853659
+
+downloaded
+tar_vid_input:  https://vimeo.com/116856377
+
+downloaded
+tar_vid_input:  https://vimeo.com/116881531
+
+downloaded
+tar_vid_input:  https://vimeo.com/116884669
+
+downloaded
+tar_vid_input:  https://vimeo.com/116905061
+
+downloaded
+tar_vid_input:  https://vimeo.com/116907065
+
+downloaded
+tar_vid_input:  https://vimeo.com/116954012
+
+downloaded
+tar_vid_input:  https://vimeo.com/116976638
+
+downloaded
+tar_vid_input:  https://vimeo.com/116995381
+
+downloaded
+tar_vid_input:  https://vimeo.com/117012517
+
+downloaded
+tar_vid_input:  https://vimeo.com/117058024
+
+downloaded
+tar_vid_input:  https://vimeo.com/117069278
+
+downloaded
+tar_vid_input:  https://vimeo.com/117070010
+
+downloaded
+tar_vid_input:  https://vimeo.com/117070179
+
+downloaded
+tar_vid_input:  https://vimeo.com/117071890
+
+downloaded
+tar_vid_input:  https://vimeo.com/117075890
+
+downloaded
+tar_vid_input:  https://vimeo.com/117076577
+
+downloaded
+tar_vid_input:  https://vimeo.com/117124245
+
+downloaded
+tar_vid_input:  https://vimeo.com/117157122
+
+downloaded
+tar_vid_input:  https://vimeo.com/117183379
+
+downloaded
+tar_vid_input:  https://vimeo.com/117192955
+
+downloaded
+tar_vid_input:  https://vimeo.com/117209824
+
+downloaded
+tar_vid_input:  https://vimeo.com/117218335
+
+downloaded
+tar_vid_input:  https://vimeo.com/117256594
+
+downloaded
+tar_vid_input:  https://vimeo.com/117276602
+
+downloaded
+tar_vid_input:  https://vimeo.com/117277139
+
+downloaded
+tar_vid_input:  https://vimeo.com/117277478
+
+downloaded
+tar_vid_input:  https://vimeo.com/117277888
+
+downloaded
+tar_vid_input:  https://vimeo.com/117278561
+
+downloaded
+tar_vid_input:  https://vimeo.com/117298712
+
+downloaded
+tar_vid_input:  https://vimeo.com/117304823
+
+downloaded
+tar_vid_input:  https://vimeo.com/117317854
+
+downloaded
+tar_vid_input:  https://vimeo.com/117337742
+
+downloaded
+tar_vid_input:  https://vimeo.com/117339163
+
+downloaded
+tar_vid_input:  https://vimeo.com/117345093
+
+downloaded
+tar_vid_input:  https://vimeo.com/117345550
+
+downloaded
+tar_vid_input:  https://vimeo.com/117369131
+
+downloaded
+tar_vid_input:  https://vimeo.com/117369707
+
+downloaded
+tar_vid_input:  https://vimeo.com/117369861
+
+downloaded
+tar_vid_input:  https://vimeo.com/117373377
+
+downloaded
+tar_vid_input:  https://vimeo.com/117412130
+
+downloaded
+tar_vid_input:  https://vimeo.com/117427635
+
+downloaded
+tar_vid_input:  https://vimeo.com/117440879
+
+downloaded
+tar_vid_input:  https://vimeo.com/117447362
+
+downloaded
+tar_vid_input:  https://vimeo.com/117447366
+
+downloaded
+tar_vid_input:  https://vimeo.com/117447367
+
+downloaded
+tar_vid_input:  https://vimeo.com/117447368
+
+downloaded
+tar_vid_input:  https://vimeo.com/117448335
+
+downloaded
+tar_vid_input:  https://vimeo.com/117453224
+
+downloaded
+tar_vid_input:  https://vimeo.com/117479858
+
+downloaded
+tar_vid_input:  https://vimeo.com/117486188
+
+downloaded
+tar_vid_input:  https://vimeo.com/117487080
+
+downloaded
+tar_vid_input:  https://vimeo.com/117491187
+
+downloaded
+tar_vid_input:  https://vimeo.com/117493715
+
+downloaded
+tar_vid_input:  https://vimeo.com/117535889
+
+downloaded
+tar_vid_input:  https://vimeo.com/117549530
+
+downloaded
+tar_vid_input:  https://vimeo.com/117552793
+
+downloaded
+tar_vid_input:  https://vimeo.com/117557499
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574024
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574025
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574027
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574029
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574068
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574069
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574070
+
+downloaded
+tar_vid_input:  https://vimeo.com/117574071
+
+downloaded
+tar_vid_input:  https://vimeo.com/117575117
+
+downloaded
+tar_vid_input:  https://vimeo.com/117575403
+
+downloaded
+tar_vid_input:  https://vimeo.com/117608625
+
+downloaded
+tar_vid_input:  https://vimeo.com/117634634
+
+downloaded
+tar_vid_input:  https://vimeo.com/117639070
+
+downloaded
+tar_vid_input:  https://vimeo.com/117660539
+
+downloaded
+tar_vid_input:  https://vimeo.com/117686719
+
+downloaded
+tar_vid_input:  https://vimeo.com/117697677
+
+downloaded
+tar_vid_input:  https://vimeo.com/117698188
+
+downloaded
+tar_vid_input:  https://vimeo.com/117766626
+
+downloaded
+tar_vid_input:  https://vimeo.com/117777762
+
+downloaded
+tar_vid_input:  https://vimeo.com/117789812
+
+downloaded
+tar_vid_input:  https://vimeo.com/117806000
+
+downloaded
+tar_vid_input:  https://vimeo.com/117847579
+
+downloaded
+tar_vid_input:  https://vimeo.com/117854843
+
+downloaded
+tar_vid_input:  https://vimeo.com/117855099
+
+downloaded
+tar_vid_input:  https://vimeo.com/117856146
+
+downloaded
+tar_vid_input:  https://vimeo.com/117891387
+
+downloaded
+tar_vid_input:  https://vimeo.com/117902169
+
+downloaded
+tar_vid_input:  https://vimeo.com/117902170
+
+downloaded
+tar_vid_input:  https://vimeo.com/117914842
+
+downloaded
+tar_vid_input:  https://vimeo.com/117918840
+
+downloaded
+tar_vid_input:  https://vimeo.com/117923820
+
+downloaded
+tar_vid_input:  https://vimeo.com/117929962
+
+downloaded
+tar_vid_input:  https://vimeo.com/117957394
+
+downloaded
+tar_vid_input:  https://vimeo.com/117959324
+
+downloaded
+tar_vid_input:  https://vimeo.com/117976984
+
+downloaded
+tar_vid_input:  https://vimeo.com/117997677
+
+downloaded
+tar_vid_input:  https://vimeo.com/117998746
+
+downloaded
+tar_vid_input:  https://vimeo.com/117999785
+
+downloaded
+tar_vid_input:  https://vimeo.com/118000044
+
+downloaded
+tar_vid_input:  https://vimeo.com/118005782
+
+downloaded
+tar_vid_input:  https://vimeo.com/118006662
+
+downloaded
+tar_vid_input:  https://vimeo.com/118008896
+
+downloaded
+tar_vid_input:  https://vimeo.com/118029422
+
+downloaded
+tar_vid_input:  https://vimeo.com/118051605
+
+downloaded
+tar_vid_input:  https://vimeo.com/118052998
+
+downloaded
+tar_vid_input:  https://vimeo.com/118067319
+
+downloaded
+tar_vid_input:  https://vimeo.com/118070124
+
+downloaded
+tar_vid_input:  https://vimeo.com/118088808
+
+downloaded
+tar_vid_input:  https://vimeo.com/118090105
+
+downloaded
+tar_vid_input:  https://vimeo.com/118151123
+
+downloaded
+tar_vid_input:  https://vimeo.com/118175838
+
+downloaded
+tar_vid_input:  https://vimeo.com/118180718
+
+downloaded
+tar_vid_input:  https://vimeo.com/118209102
+
+downloaded
+tar_vid_input:  https://vimeo.com/118229444
+
+downloaded
+tar_vid_input:  https://vimeo.com/118235783
+
+downloaded
+tar_vid_input:  https://vimeo.com/118267312
+
+downloaded
+tar_vid_input:  https://vimeo.com/118339370
+
+downloaded
+tar_vid_input:  https://vimeo.com/118367247
+
+downloaded
+tar_vid_input:  https://vimeo.com/118369334
+
+downloaded
+tar_vid_input:  https://vimeo.com/118369339
+
+downloaded
+tar_vid_input:  https://vimeo.com/118369340
+
+downloaded
+tar_vid_input:  https://vimeo.com/118376618
+
+downloaded
+tar_vid_input:  https://vimeo.com/118376619
+
+downloaded
+tar_vid_input:  https://vimeo.com/118376622
+
+downloaded
+tar_vid_input:  https://vimeo.com/118380678
+
+downloaded
+tar_vid_input:  https://vimeo.com/11838572
+
+downloaded
+tar_vid_input:  https://vimeo.com/11840137
+
+downloaded
+tar_vid_input:  https://vimeo.com/118417138
+
+downloaded
+tar_vid_input:  https://vimeo.com/118430793
+
+downloaded
+tar_vid_input:  https://vimeo.com/118430795
+
+downloaded
+tar_vid_input:  https://vimeo.com/118433891
+
+downloaded
+tar_vid_input:  https://vimeo.com/118438395
+
+downloaded
+tar_vid_input:  https://vimeo.com/118447419
+
+downloaded
+tar_vid_input:  https://vimeo.com/118458122
+
+downloaded
+tar_vid_input:  https://vimeo.com/118465615
+
+downloaded
+tar_vid_input:  https://vimeo.com/118507062
+
+downloaded
+tar_vid_input:  https://vimeo.com/118528553
+
+downloaded
+tar_vid_input:  https://vimeo.com/118529254
+
+downloaded
+tar_vid_input:  https://vimeo.com/118529255
+
+downloaded
+tar_vid_input:  https://vimeo.com/118533306
+
+downloaded
+tar_vid_input:  https://vimeo.com/118533648
+
+downloaded
+tar_vid_input:  https://vimeo.com/118534041
+
+downloaded
+tar_vid_input:  https://vimeo.com/118547783
+
+downloaded
+tar_vid_input:  https://vimeo.com/118570491
+
+downloaded
+tar_vid_input:  https://vimeo.com/118577594
+
+downloaded
+tar_vid_input:  https://vimeo.com/118596245
+
+downloaded
+tar_vid_input:  https://vimeo.com/118606346
+
+downloaded
+tar_vid_input:  https://vimeo.com/118614784
+
+downloaded
+tar_vid_input:  https://vimeo.com/118661812
+
+downloaded
+tar_vid_input:  https://vimeo.com/118669755
+
+downloaded
+tar_vid_input:  https://vimeo.com/118677761
+
+downloaded
+tar_vid_input:  https://vimeo.com/118692905
+
+downloaded
+tar_vid_input:  https://vimeo.com/118708865
+
+downloaded
+tar_vid_input:  https://vimeo.com/118746308
+
+downloaded
+tar_vid_input:  https://vimeo.com/118754617
+
+downloaded
+tar_vid_input:  https://vimeo.com/118760556
+
+downloaded
+tar_vid_input:  https://vimeo.com/118824965
+
+downloaded
+tar_vid_input:  https://vimeo.com/118847779
+
+downloaded
+tar_vid_input:  https://vimeo.com/118858337
+
+downloaded
+tar_vid_input:  https://vimeo.com/118858807
+
+downloaded
+tar_vid_input:  https://vimeo.com/118865492
+
+downloaded
+tar_vid_input:  https://vimeo.com/118873317
+
+downloaded
+tar_vid_input:  https://vimeo.com/118875982
+
+downloaded
+tar_vid_input:  https://vimeo.com/118878160
+
+downloaded
+tar_vid_input:  https://vimeo.com/118897367
+
+downloaded
+tar_vid_input:  https://vimeo.com/118899925
+
+downloaded
+tar_vid_input:  https://vimeo.com/118899926
+
+downloaded
+tar_vid_input:  https://vimeo.com/118899927
+
+downloaded
+tar_vid_input:  https://vimeo.com/118913554
+
+downloaded
+tar_vid_input:  https://vimeo.com/118938759
+
+downloaded
+tar_vid_input:  https://vimeo.com/118955111
+
+downloaded
+tar_vid_input:  https://vimeo.com/118955112
+
+downloaded
+tar_vid_input:  https://vimeo.com/118955113
+
+downloaded
+tar_vid_input:  https://vimeo.com/118955114
+
+downloaded
+tar_vid_input:  https://vimeo.com/118958651
+
+downloaded
+tar_vid_input:  https://vimeo.com/118975696
+
+downloaded
+tar_vid_input:  https://vimeo.com/118983838
+
+downloaded
+tar_vid_input:  https://vimeo.com/118983840
+
+downloaded
+tar_vid_input:  https://vimeo.com/118986465
+
+downloaded
+tar_vid_input:  https://vimeo.com/118993075
+
+downloaded
+tar_vid_input:  https://vimeo.com/119008314
+
+downloaded
+tar_vid_input:  https://vimeo.com/119013462
+
+downloaded
+tar_vid_input:  https://vimeo.com/119020133
+
+downloaded
+tar_vid_input:  https://vimeo.com/119058076
+
+downloaded
+tar_vid_input:  https://vimeo.com/119061987
+
+downloaded
+tar_vid_input:  https://vimeo.com/119061992
+
+downloaded
+tar_vid_input:  https://vimeo.com/119061993
+
+downloaded
+tar_vid_input:  https://vimeo.com/119063706
+
+downloaded
+tar_vid_input:  https://vimeo.com/119072019
+
+downloaded
+tar_vid_input:  https://vimeo.com/119086184
+
+downloaded
+tar_vid_input:  https://vimeo.com/119086449
+
+downloaded
+tar_vid_input:  https://vimeo.com/119093917
+
+downloaded
+tar_vid_input:  https://vimeo.com/119103649
+
+downloaded
+tar_vid_input:  https://vimeo.com/119120674
+
+downloaded
+tar_vid_input:  https://vimeo.com/119127395
+
+downloaded
+tar_vid_input:  https://vimeo.com/119137048
+
+downloaded
+tar_vid_input:  https://vimeo.com/119139668
+
+downloaded
+tar_vid_input:  https://vimeo.com/119146487
+
+downloaded
+tar_vid_input:  https://vimeo.com/119148197
+
+downloaded
+tar_vid_input:  https://vimeo.com/119174791
+
+downloaded
+tar_vid_input:  https://vimeo.com/119188777
+
+downloaded
+tar_vid_input:  https://vimeo.com/119191638
+
+downloaded
+tar_vid_input:  https://vimeo.com/119214149
+
+downloaded
+tar_vid_input:  https://vimeo.com/119215907
+
+downloaded
+tar_vid_input:  https://vimeo.com/119216111
+
+downloaded
+tar_vid_input:  https://vimeo.com/119216556
+
+downloaded
+tar_vid_input:  https://vimeo.com/119217224
+
+downloaded
+tar_vid_input:  https://vimeo.com/119217225
+
+downloaded
+tar_vid_input:  https://vimeo.com/119224460
+
+downloaded
+tar_vid_input:  https://vimeo.com/119228511
+
+downloaded
+tar_vid_input:  https://vimeo.com/119268729
+
+downloaded
+tar_vid_input:  https://vimeo.com/119280737
+
+downloaded
+tar_vid_input:  https://vimeo.com/119313232
+
+downloaded
+tar_vid_input:  https://vimeo.com/119314403
+
+downloaded
+tar_vid_input:  https://vimeo.com/119318795
+
+downloaded
+tar_vid_input:  https://vimeo.com/119326570
+
+downloaded
+tar_vid_input:  https://vimeo.com/119328563
+
+downloaded
+tar_vid_input:  https://vimeo.com/119366167
+
+downloaded
+tar_vid_input:  https://vimeo.com/119366168
+
+downloaded
+tar_vid_input:  https://vimeo.com/119367520
+
+downloaded
+tar_vid_input:  https://vimeo.com/119368147
+
+downloaded
+tar_vid_input:  https://vimeo.com/119370316
+
+downloaded
+tar_vid_input:  https://vimeo.com/119436747
+
+downloaded
+tar_vid_input:  https://vimeo.com/119452881
+
+downloaded
+tar_vid_input:  https://vimeo.com/119472038
+
+downloaded
+tar_vid_input:  https://vimeo.com/119486229
+
+downloaded
+tar_vid_input:  https://vimeo.com/119486489
+
+downloaded
+tar_vid_input:  https://vimeo.com/119499058
+
+downloaded
+tar_vid_input:  https://vimeo.com/119521566
+
+downloaded
+tar_vid_input:  https://vimeo.com/119523684
+
+downloaded
+tar_vid_input:  https://vimeo.com/119548624
+
+downloaded
+tar_vid_input:  https://vimeo.com/119554792
+
+downloaded
+tar_vid_input:  https://vimeo.com/119582410
+
+downloaded
+tar_vid_input:  https://vimeo.com/119603636
+
+downloaded
+tar_vid_input:  https://vimeo.com/119609649
+
+downloaded
+tar_vid_input:  https://vimeo.com/119661569
+
+downloaded
+tar_vid_input:  https://vimeo.com/119668141
+
+downloaded
+tar_vid_input:  https://vimeo.com/119678308
+
+downloaded
+tar_vid_input:  https://vimeo.com/119679974
+
+downloaded
+tar_vid_input:  https://vimeo.com/119680003
+
+downloaded
+tar_vid_input:  https://vimeo.com/119684207
+
+downloaded
+tar_vid_input:  https://vimeo.com/119688007
+
+downloaded
+tar_vid_input:  https://vimeo.com/119701824
+
+downloaded
+tar_vid_input:  https://vimeo.com/119701826
+
+downloaded
+tar_vid_input:  https://vimeo.com/119701827
+
+downloaded
+tar_vid_input:  https://vimeo.com/119712363
+
+downloaded
+tar_vid_input:  https://vimeo.com/119712364
+
+downloaded
+tar_vid_input:  https://vimeo.com/119756154
+
+downloaded
+tar_vid_input:  https://vimeo.com/119757765
+
+downloaded
+tar_vid_input:  https://vimeo.com/119757766
+
+downloaded
+tar_vid_input:  https://vimeo.com/119758804
+
+downloaded
+tar_vid_input:  https://vimeo.com/119759473
+
+downloaded
+tar_vid_input:  https://vimeo.com/119759477
+
+downloaded
+tar_vid_input:  https://vimeo.com/119759479
+
+downloaded
+tar_vid_input:  https://vimeo.com/119761438
+
+downloaded
+tar_vid_input:  https://vimeo.com/119761442
+
+downloaded
+tar_vid_input:  https://vimeo.com/119764909
+
+downloaded
+tar_vid_input:  https://vimeo.com/119764910
+
+downloaded
+tar_vid_input:  https://vimeo.com/119764911
+
+downloaded
+tar_vid_input:  https://vimeo.com/119770616
+
+downloaded
+tar_vid_input:  https://vimeo.com/119782219
+
+downloaded
+tar_vid_input:  https://vimeo.com/119808676
+
+downloaded
+tar_vid_input:  https://vimeo.com/119809037
+
+downloaded
+tar_vid_input:  https://vimeo.com/119826285
+
+downloaded
+tar_vid_input:  https://vimeo.com/119831129
+
+downloaded
+tar_vid_input:  https://vimeo.com/119833128
+
+downloaded
+tar_vid_input:  https://vimeo.com/119833903
+
+downloaded
+tar_vid_input:  https://vimeo.com/119834131
+
+downloaded
+tar_vid_input:  https://vimeo.com/119835419
+
+downloaded
+tar_vid_input:  https://vimeo.com/119839323
+
+downloaded
+tar_vid_input:  https://vimeo.com/119839324
+
+downloaded
+tar_vid_input:  https://vimeo.com/119839874
+
+downloaded
+tar_vid_input:  https://vimeo.com/119934946
+
+downloaded
+tar_vid_input:  https://vimeo.com/119942215
+
+downloaded
+tar_vid_input:  https://vimeo.com/119955085
+
+downloaded
+tar_vid_input:  https://vimeo.com/119974501
+
+downloaded
+tar_vid_input:  https://vimeo.com/119977607
+
+downloaded
+tar_vid_input:  https://vimeo.com/119984543
+
+downloaded
+tar_vid_input:  https://vimeo.com/119996087
+
+downloaded
+tar_vid_input:  https://vimeo.com/120016848
+
+downloaded
+tar_vid_input:  https://vimeo.com/120023169
+
+downloaded
+tar_vid_input:  https://vimeo.com/120023453
+
+downloaded
+tar_vid_input:  https://vimeo.com/120026492
+
+downloaded
+tar_vid_input:  https://vimeo.com/120026495
+
+downloaded
+tar_vid_input:  https://vimeo.com/120033858
+
+downloaded
+tar_vid_input:  https://vimeo.com/120033860
+
+downloaded
+tar_vid_input:  https://vimeo.com/120033861
+
+downloaded
+tar_vid_input:  https://vimeo.com/120033862
+
+downloaded
+tar_vid_input:  https://vimeo.com/120039075
+
+downloaded
+tar_vid_input:  https://vimeo.com/120039077
+
+downloaded
+tar_vid_input:  https://vimeo.com/120042049
+
+downloaded
+tar_vid_input:  https://vimeo.com/120051562
+
+downloaded
+tar_vid_input:  https://vimeo.com/120053586
+
+downloaded
+tar_vid_input:  https://vimeo.com/120054441
+
+downloaded
+tar_vid_input:  https://vimeo.com/120054496
+
+downloaded
+tar_vid_input:  https://vimeo.com/120054502
+
+downloaded
+tar_vid_input:  https://vimeo.com/120054524
+
+downloaded
+tar_vid_input:  https://vimeo.com/120054832
+
+downloaded
+tar_vid_input:  https://vimeo.com/120055394
+
+downloaded
+tar_vid_input:  https://vimeo.com/120055395
+
+downloaded
+tar_vid_input:  https://vimeo.com/120055396
+
+downloaded
+tar_vid_input:  https://vimeo.com/120056266
+
+downloaded
+tar_vid_input:  https://vimeo.com/120056267
+
+downloaded
+tar_vid_input:  https://vimeo.com/120061687
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066451
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066706
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066707
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066710
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066712
+
+downloaded
+tar_vid_input:  https://vimeo.com/120066713
+
+downloaded
+tar_vid_input:  https://vimeo.com/120071632
+
+downloaded
+tar_vid_input:  https://vimeo.com/120076512
+
+downloaded
+tar_vid_input:  https://vimeo.com/120097700
+
+downloaded
+tar_vid_input:  https://vimeo.com/120112673
+
+downloaded
+tar_vid_input:  https://vimeo.com/120113645
+
+downloaded
+tar_vid_input:  https://vimeo.com/120113758
+
+downloaded
+tar_vid_input:  https://vimeo.com/120123092
+
+downloaded
+tar_vid_input:  https://vimeo.com/120128239
+
+downloaded
+tar_vid_input:  https://vimeo.com/120132099
+
+downloaded
+tar_vid_input:  https://vimeo.com/120142105
+
+downloaded
+tar_vid_input:  https://vimeo.com/120143561
+
+downloaded
+tar_vid_input:  https://vimeo.com/120143562
+
+downloaded
+tar_vid_input:  https://vimeo.com/120143565
+
+downloaded
+tar_vid_input:  https://vimeo.com/120143809
+
+downloaded
+tar_vid_input:  https://vimeo.com/120164150
+
+downloaded
+tar_vid_input:  https://vimeo.com/120171511
+
+downloaded
+tar_vid_input:  https://vimeo.com/120173965
+
+downloaded
+tar_vid_input:  https://vimeo.com/120190589
+
+downloaded
+tar_vid_input:  https://vimeo.com/120201321
+
+downloaded
+tar_vid_input:  https://vimeo.com/120267980
+
+downloaded
+tar_vid_input:  https://vimeo.com/120287425
+
+downloaded
+tar_vid_input:  https://vimeo.com/120289701
+
+downloaded
+tar_vid_input:  https://vimeo.com/120311542
+
+downloaded
+tar_vid_input:  https://vimeo.com/120313418
+
+downloaded
+tar_vid_input:  https://vimeo.com/120344386
+
+downloaded
+tar_vid_input:  https://vimeo.com/120354187
+
+downloaded
+tar_vid_input:  https://vimeo.com/120367726
+
+downloaded
+tar_vid_input:  https://vimeo.com/120367728
+
+downloaded
+tar_vid_input:  https://vimeo.com/120367834
+
+downloaded
+tar_vid_input:  https://vimeo.com/120380786
+
+downloaded
+tar_vid_input:  https://vimeo.com/120391939
+
+downloaded
+tar_vid_input:  https://vimeo.com/120391973
+
+downloaded
+tar_vid_input:  https://vimeo.com/120393084
+
+downloaded
+tar_vid_input:  https://vimeo.com/120393668
+
+downloaded
+tar_vid_input:  https://vimeo.com/120440588
+
+downloaded
+tar_vid_input:  https://vimeo.com/120476290
+
+downloaded
+tar_vid_input:  https://vimeo.com/120521003
+
+downloaded
+tar_vid_input:  https://vimeo.com/120523898
+
+downloaded
+tar_vid_input:  https://vimeo.com/120539196
+
+downloaded
+tar_vid_input:  https://vimeo.com/120550797
+
+downloaded
+tar_vid_input:  https://vimeo.com/120565775
+
+downloaded
+tar_vid_input:  https://vimeo.com/120568861
+
+downloaded
+tar_vid_input:  https://vimeo.com/120573735
+
+downloaded
+tar_vid_input:  https://vimeo.com/120575007
+
+downloaded
+tar_vid_input:  https://vimeo.com/120588246
+
+downloaded
+tar_vid_input:  https://vimeo.com/120602069
+
+downloaded
+tar_vid_input:  https://vimeo.com/120611056
+
+downloaded
+tar_vid_input:  https://vimeo.com/120615244
+
+downloaded
+tar_vid_input:  https://vimeo.com/120623824
+
+downloaded
+tar_vid_input:  https://vimeo.com/120631747
+
+downloaded
+tar_vid_input:  https://vimeo.com/120633441
+
+downloaded
+tar_vid_input:  https://vimeo.com/120637814
+
+downloaded
+tar_vid_input:  https://vimeo.com/120675243
+
+downloaded
+tar_vid_input:  https://vimeo.com/120684283
+
+downloaded
+tar_vid_input:  https://vimeo.com/120684284
+
+downloaded
+tar_vid_input:  https://vimeo.com/120691342
+
+downloaded
+tar_vid_input:  https://vimeo.com/120709657
+
+downloaded
+tar_vid_input:  https://vimeo.com/120722261
+
+downloaded
+tar_vid_input:  https://vimeo.com/120722400
+
+downloaded
+tar_vid_input:  https://vimeo.com/120723659
+
+downloaded
+tar_vid_input:  https://vimeo.com/120736968
+
+downloaded
+tar_vid_input:  https://vimeo.com/120760839
+
+downloaded
+tar_vid_input:  https://vimeo.com/120776454
+
+downloaded
+tar_vid_input:  https://vimeo.com/120792013
+
+downloaded
+tar_vid_input:  https://vimeo.com/120814043
+
+downloaded
+tar_vid_input:  https://vimeo.com/120836987
+
+downloaded
+tar_vid_input:  https://vimeo.com/120846705
+
+downloaded
+tar_vid_input:  https://vimeo.com/120854491
+
+downloaded
+tar_vid_input:  https://vimeo.com/120863805
+
+downloaded
+tar_vid_input:  https://vimeo.com/120867955
+
+downloaded
+tar_vid_input:  https://vimeo.com/120871784
+
+downloaded
+tar_vid_input:  https://vimeo.com/120898950
+
+downloaded
+tar_vid_input:  https://vimeo.com/120905797
+
+downloaded
+tar_vid_input:  https://vimeo.com/120957427
+
+downloaded
+tar_vid_input:  https://vimeo.com/120994512
+
+downloaded
+tar_vid_input:  https://vimeo.com/120999397
+
+downloaded
+tar_vid_input:  https://vimeo.com/120999398
+
+downloaded
+tar_vid_input:  https://vimeo.com/121049160
+
+downloaded
+tar_vid_input:  https://vimeo.com/121054567
+
+downloaded
+tar_vid_input:  https://vimeo.com/121073035
+
+downloaded
+tar_vid_input:  https://vimeo.com/121113394
+
+downloaded
+tar_vid_input:  https://vimeo.com/121125244
+
+downloaded
+tar_vid_input:  https://vimeo.com/121136297
+
+downloaded
+tar_vid_input:  https://vimeo.com/121179034
+
+downloaded
+tar_vid_input:  https://vimeo.com/121192570
+
+downloaded
+tar_vid_input:  https://vimeo.com/121195393
+
+downloaded
+tar_vid_input:  https://vimeo.com/121246460
+
+downloaded
+tar_vid_input:  https://vimeo.com/121256707
+
+downloaded
+tar_vid_input:  https://vimeo.com/121268099
+
+downloaded
+tar_vid_input:  https://vimeo.com/121270102
+
+downloaded
+tar_vid_input:  https://vimeo.com/121292778
+
+downloaded
+tar_vid_input:  https://vimeo.com/121313377
+
+downloaded
+tar_vid_input:  https://vimeo.com/121316097
+
+downloaded
+tar_vid_input:  https://vimeo.com/121327555
+
+downloaded
+tar_vid_input:  https://vimeo.com/121328333
+
+downloaded
+tar_vid_input:  https://vimeo.com/121330955
+
+downloaded
+tar_vid_input:  https://vimeo.com/121350445
+
+downloaded
+tar_vid_input:  https://vimeo.com/121380504
+
+downloaded
+tar_vid_input:  https://vimeo.com/121402950
+
+downloaded
+tar_vid_input:  https://vimeo.com/121416063
+
+downloaded
+tar_vid_input:  https://vimeo.com/121416119
+
+downloaded
+tar_vid_input:  https://vimeo.com/121418827
+
+downloaded
+tar_vid_input:  https://vimeo.com/121449888
+
+downloaded
+tar_vid_input:  https://vimeo.com/121467225
+
+downloaded
+tar_vid_input:  https://vimeo.com/121495209
+
+downloaded
+tar_vid_input:  https://vimeo.com/121497381
+
+downloaded
+tar_vid_input:  https://vimeo.com/121507437
+
+downloaded
+tar_vid_input:  https://vimeo.com/121570837
+
+downloaded
+tar_vid_input:  https://vimeo.com/121585991
+
+downloaded
+tar_vid_input:  https://vimeo.com/121599613
+
+downloaded
+tar_vid_input:  https://vimeo.com/121617569
+
+keys:  121617569
+[vimeo] 121617569: Downloading webpage
