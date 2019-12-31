@@ -3,3 +3,4 @@ dataset/*
 video_analysis/*
 ARTN/*
 input_analysis/*
+.ipynb_checkpoints
