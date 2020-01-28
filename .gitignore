@@ -3,3 +3,9 @@ dataset/*
 video_analysis/*
 ARTN/*
 input_analysis/*
+Vimeo90k/*
+log/*
+.ipynb_checkpoints/*
+test_sequence/*
+lib/model/__pycache__/*
+lib/__pycache__/*

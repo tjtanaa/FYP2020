@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-from .inception_block import inception_block, BasicConv2d
+from .blocks import inception_block, BasicConv2d
 
 class temporal_branch(torch.nn.Module):
 
@@ -9,13 +9,13 @@ class temporal_branch(torch.nn.Module):
         if conv_block is None:
             conv_block = BasicConv2d
         self.conv1 = conv_block(in_channels, channel_size, kernel_size=7, stride = 1, padding =3)
-        self.conv2 = conv_block(in_channels, channel_size, kernel_size=1, stride = 1, padding =0)
-        self.conv3 = conv_block(in_channels, channel_size, kernel_size=3, stride = 1, padding =1)
-
+        self.conv2 = conv_block(channel_size, channel_size, kernel_size=1, stride = 1, padding =0)
+        self.conv3 = conv_block(channel_size, channel_size, kernel_size=3, stride = 1, padding =1)
+        self.prelu = nn.PReLU()
     def forward(self, x):
-    	c1 = F.relu(self.conv1(x))
-    	c2 = F.relu(self.conv2(x))
-    	output = F.relu(self.conv3(x))
+    	c1 = self.prelu(self.conv1(x))
+    	c2 = self.prelu(self.conv2(c1))
+    	output = self.prelu(self.conv3(c2))
     	return output
 
 

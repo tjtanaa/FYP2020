@@ -11,13 +11,13 @@ import time
 import math
 import cv2
 from skimage.measure import compare_ssim as ssim
-import ipdb
+# import ipdb
 import h5py
 
 '''
     Command
 
-    python train_ARTN.py --load_from_ckpt "D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35"
+    python train_VRCNN.py --load_from_ckpt "D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35"
 
     experiment residual 1: D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35
 '''
@@ -50,22 +50,24 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="ARTN", type=str, help='the path to save the dataset')
-parser.add_argument('--epoch', default=200, type=int, help='number of training epochs')
+parser.add_argument('--model', default="VRCNN", type=str, help='the path to save the dataset')
+parser.add_argument('--epoch', default=50, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-# parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
-# parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
+# parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
+# parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
+parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.0005, help="adam: learning rate")
+# parser.add_argument('--disk_path', default="D:\\Github\\tecogan_video_data", help='the path to save the dataset')
+parser.add_argument("--lr", type=float, default=0.1, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic average GAN instead of standard")
 parser.add_argument("--sample_interval", type=int, default=10, help="interval between image sampling")
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--channel', default=1, type=int, help='image channel dimension')
+
 Flags = parser.parse_args()
 
 def psnr(img1, img2):
@@ -134,16 +136,10 @@ def read_many_hdf5(input_dir):
 
     return input_images, gt_images_labels
 
-def load_dataset(model = 'ARTN'):
-    if model == 'ARTN':
-        save_path = os.path.join(Flags.input_dir, 'ARTN')
-        input_path = os.path.join(save_path, 'input.npy')
-        gt_path = os.path.join(save_path, 'gt.npy')
-        # [T x N x C x H  x W]
-        return np.transpose(np.load(input_path), [0, 1, 4, 2, 3])/255.0, np.transpose(np.load(gt_path), [0, 2, 3, 1])/255.0
+def load_dataset(model = 'ARCNN'):
     if model == 'ARCNN' or model == 'FastARCNN' or model == 'VRCNN':    
         save_path = os.path.join(Flags.input_dir, 'ARCNN')
-        input_path = os.path.join(save_path, 'data.h5')
+        input_path = os.path.join(save_path, 'backup/data_yuv.h5')
         input_images, gt_images = read_many_hdf5(input_path)
         print("input_images.shape: ", str(input_images.shape), "\t gt_images.shape: " + str(gt_images.shape))
 
@@ -175,34 +171,35 @@ batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
 
 
+# load dataset
+# X, Y = load_dataset(model = Flags.model)
+
+# split into train, validation and test
+# 70, 20, 10
+
+# input_size = X.shape
+# N, C, H, W = input_size
 C = Flags.channel
+# indices = np.arange(N)
+# np.random.shuffle(indices)
+
+# train_indices = indices[: int(N * 0.7)]
+# val_indices = indices[int(N * 0.7): int(N * 0.9)]
+# test_indices = indices[int(N * 0.9):]
+
 # create model
 
-if Flags.model == 'ARTN':
-    model = ARTN(C, C).to(device)
-    # print(model)
-elif Flags.model == 'ARCNN':
-    model = ARCNN(C, C).to(device)
-elif Flags.model == 'FastARCNN':
-    model = FastARCNN(C, C).to(device)
-elif Flags.model == 'VRCNN':
+if Flags.model == 'VRCNN':
     model = VRCNN(C, C).to(device)
 
 
 
 # criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
 criterion = nn.MSELoss()
-lr = 1e-4
-# optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-# optimizer = optim.Adam(model.parameters(), lr=0.0001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-optimizer = optim.Adam([
-    {'params': model.pre_branch.parameters()},
-    {'params': model.cur_branch.parameters()},
-    {'params': model.post_branch.parameters()},
-    {'params': model.inception_block1.parameters()},
-    {'params': model.inception_block2.parameters()},
-    {'params': model.conv5.parameters(), 'lr': lr * 0.1},
-], lr=lr)
+
+optimizer = torch.optim.SGD(model.parameters(), lr=Flags.lr, momentum=0.9, dampening=0, weight_decay=0.0001, nesterov=True)
+
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 # if the checkpoint dir is not null refers to load checkpoint
 if Flags.load_from_ckpt != "":
     summary_dir = Flags.load_from_ckpt
@@ -210,6 +207,9 @@ if Flags.load_from_ckpt != "":
     checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
     model.load_state_dict(checkpoint['model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    for param_group in optimizer.param_groups:
+        param_group['lr'] *= 0.1
+    scheduler = checkpoint['scheduler']
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     best_model_loss = checkpoint['val_loss']
@@ -293,8 +293,8 @@ from lib.dataloader import HDF5Dataset
 from torch.utils.data.sampler import SubsetRandomSampler
 
 
-dataset = HDF5Dataset(os.path.join(Flags.input_dir, 'ARTN'), recursive=False, load_data=False, 
-   data_cache_size=100, transform=None)
+dataset = HDF5Dataset(os.path.join(Flags.input_dir, 'ARCNN'), recursive=False, load_data=False, 
+   data_cache_size=500, transform=None)
 
 shuffle_dataset = True
 # Creating data indices for training and validation splits:
@@ -311,14 +311,14 @@ train_indices, val_indices = indices[split:], indices[:split]
 train_sampler = SubsetRandomSampler(train_indices)
 valid_sampler = SubsetRandomSampler(val_indices)
 
-train_loader_params = {'batch_size': 44, 'num_workers': 6,'sampler': train_sampler}
-validation_loader_params = {'batch_size': 4, 'num_workers': 6,'sampler': valid_sampler}
+train_loader_params = {'batch_size': 128, 'num_workers': 6,'sampler': train_sampler}
+validation_loader_params = {'batch_size': 32, 'num_workers': 6,'sampler': valid_sampler}
 
 train_loader = data.DataLoader(dataset, **train_loader_params)
 validation_loader = data.DataLoader(dataset, **validation_loader_params)
 
+# data_loader = data.DataLoader(dataset, **loader_params)
 
-# training loop
 for epoch in range(st_epoch,Flags.epoch):
     start_timing_epoch = time.time()
     running_loss = 0.0
@@ -328,12 +328,12 @@ for epoch in range(st_epoch,Flags.epoch):
         # here comes your training loop
         # print("train_x. shape", X.shape)
         # print(len(train_loader))
-        train_length = len(Y)
-        for i in range(train_length):
+        train_length += len(X)
+        for i in range(len(X)):
             # X_ = X[t,:,:,:,:].permute([0, 3, 1, 2])
             # print(X_.shape)
 
-            Xtrain = (X[i,:,:,:,:,:].permute([0, 1, 4, 2, 3])/255.0).float().to(device)
+            Xtrain = (X[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
             Ytrain = (Y[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
 
             # zero the parameter gradients
@@ -344,21 +344,31 @@ for epoch in range(st_epoch,Flags.epoch):
             outputs = model(Xtrain)
             # print("outputs.shape: ", outputs.shape)
             # print("Xtrain.shape: ", Xtrain.shape)
-            
             if( i == 0):
                 y = np.transpose(Ytrain[0].detach().cpu().numpy(), [1,2,0])
                 x = np.transpose((outputs[0].detach()).cpu().numpy(), [1,2,0])
-                x_input = np.transpose((Xtrain[1,0].detach()).cpu().numpy(), [1,2,0])
+                x_input = np.transpose((Xtrain[0].detach()).cpu().numpy(), [1,2,0])
                 logger.info("Training: input_psnr: %.5f \t train_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
+            # img_pair1 = np.hstack(([x_input, y, x])) * 255
+            # display_img = np.vstack([img_pair1, img_pair2])
+            # ipdb.set_trace()
+            # print(display_img.shape)
+            # cv2.imshow('sample image', img_pair1.astype(np.uint8))
+            # cv2.waitKey(0) # waits until a key is pressed
+            # cv2.destroyAllWindows()
+        
             # print("loss")
             loss = criterion(outputs, Ytrain)
             # print("backward")
             loss.backward()
             # print("optimize")
+            cur_learning_rate = optimizer.param_groups[0]['lr']
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.01/cur_learning_rate)
             optimizer.step()
+    scheduler.step()
 
-            # print statistics
-            running_loss += loss.item()
+    # print statistics
+    running_loss += loss.item()
     # if i % 1000 == 999:    # print every 2000 mini-batches
     # if i % 50 == 49:
     # np.random.shuffle(val_indices)
@@ -370,9 +380,9 @@ for epoch in range(st_epoch,Flags.epoch):
             # here comes your training loop
             # print("ValX.shape", X.shape)
             # print(len(validation_loader))
-            val_length = len(Y)
-            for j in range(val_length):
-                Xval = (X[j,:,:,:,:,:].permute([0, 1, 4, 2, 3])/255.0).float().to(device)
+            val_length += len(X)
+            for j in range(len(X)):
+                Xval = (X[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
                 Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
                 val_outputs = model(Xval)
                 # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
@@ -382,7 +392,7 @@ for epoch in range(st_epoch,Flags.epoch):
                 if(j == 0):
                     y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
                     x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
-                    x_input = np.transpose((Xval[1,0].detach()).cpu().numpy(), [1,2,0])
+                    x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
                     logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
                 val_loss = criterion(val_outputs , Yval)
                 validation_loss += val_loss.item()
@@ -396,6 +406,7 @@ for epoch in range(st_epoch,Flags.epoch):
     'epoch': epoch,
     'model_state_dict': model.state_dict(),
     'optimizer_state_dict': optimizer.state_dict(),
+    'scheduler': scheduler,
     'loss': loss,
     'val_loss': validation_loss
     }, os.path.join(model_dir, 'ckpt_model.pth'))
@@ -406,6 +417,7 @@ for epoch in range(st_epoch,Flags.epoch):
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
+        'scheduler': scheduler,
         'loss': loss,
         'val_loss': validation_loss
         }, os.path.join(model_dir, 'best_model.pth'))
@@ -415,25 +427,6 @@ for epoch in range(st_epoch,Flags.epoch):
 
     end_timing_epoch = time.time()
     logger.info("Epoch %i runtime: %.3f"% (epoch+1, end_timing_epoch - start_timing_epoch))
-    print('Finished Training')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # # training loop
 # for epoch in range(st_epoch,Flags.epoch):  # loop over the dataset multiple times
@@ -446,7 +439,7 @@ for epoch in range(st_epoch,Flags.epoch):
 #         # print("Epoch: %i \t Iteration: %i" % (epoch, i))
 
 #         tindices = train_indices[batch_size*i: batch_size*(i+1)]
-#         Xtrain = torch.from_numpy(X[:,tindices,:,:,:]).float().to(device)
+#         Xtrain = torch.from_numpy(X[tindices,:,:,:]).float().to(device)
 #         Ytrain = torch.from_numpy(Y[tindices,:,:,:]).float().to(device)
 
 #         # zero the parameter gradients
@@ -455,11 +448,24 @@ for epoch in range(st_epoch,Flags.epoch):
 #         # forward + backward + optimize
 #         # print("forward")
 #         outputs = model(Xtrain)
-#         print("outputs.shape: ", outputs.shape)
-#         print("Xtrain.shape: ", Xtrain.shape)
+#         # print("outputs.shape: ", outputs.shape)
+#         # print("Xtrain.shape: ", Xtrain.shape)
+
         
+#         y = np.transpose(Ytrain[0].detach().cpu().numpy(), [1,2,0])
+#         x = np.transpose((outputs[0].detach()).cpu().numpy(), [1,2,0])
+#         x_input = np.transpose((Xtrain[0].detach()).cpu().numpy(), [1,2,0])
+#         print("Training: input_psnr", psnr(y,x_input), "val_psnr", psnr(y,x))
+#         img_pair1 = np.hstack(([x_input, y, x])) * 255
+#         # display_img = np.vstack([img_pair1, img_pair2])
+#         # ipdb.set_trace()
+#         # print(display_img.shape)
+#         cv2.imshow('sample image', img_pair1.astype(np.uint8))
+#         cv2.waitKey(0) # waits until a key is pressed
+#         cv2.destroyAllWindows()
+    
 #         # print("loss")
-#         loss = criterion(outputs, Ytrain - Xtrain[1])
+#         loss = criterion(outputs, Ytrain - Xtrain)
 #         # print("backward")
 #         loss.backward()
 #         # print("optimize")
@@ -475,14 +481,19 @@ for epoch in range(st_epoch,Flags.epoch):
 #                 validation_loss = 0.0
 #                 for j in range(len(val_indices)//batch_size-1):
 #                     vindices = val_indices[batch_size*j: batch_size*(j+1)] 
-#                     Xval = torch.from_numpy(X[:,vindices,:,:,:]).float().to(device)
+#                     Xval = torch.from_numpy(X[vindices,:,:,:]).float().to(device)
 #                     Yval = torch.from_numpy(Y[vindices,:,:,:]).float().to(device)
 #                     val_outputs = model(Xval)
 #                     # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
 #                     # ssim = pytorch_ssim.ssim(Yval, val_outputs)
 #                     # print("ssim ", ssim)
 #                     # exit()
-#                     val_loss = criterion(val_outputs , Yval - Xval[1])
+#                     if(j == 0):
+#                         y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
+#                         x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
+#                         x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
+#                         print("Validation: input_psnr", psnr(y,x_input), "val_psnr", psnr(y,x))
+#                     val_loss = criterion(val_outputs , Yval - Xval)
 #                     validation_loss += val_loss.item()
 #             validation_loss /= ((len(val_indices)//batch_size-1)*batch_size)
 #             logger.info('Epoch: %i \t Iteration: %i training_running_loss: %.6e \t validation_loss: %.6e' %
@@ -520,55 +531,68 @@ for epoch in range(st_epoch,Flags.epoch):
 # model.eval()
 # with torch.set_grad_enabled(False):
 #     test_loss = 0.0
-#     avg_psnr = 0.0
+#     avg_predicted_psnr = 0.0
+#     avg_input_psnr = 0.0
+#     avg_predicted_ssim = 0.0
+#     avg_input_ssim = 0.0
 #     count = 0
+#     better_count = 0
 #     for k in range(len(test_indices)//2-1):
 #         filename = os.path.join(test_dir, "test_batch_best_%i.png"%(k))
 #         tindices = test_indices[2*k: 2*(k+1)] 
-#         Xtest = torch.from_numpy(X[:,tindices,:,:,:]).float().to(device)
+#         Xtest = torch.from_numpy(X[tindices,:,:,:]).float().to(device)
 #         Ytest = torch.from_numpy(Y[tindices,:,:,:]).float().to(device)
 #         # [N x C x H x W]
 #         test_outputs = model(Xtest)
+
+#         # print(test_outputs * 255)
+#         # exit()
 #         np_images = test_outputs.cpu().numpy()
-#         pre_img1 = np.transpose(Xtest[0,0].cpu().numpy(), [1,2,0])
-#         cur_img1 = np.transpose(Xtest[1,0].cpu().numpy(), [1,2,0])
-#         post_img1 = np.transpose(Xtest[2,0].cpu().numpy(), [1,2,0])
 
 #         # residual
-#         # pred_mask1 = np.transpose(np_images[0], [1,2,0])
-#         # pred_img1 =  np.transpose(Xtest[1,0].cpu().numpy(), [1,2,0]) + pred_mask1
-#         # gt_img1 = np.transpose(Ytest[0].cpu().numpy(), [1,2,0])
-
-#         # pre_img2 = np.transpose(Xtest[0,1].cpu().numpy(), [1,2,0])
-#         # cur_img2 = np.transpose(Xtest[1,1].cpu().numpy(), [1,2,0])
-#         # post_img2 = np.transpose(Xtest[2,1].cpu().numpy(), [1,2,0])
-#         # pred_mask2 = np.transpose(np_images[1], [1,2,0])
-#         # pred_img2 =  np.transpose(Xtest[1,1].cpu().numpy(), [1,2,0]) + pred_mask2 
-#         # gt_img2 = np.transpose(Ytest[1].cpu().numpy(), [1,2,0])
-
-#         # reconstruction
+#         cur_img1 = np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
 #         pred_mask1 = np.transpose(np_images[0], [1,2,0])
-#         pred_img1 = pred_mask1  #+ np.transpose(Xtest[1,0].cpu().numpy(), [1,2,0])
+#         pred_img1 = pred_mask1  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
 #         gt_img1 = np.transpose(Ytest[0].cpu().numpy(), [1,2,0])
 
-#         pre_img2 = np.transpose(Xtest[0,1].cpu().numpy(), [1,2,0])
-#         cur_img2 = np.transpose(Xtest[1,1].cpu().numpy(), [1,2,0])
-#         post_img2 = np.transpose(Xtest[2,1].cpu().numpy(), [1,2,0])
+#         cur_img2 = np.transpose(Xtest[1].cpu().numpy(), [1,2,0])
 #         pred_mask2 = np.transpose(np_images[1], [1,2,0])
-#         pred_img2 = pred_mask2 # + np.transpose(Xtest[1,1].cpu().numpy(), [1,2,0])
+#         pred_img2 = pred_mask2 #+ np.transpose(Xtest[1].cpu().numpy(), [1,2,0])
 #         gt_img2 = np.transpose(Ytest[1].cpu().numpy(), [1,2,0])
 
 #         # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
+#         # Stats of Predicted Image
+
 #         ssim1 = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
 #         psnr1 = psnr(gt_img1, pred_img1)
 #         ssim2 = np.mean(np.mean(ssim(gt_img2, pred_img2, full=True,multichannel=True)))
 #         psnr2 = psnr(gt_img2, pred_img2)
-#         avg_psnr += (psnr1 + psnr2)
+#         avg_predicted_psnr += (psnr1 + psnr2)
+#         avg_predicted_ssim += (ssim1 + ssim2)
 #         count += 2
-#         print("ssim1 ", ssim1, "\t psnr1: ", psnr1, "\t ssim2 ", ssim2, "\t psnr2: ", psnr2)
+#         print("PREDICTED: ssim1 ", ssim1, "\t psnr1: ", psnr1, "\t ssim2 ", ssim2, "\t psnr2: ", psnr2)
+#         ppsnr1 = psnr1
+#         ppsnr2 = psnr2
 
-#         img_pair1 = np.hstack(([pre_img1, cur_img1, post_img1, pred_mask1, pred_img1, gt_img1])) * 255
-#         img_pair2 = np.hstack(([pre_img2, cur_img2, post_img2, pred_mask2, pred_img2, gt_img2])) * 255
+#         # Stats of Input Image
+#         ssim1 = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+#         psnr1 = psnr(gt_img1, cur_img1)
+#         ssim2 = np.mean(np.mean(ssim(gt_img2, cur_img2, full=True,multichannel=True)))
+#         psnr2 = psnr(gt_img2, cur_img2)
+#         avg_input_psnr += (psnr1 + psnr2)
+#         avg_input_ssim += (ssim1 + ssim2)
+#         print("INPUT ssim1 ", ssim1, "\t psnr1: ", psnr1, "\t ssim2 ", ssim2, "\t psnr2: ", psnr2)
+#         ipsnr1 = psnr1
+#         ipsnr2 = psnr2
+
+#         if(ipsnr1 < psnr1):
+#             better_count += 1
+#         if(ipsnr2 < psnr2):
+#             better_count += 1
+
+
+#         img_pair1 = np.hstack(([cur_img1, pred_mask1, pred_img1, gt_img1])) * 255
+#         img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
 #         display_img = np.vstack([img_pair1, img_pair2])
 #         # print(pred_mask1.shape)
 #         # print(pred_img1.shape)
@@ -585,7 +609,9 @@ for epoch in range(st_epoch,Flags.epoch):
 
 #         t_loss = criterion(test_outputs, Ytest)
 #         test_loss += t_loss.item()
-#     print(Flags.model, " avg_psnr: ", avg_psnr/count)
+#     print(Flags.model, " avg_input_psnr: ", avg_input_psnr/count , " avg_predicted_psnr: ", avg_predicted_psnr/count, \
+#             " avg_input_ssim: ", avg_input_ssim/count , " avg_predicted_ssim: ", avg_predicted_ssim/count, \
+#             " better count: ", better_count)
 
 # test_loss /= ((len(test_indices)//2-1)*2)
 # logger.info('Test loss: %.5f' % (test_loss))

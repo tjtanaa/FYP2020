@@ -17,7 +17,7 @@ class PreluConv2d(torch.nn.Module):
 
 class VRCNN(torch.nn.Module):
     def __init__(self, in_channels, out_channels, conv_block=None):
-        super(ARCNN, self).__init__()
+        super(VRCNN, self).__init__()
         # print("in_channels, ", in_channels, "\t", "channel_size: ",out_channels)
         if conv_block is None:
             conv_block = PreluConv2d        
@@ -27,12 +27,6 @@ class VRCNN(torch.nn.Module):
         self.layer3_1 = conv_block(48, 16, kernel_size=3, stride = 1, padding = 1)
         self.layer3_2 = conv_block(48, 32, kernel_size=1, stride = 1, padding = 0)
         self.layer4 = conv_block(48, out_channels, kernel_size=3, stride = 1, padding = 1)
-        # self._initialize_weights()
-
-    # def _initialize_weights(self):
-    #     for m in self.modules():
-    #         if isinstance(m, nn.Conv2d):
-    #             nn.init.normal_(m.weight, std=0.001)
 
     def forward(self, x):
         """
@@ -40,7 +34,8 @@ class VRCNN(torch.nn.Module):
             x : [1 x N x C x H x W ]
     
         """
-        cur_patch = x[0]
+        # cur_patch = x[0]
+        cur_patch = x
         # print("pre_patch size, ", pre_patch.shape)
 
 
@@ -56,5 +51,5 @@ class VRCNN(torch.nn.Module):
         concat2 = torch.cat(outputs, 1)
 
         out = self.layer4(concat2)
-
+        out = x + out
         return out

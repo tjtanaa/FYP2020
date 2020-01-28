@@ -136,16 +136,16 @@ def download_videos():
                     if info_dict["width"] > 1980 or info_dict["height"] > 2160:
                         print("Skipped videos of large size %dx%d"%(info_dict["width"] , info_dict["height"] ))
                         continue
-                    # info_dict = ydl.extract_info(tar_vid_input, download=saveframes)
-                    tar_vid_output = os.path.join(Flags.disk_path, keys+'.'+info_dict["ext"])
+                    info_dict = ydl.extract_info(tar_vid_input, download=saveframes)
+                    # tar_vid_output = os.path.join(Flags.disk_path, keys+'.'+info_dict["ext"])
 
-                    video = info_dict['entries'][0] if 'entries' in info_dict else info_dict
-                    # print(info_dict.keys())
-                    # print(video.keys())
-                    url = video['url']
-                    print('url: ', url)
-                    print("tar_vid_output: ", tar_vid_output)
-                    subprocess.call('ffmpeg -i "%s" -ss %s -t %s -c copy %s' % (url , FROM, TO, tar_vid_output))
+                    # video = info_dict['entries'][0] if 'entries' in info_dict else info_dict
+                    # # print(info_dict.keys())
+                    # # print(video.keys())
+                    # url = video['url']
+                    # print('url: ', url)
+                    # print("tar_vid_output: ", tar_vid_output)
+                    # subprocess.call('ffmpeg -i "%s" -ss %s -t %s -c copy %s' % (url , FROM, TO, tar_vid_output))
 
                     # we only need info_dict["ext"], info_dict["width"], info_dict["height"]
                 except KeyboardInterrupt:
