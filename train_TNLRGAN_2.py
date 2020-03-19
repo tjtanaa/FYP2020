@@ -1,8 +1,21 @@
+#----------------------- Description -----------------------------------------
+#   The model is trained with Relativistic GAN loss and L1 reconstruction loss and content loss (vgg feature)
+
+
+
+# model and pytorch modules
 import torch
 import torch.nn as nn
-from lib.model import TNLRGAN_G, TNLRGAN_D
+from lib.model import TNLRGAN_G, TNLRGAN_D, TDNLRGAN_G, TDNLRGAN_D, TDKNLRGAN_G, TDKNLRGAN_D, SRGAN_G, SRGAN_D
+from lib.model import FeatureExtractor
 from torchvision.utils import save_image
 from torch.autograd import Variable
+# dataset loader library
+from torch.utils import data
+from lib.dataloader import HDF5Dataset
+from torch.utils.data.sampler import SubsetRandomSampler
+
+
 # from lib import load_dataset
 import os
 import numpy as np
@@ -19,8 +32,8 @@ import h5py
 '''
     Command
 
-    python train_TNLRGAN.py --load_from_ckpt "D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35"
-
+    python train_ARTN.py --load_from_ckpt "D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35"
+    TNL : ../content/drive/My Drive/FYP/TNLRGAN/01-18-2020=11-08-24
     experiment residual 1: D:\\Github\\tecogan_video_data\\ARTN\\12-20-2019=17-24-35
 '''
 
@@ -49,25 +62,32 @@ np.random.seed(0)
 # - test output
 # - log
 # load_from_ckpt: input the directory path to the model
-
+# ../content/drive/My Drive/FYP/TDKNLRGAN/01-20-2020=16-59-08
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="TNLRGAN", type=str, help='the path to save the dataset')
-parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
+parser.add_argument('--model', default="TDKNLRGAN", type=str, help='the path to save the dataset')
+parser.add_argument('--epoch', default=100, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-# parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
-# parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
+# parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
+# parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
+parser.add_argument('--input_dir', default=".", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.0005, help="adam: learning rate")
+parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
+parser.add_argument("--adv_coeff", type=float, default=0.001, help="coefficient of adversarial loss")
+parser.add_argument("--rec_coeff", type=float, default=0.999, help="coefficient of reconstruction loss")
+parser.add_argument("--content_coeff", type=float, default=0.999, help="coefficient of content loss")
 parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic average GAN instead of standard")
-parser.add_argument("--sample_interval", type=int, default=10, help="interval between image sampling")
-parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
-parser.add_argument('--channel', default=1, type=int, help='image channel dimension')
+parser.add_argument("--tseq_length", type=int, default=11, help="interval between image sampling")
+parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
+parser.add_argument('--qp', default=37, type=int, help='scene duration')
+parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
+parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
+parser.add_argument("--img_size", type=int, default=256, help="interval between image sampling")
 
 Flags = parser.parse_args()
 Flags.rel_avg_gan = True
@@ -143,50 +163,84 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 print("device: ", device)
 
-# define training parameters
-best_model_loss = [999999, 99999, 99999] # d, g, rec
+
+"""
+    define training parameters
+"""
+best_model_loss = [999999, 99999, 99999, 99999] # d, g, rec
 batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
+iteration_count = 0
 # number of input channel
 C = Flags.channel
+print("model: ",  Flags.model)
 
-# create model
+""" 
+    create model
+"""
+# create generator and discriminator
 
 if Flags.model == 'RGAN':
     generator = RGAN_G(C,C).to(device)
     discriminator = RGAN_D(C,C).to(device)
 elif Flags.model == 'TNLRGAN':
     generator = TNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length).to(device)
-    discriminator = TNLRGAN_D(C,C,img_size=512).to(device)
+    discriminator = SRGAN_D(input_shape=(C, Flags.img_size, Flags.img_size)).to(device)
+    # discriminator = TNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+elif Flags.model == 'TDNLRGAN':
+    generator = TDNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length).to(device)
+    discriminator = TDNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+elif Flags.model == 'TDKNLRGAN':
+    generator = TDKNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length,device=device).to(device)
+    # discriminator = TDKNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+    discriminator = SRGAN_D(input_shape=(C, Flags.img_size, Flags.img_size)).to(device)
 
-# criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
-criterion = nn.MSELoss()
+# define feature extractor (vgg)
+feature_extractor = FeatureExtractor().to(device)
+# Set feature extractor to inference mode
+feature_extractor.eval()
+
+"""
+    Define Loss functions
+"""
+
+
+criterion_reconstruction = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
+criterion_content = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
 
 # Loss function
 adversarial_loss = torch.nn.BCEWithLogitsLoss().to(device)
 
+
+"""
+    Define the optimizers
+"""
+
 if(Flags.model == 'RGAN'):
-    # # Optimizers
+    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr/4, betas=(Flags.b1, Flags.b2))
     # optimizer_G = torch.optim.Adam([
     #                                 {'params': generator.base.parameters()},
     #                                 {'params': generator.last.parameters(), 'lr': Flags.lr * 0.1},
-    #                                 ], lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+    #                                 ], lr=Flags.lr) # , betas=(Flags.b1, Flags.b2)
     optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-elif(Flags.model == 'TNLRGAN'):
-    # # Optimizers
+elif(Flags.model == 'TNLRGAN' or Flags.model == 'TDKNLRGAN'):
+    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr/4, betas=(Flags.b1, Flags.b2))
     # optimizer_G = torch.optim.Adam([
     #                                 {'params': generator.base.parameters()},
     #                                 {'params': generator.last.parameters(), 'lr': Flags.lr * 0.1},
-    #                                 ], lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+    #                                 ], lr=Flags.lr) # , betas=(Flags.b1, Flags.b2)
     optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+
+
+"""
+    Load training and model checkpoints
+"""
 
 # if the checkpoint dir is not null refers to load checkpoint
 if Flags.load_from_ckpt != "":
     summary_dir = Flags.load_from_ckpt
-    # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/ckpt_model.pth'))
-    checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
+    checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/ckpt_model.pth'))
+    # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
     generator.load_state_dict(checkpoint['generator_state_dict'])
     discriminator.load_state_dict(checkpoint['discriminator_state_dict'])
     optimizer_G.load_state_dict(checkpoint['optimizer_G_state_dict'])
@@ -194,9 +248,11 @@ if Flags.load_from_ckpt != "":
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     # best_model_loss = checkpoint['val_loss']
+    iteration_count = checkpoint['iteration']
     best_model_loss[0] = checkpoint['val_d_loss']
     best_model_loss[1] = checkpoint['val_g_loss']
     best_model_loss[2] = checkpoint['val_rec_loss']
+    best_model_loss[3] = checkpoint['val_con_loss']
     generator.train()
     discriminator.train()
     # override training output, continue training
@@ -212,6 +268,10 @@ else:
     if not(os.path.exists(summary_dir)):
         os.makedirs(summary_dir)
 
+"""
+    Define log directory
+"""
+
 log_dir = os.path.join(summary_dir, "log")
 
 
@@ -226,11 +286,13 @@ def touch(path):
 if not(os.path.exists(log_dir+ '/' + cur_time + '.log')):
     touch(log_dir+ '/' + cur_time + '.log')
 
+"""
+    Define logger
+"""
 import logging
 logging.basicConfig(level=logging.INFO)
 # Create a custom logger
 logger = logging.getLogger(__name__)
-
 
 # Create handlers
 # c_handler = logging.StreamHandler()
@@ -268,14 +330,21 @@ np.random.seed(st_epoch)
 
 logger.info(cur_time)
 
+"""
+    Define the path to training dataset
+"""
 
-from torch.utils import data
-from lib.dataloader import HDF5Dataset
-from torch.utils.data.sampler import SubsetRandomSampler
+if 'drive' in Flags.input_dir:
+    input_dir = '.'
+else:
+    save_dir = os.path.join(Flags.input_dir, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
+    # input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
+    input_dir = os.path.join(os.path.join(save_dir, 'TNLRGAN'), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
 
+print(input_dir)
 
-dataset = HDF5Dataset(os.path.join(Flags.input_dir, 'TNLRGAN'), recursive=False, load_data=False, 
-   data_cache_size=100, transform=None)
+dataset = HDF5Dataset(input_dir, recursive=False, load_data=False, 
+   data_cache_size=128, transform=None)
 
 shuffle_dataset = True
 # Creating data indices for training and validation and test splits:
@@ -284,10 +353,8 @@ indices = list(range(dataset_size))
 if shuffle_dataset :
     np.random.seed(0)
     np.random.shuffle(indices)
-# indices = np.arange(N)
-# np.random.shuffle(indices)
 
-train_indices = indices[: int(dataset_size * 0.7)]
+train_indices = indices[: int(dataset_size * 0.1)]
 val_indices = indices[int(dataset_size * 0.7): int(dataset_size * 0.9)]
 test_indices = indices[int(dataset_size * 0.9):]
 
@@ -303,21 +370,33 @@ validation_loader = data.DataLoader(dataset, **validation_loader_params)
 
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
+"""
+    Start Training
+"""
+
 
 for epoch in range(st_epoch,Flags.epoch):
+    if iteration_count > Flags.max_iteration:
+        break
     start_timing_epoch = time.time()
     running_g_loss = 0.0
     running_d_loss = 0.0
     running_rec_loss = 0.0
+    running_con_loss = 0.0
     val_g_loss = 0.0
     val_d_loss = 0.0
     val_rec_loss = 0.0
+    val_con_loss = 0.0
     num_train_batches = 0
     for m, (X,Y) in enumerate(train_loader):
+        if iteration_count > Flags.max_iteration:
+             break
         # here comes your training loop
         train_length = len(Y)
         num_train_batches += train_length
         for i in range(train_length):
+            if iteration_count > Flags.max_iteration:
+                break
 
             # ------------------------------------
             #
@@ -351,6 +430,12 @@ for epoch in range(st_epoch,Flags.epoch):
 
             real_pred = discriminator(real_imgs).detach()
             fake_pred = discriminator(gen_imgs)
+            # print(real_pred.shape)
+            # print(fake_pred.shape)
+            # print(valid.shape)
+            # exit()
+
+
 
             if Flags.rel_avg_gan:
                 g_loss = adversarial_loss(fake_pred - real_pred.mean(0, keepdim=True), valid)
@@ -358,8 +443,13 @@ for epoch in range(st_epoch,Flags.epoch):
                 g_loss = adversarial_loss(fake_pred - real_pred, valid)
 
             # Loss measures generator's ability to fool the discriminator
-            reconstruction_loss = criterion(Ytrain, gen_imgs)
-            g_loss += reconstruction_loss
+            reconstruction_loss = criterion_reconstruction(Ytrain, gen_imgs)
+
+            gen_features = feature_extractor(gen_imgs.repeat(1, 3, 1, 1))
+            real_features = feature_extractor(real_imgs.repeat(1, 3, 1, 1))
+            content_loss = criterion_content(gen_features, real_features.detach())
+
+            g_loss = Flags.adv_coeff * g_loss + Flags.rec_coeff * reconstruction_loss + Flags.content_coeff * content_loss
 
 
             g_loss.backward()
@@ -389,8 +479,8 @@ for epoch in range(st_epoch,Flags.epoch):
             d_loss.backward()
             optimizer_D.step()
             logger.info(
-                "[Epoch %d/%d] [Batch %d/%d] [D loss: %.5e] [G loss: %.5e] [Rec loss: %.5e]"
-                % (epoch, Flags.epoch, m, len(train_loader), d_loss.item(), g_loss.item(), reconstruction_loss.item())
+                "[Epoch %d/%d] [Batch %d/%d] [D loss: %.8e] [G loss: %.8e] [Rec loss: %.8e] [Con loss: %.8e]"
+                % (epoch, Flags.epoch, m, len(train_loader), d_loss.item(), g_loss.item(), reconstruction_loss.item(), content_loss.item())
             )
 
             batches_done = epoch * len(train_loader) + m + i 
@@ -403,9 +493,11 @@ for epoch in range(st_epoch,Flags.epoch):
                 save_image(gen_imgs.data[:25],  os.path.join(test_dir,"train_%d.png") % batches_done, nrow=5, normalize=True)
 
 
-    running_g_loss += g_loss.item()
-    running_d_loss += d_loss.item()
-    running_rec_loss += reconstruction_loss.item()
+            running_g_loss += g_loss.item()
+            running_d_loss += d_loss.item()
+            running_rec_loss += reconstruction_loss.item()
+            running_con_loss += content_loss.item()
+            iteration_count += 1
 
     with torch.set_grad_enabled(False):
         validation_loss = 0.0
@@ -422,8 +514,10 @@ for epoch in range(st_epoch,Flags.epoch):
                 #
                 #-------------------------------------
 
-                Xval = (X[i,:,:,:,:,:].permute([1,4,0,2,3])/255.0).float().to(device)
-                Yval = (Y[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+                # Xval = (X[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+                # Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+                Xval = (X[j,:,:,:,:,:].permute([1,4,0,2,3])/255.0).float().to(device)
+                Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
                 # print(Xtrain.shape)
                 # exit()
 
@@ -449,8 +543,13 @@ for epoch in range(st_epoch,Flags.epoch):
                     g_loss = adversarial_loss(fake_pred - real_pred, valid)
 
                 # Loss measures generator's ability to fool the discriminator
-                reconstruction_loss = criterion(Yval, gen_imgs)
-                g_loss += reconstruction_loss
+                reconstruction_loss = criterion_reconstruction(Yval, gen_imgs)
+
+                gen_features = feature_extractor(gen_imgs.repeat(1, 3, 1, 1))
+                real_features = feature_extractor(real_imgs.repeat(1, 3, 1, 1))
+                content_loss = criterion_content(gen_features, real_features.detach())
+
+                g_loss = Flags.adv_coeff * g_loss + Flags.rec_coeff * reconstruction_loss + Flags.content_coeff * content_loss
 
                 # ---------------------
                 #
@@ -483,13 +582,15 @@ for epoch in range(st_epoch,Flags.epoch):
                 val_rec_loss += reconstruction_loss.item()
                 val_g_loss += g_loss.item()
                 val_d_loss += d_loss.item()
+                val_con_loss += content_loss.item()
         val_rec_loss /= num_val_batches
         val_g_loss /= num_val_batches
         val_d_loss /= num_val_batches
+        val_con_loss /= num_val_batches
 
-        logger.info("[Epoch %d/%d] [tD loss: %.5e] [tG loss: %.5e] [tRec loss: %.5e] [vD loss: %.5e] [vG loss: %.5e] [vRec loss: %.5e]" 
+        logger.info("[Epoch %d/%d] [tD loss: %.8e] [tG loss: %.8e] [tRec loss: %.8e] [tCon loss: %.8e] [vD loss: %.8e] [vG loss: %.8e] [vRec loss: %.8e] [vCon loss: %.8e]" 
             % (epoch, Flags.epoch, running_d_loss / num_train_batches, running_g_loss / num_train_batches,
-            running_rec_loss / num_train_batches, val_d_loss, val_g_loss, val_rec_loss))
+            running_rec_loss / num_train_batches, running_con_loss / num_train_batches, val_d_loss, val_g_loss, val_rec_loss,val_con_loss))
 
 
     # save checkpoint
@@ -502,13 +603,16 @@ for epoch in range(st_epoch,Flags.epoch):
     'rec_loss': running_rec_loss / num_train_batches,
     'd_loss': running_d_loss / num_train_batches,
     'g_loss': running_g_loss / num_train_batches,
+    'con_loss': running_con_loss / num_train_batches,
     'val_rec_loss': val_rec_loss,
     'val_d_loss': val_d_loss,
     'val_g_loss': val_g_loss,
+    'val_con_loss': val_con_loss,
+    'iteration': iteration_count,
     }, os.path.join(model_dir, 'ckpt_model.pth'))
 
     # save best model
-    if((val_d_loss < best_model_loss[0]) and (val_g_loss < best_model_loss[1]) and (val_rec_loss < best_model_loss[2])):
+    if((val_rec_loss < best_model_loss[2]) and (val_con_loss < best_model_loss[3])):
         torch.save({
         'epoch': epoch,
         'generator_state_dict': generator.state_dict(),
@@ -518,15 +622,20 @@ for epoch in range(st_epoch,Flags.epoch):
         'rec_loss': running_rec_loss / num_train_batches,
         'd_loss': running_d_loss / num_train_batches,
         'g_loss': running_g_loss / num_train_batches,
+        'con_loss': running_con_loss / num_train_batches,
         'val_rec_loss': val_rec_loss,
         'val_d_loss': val_d_loss,
         'val_g_loss': val_g_loss,
+        'val_con_loss': val_con_loss,
+        'iteration': iteration_count,
         }, os.path.join(model_dir, 'best_model.pth'))
-        best_model_loss = [val_d_loss, val_g_loss, val_rec_loss]
-        running_loss = 0.0
+        best_model_loss = [val_d_loss, val_g_loss, val_rec_loss, val_con_loss]
+        
 
     end_timing_epoch = time.time()
     logger.info("Epoch %i runtime: %.3f"% (epoch+1, end_timing_epoch - start_timing_epoch))
+    if iteration_count > Flags.max_iteration:
+        break
 
 # # test loop
 # model.eval()

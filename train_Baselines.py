@@ -14,6 +14,7 @@ import math
 import cv2
 from skimage.measure import compare_ssim as ssim
 # import ipdb
+from lib import MyLogger
 import h5py
 
 '''
@@ -54,8 +55,8 @@ parser = argparse.ArgumentParser(description='Process parameters.', formatter_cl
 # parser = argparse.ArgumentParser()
 parser.add_argument('--model', default="ARCNN", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
+parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--disk_path', default="D:\\Github\\FYP2020\\tecogan_video_data", help='the path to save the dataset')
 parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
 parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
 # parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
@@ -96,72 +97,6 @@ def psnr(img1, img2):
 
     return psnr
 
-def store_many_hdf5(input_images, gt_images, out_dir):
-    """ Stores an array of images to HDF5.
-        Parameters:
-        ---------------
-        images       images array, (N, 3, 32, 32) to be stored don't have to transpose
-        gt_images       labels array, (N, 3, 32, 32)  to be stored
-    """
-    num_images = len(input_images)
-
-    # Create a new HDF5 file
-    file = h5py.File(out_dir, "w")
-
-    # Create a dataset in the file
-    dataset = file.create_dataset(
-        "input", np.shape(input_images), h5py.h5t.STD_U8BE, data=input_images
-    )
-    meta_set = file.create_dataset(
-        "gt", np.shape(gt_images), h5py.h5t.STD_U8BE, data=gt_images
-    )
-    file.close()
-
-def read_many_hdf5(input_dir):
-    """ Reads image from HDF5.
-        Parameters:
-        ---------------
-        num_images   number of images to read
-
-        Returns:
-        ----------
-        images      images array, (N, 32, 32, 3) to be stored
-        labels      associated meta data, int label (N, 1)
-    """
-    images, labels = [], []
-
-    # Open the HDF5 file
-    file = h5py.File(input_dir, "r+")
-
-    input_images = np.array(file["/input"]).astype("uint8")
-    gt_images_labels = np.array(file["/gt"]).astype("uint8")
-
-    return input_images, gt_images_labels
-
-def load_dataset(model = 'ARCNN'):
-    if model == 'ARCNN' or model == 'FastARCNN' or model == 'VRCNN':    
-        save_path = os.path.join(Flags.input_dir, 'ARCNN')
-        input_path = os.path.join(save_path, 'backup/data_yuv.h5')
-        input_images, gt_images = read_many_hdf5(input_path)
-        print("input_images.shape: ", str(input_images.shape), "\t gt_images.shape: " + str(gt_images.shape))
-
-        return np.transpose(input_images, [0, 3, 1, 2])/255.0, np.transpose(gt_images, [0, 3, 1, 2])/255.0
-    # elif model == 'FastARCNN':
-    #     save_path = os.path.join(Flags.input_dir, 'ARTN')
-    #     input_path = os.path.join(save_path, 'input.npy')
-    #     gt_path = os.path.join(save_path, 'gt.npy')
-    #     # [T x N x C x H  x W]
-    #     return np.transpose(np.load(input_path), [0, 1, 4, 2, 3])/255.0, np.transpose(np.load(gt_path), [0, 2, 3, 1])/255.0
-    # elif model == 'VRCNN':
-    #     save_path = os.path.join(Flags.input_dir, 'ARTN')
-    #     input_path = os.path.join(save_path, 'input.npy')
-    #     gt_path = os.path.join(save_path, 'gt.npy')
-    #     # [T x N x C x H  x W]
-    #     return np.transpose(np.load(input_path), [0, 1, 4, 2, 3])/255.0, np.transpose(np.load(gt_path), [0, 2, 3, 1])/255.0
-                                                                
-
-
-
 # cuda devide
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -171,6 +106,7 @@ print("device: ", device)
 best_model_loss = 999999
 batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
+iteration_count = 0 # starting iteration
 
 C = Flags.channel
 # create model
@@ -193,13 +129,14 @@ criterion = nn.MSELoss()
 # if the checkpoint dir is not null refers to load checkpoint
 if Flags.load_from_ckpt != "":
     summary_dir = Flags.load_from_ckpt
-    # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/ckpt_model.pth'))
-    checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
+    checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/ckpt_model.pth'))
+    # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
     model.load_state_dict(checkpoint['model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     best_model_loss = checkpoint['val_loss']
+    iteration_count = checkpoint['iteration']
     model.train()
     # override training output, continue training
 else:
@@ -213,17 +150,15 @@ else:
     # os.path.isdir(summary_dir) or 
     if not(os.path.exists(summary_dir)):
         os.makedirs(summary_dir)
-# print("summary_dir: ", summary_dir)
-# exit()
+
 # create the output log folder
 log_dir = os.path.join(summary_dir, "log")
-# print(summary_dir)
-# print(log_dir)
-# exit()
+
 
 # os.path.isdir(log_dir) or 
 if not(os.path.exists(log_dir)):
     os.makedirs(log_dir)
+
 def touch(path):
     with open(path, 'a'):
         os.utime(path, None)
@@ -232,30 +167,6 @@ def touch(path):
 if not(os.path.exists(log_dir+ '/' + cur_time + '.log')):
     touch(log_dir+ '/' + cur_time + '.log')
 
-import logging
-logging.basicConfig(level=logging.INFO)
-# Create a custom logger
-logger = logging.getLogger(__name__)
-
-
-# Create handlers
-# c_handler = logging.StreamHandler()
-f_handler = logging.FileHandler(log_dir+ '/' + cur_time + '.log')
-# c_handler.setLevel(logging.INFO)
-f_handler.setLevel(logging.INFO)
-
-# Create formatters and add it to handlers
-# c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# c_handler.setFormatter(c_format)
-f_handler.setFormatter(f_format)
-
-# Add handlers to the logger
-# logger.addHandler(c_handler)
-logger.addHandler(f_handler)
-
-# logger.warning('This is a warning')
-# logger.error('This is an error')
 
 # create the model folder
 model_dir = os.path.join(summary_dir, "model")
@@ -272,15 +183,21 @@ if not(os.path.exists(test_dir)):
 # ensure that the shuffle is random different from the random indices in st_epoch = 0
 np.random.seed(st_epoch)
 
+# define logger
+logger = MyLogger(log_dir, cur_time).getLogger()
 logger.info(cur_time)
-
+logger.info(Flags)
+# exit()
 
 from torch.utils import data
 from lib.dataloader import HDF5Dataset
 from torch.utils.data.sampler import SubsetRandomSampler
 
-save_dir = os.path.join(Flags.disk_path, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
-input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
+if 'drive' in Flags.input_dir:
+    input_dir = '.'
+else:
+    save_dir = os.path.join(Flags.input_dir, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
+    input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
 
 dataset = HDF5Dataset(input_dir, recursive=False, load_data=False, 
    data_cache_size=100, transform=None)
@@ -303,7 +220,7 @@ train_sampler = SubsetRandomSampler(train_indices)
 valid_sampler = SubsetRandomSampler(val_indices)
 
 train_loader_params = {'batch_size': 100, 'num_workers': 6,'sampler': train_sampler}
-validation_loader_params = {'batch_size': 4, 'num_workers': 6,'sampler': valid_sampler}
+validation_loader_params = {'batch_size': 20, 'num_workers': 6,'sampler': valid_sampler}
 
 train_loader = data.DataLoader(dataset, **train_loader_params)
 validation_loader = data.DataLoader(dataset, **validation_loader_params)
@@ -313,6 +230,8 @@ Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTen
 
 
 for epoch in range(st_epoch,Flags.epoch):
+    if iteration_count > Flags.max_iteration:
+                break
     start_timing_epoch = time.time()
     running_g_loss = 0.0
     running_d_loss = 0.0
@@ -322,10 +241,14 @@ for epoch in range(st_epoch,Flags.epoch):
     val_rec_loss = 0.0
     num_train_batches = 0
     for m, (X,Y) in enumerate(train_loader):
+        if iteration_count > Flags.max_iteration:
+                break
         # here comes your training loop
         train_length = len(Y)
         num_train_batches += train_length
         for i in range(train_length):
+            if iteration_count > Flags.max_iteration:
+                break
 
             Xtrain = (X[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
             Ytrain = (Y[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
@@ -364,9 +287,9 @@ for epoch in range(st_epoch,Flags.epoch):
             # running_g_loss += g_loss.item()
             # running_d_loss += d_loss.item()
             running_rec_loss += reconstruction_loss.item()
+            iteration_count += 1
 
     with torch.set_grad_enabled(False):
-        validation_loss = 0.0
         num_val_batches = 0
         for k, (X,Y) in enumerate(validation_loader):
             val_length = len(Y)
@@ -384,6 +307,7 @@ for epoch in range(st_epoch,Flags.epoch):
                 Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
                 val_outputs = model(Xval)
                 # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
+                reconstruction_loss = criterion(val_outputs, Yval)
                 ssim = pytorch_ssim.ssim(Yval, val_outputs)
                 logger.info("ssim ", ssim)
 
@@ -409,26 +333,29 @@ for epoch in range(st_epoch,Flags.epoch):
     'epoch': epoch,
     'model_state_dict': model.state_dict(),
     'optimizer_state_dict': optimizer.state_dict(),
-    'loss': loss,
-    'val_loss': validation_loss
+    'loss': running_rec_loss / num_train_batches,
+    'val_loss': val_rec_loss,
+    'iteration': iteration_count,
     }, os.path.join(model_dir, 'ckpt_model.pth'))
 
     # save best model
-    if validation_loss < best_model_loss:
+    if val_rec_loss < best_model_loss:
         torch.save({
         'epoch': epoch,
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'loss': loss,
-        'val_loss': validation_loss
+        'loss': running_rec_loss / num_train_batches,
+        'val_loss': val_rec_loss,
+        'iteration': iteration_count,
         }, os.path.join(model_dir, 'best_model.pth'))
-        best_model_loss = validation_loss
+        best_model_loss = val_rec_loss
 
         running_loss = 0.0
 
     end_timing_epoch = time.time()
     logger.info("Epoch %i runtime: %.3f"% (epoch+1, end_timing_epoch - start_timing_epoch))
-
+    if iteration_count > Flags.max_iteration:
+                break
 
 
 

@@ -61,11 +61,18 @@ parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.0005, help="adam: learning rate")
+parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic average GAN instead of standard")
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
+parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
+parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
+parser.add_argument('--qp', default=37, type=int, help='scene duration')
+parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
+parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
+parser.add_argument("--mse_lambda", type=float, default=0.9, help="interval between image sampling")
 
 Flags = parser.parse_args()
 Flags.rel_avg_gan = True
@@ -145,6 +152,7 @@ print("device: ", device)
 best_model_loss = [999999, 99999, 99999] # d, g, rec
 batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
+iteration_count = 0
 # number of input channel
 C = 1
 
@@ -154,8 +162,8 @@ if Flags.model == 'RGAN':
     generator = RGAN_G(C,C).to(device)
     discriminator = RGAN_D(C,C).to(device)
 
-# criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
-criterion = nn.MSELoss()
+criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
+# criterion = nn.MSELoss()
 
 # Loss function
 adversarial_loss = torch.nn.BCEWithLogitsLoss().to(device)
@@ -166,7 +174,7 @@ if(Flags.model == 'RGAN'):
     #                                 {'params': generator.base.parameters()},
     #                                 {'params': generator.last.parameters(), 'lr': Flags.lr * 0.1},
     #                                 ], lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr/4, betas=(Flags.b1, Flags.b2))
     optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
 
 
@@ -182,6 +190,7 @@ if Flags.load_from_ckpt != "":
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     # best_model_loss = checkpoint['val_loss']
+    iteration_count = checkpoint['iteration']
     best_model_loss[0] = checkpoint['val_d_loss']
     best_model_loss[1] = checkpoint['val_g_loss']
     best_model_loss[2] = checkpoint['val_rec_loss']
@@ -261,8 +270,13 @@ from torch.utils import data
 from lib.dataloader import HDF5Dataset
 from torch.utils.data.sampler import SubsetRandomSampler
 
+if 'drive' in Flags.input_dir:
+    input_dir = '.'
+else:
+    save_dir = os.path.join(Flags.input_dir, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
+    input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
 
-dataset = HDF5Dataset(os.path.join(Flags.input_dir, 'ARCNN'), recursive=False, load_data=False, 
+dataset = HDF5Dataset(os.path.join(input_dir, 'ARCNN'), recursive=False, load_data=False, 
    data_cache_size=300, transform=None)
 
 shuffle_dataset = True
@@ -293,6 +307,8 @@ Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTen
 
 
 for epoch in range(st_epoch,Flags.epoch):
+    if iteration_count > Flags.max_iteration:
+                break
     start_timing_epoch = time.time()
     running_g_loss = 0.0
     running_d_loss = 0.0
@@ -302,10 +318,14 @@ for epoch in range(st_epoch,Flags.epoch):
     val_rec_loss = 0.0
     num_train_batches = 0
     for m, (X,Y) in enumerate(train_loader):
+        if iteration_count > Flags.max_iteration:
+                    break
         # here comes your training loop
         train_length = len(Y)
         num_train_batches += train_length
         for i in range(train_length):
+            if iteration_count > Flags.max_iteration:
+                        break
 
             # ------------------------------------
             #
@@ -341,7 +361,7 @@ for epoch in range(st_epoch,Flags.epoch):
 
             # Loss measures generator's ability to fool the discriminator
             reconstruction_loss = criterion(Ytrain, gen_imgs)
-            g_loss += reconstruction_loss
+            g_loss += (Flags.mse_lambda *  reconstruction_loss)
 
 
             g_loss.backward()
@@ -385,9 +405,10 @@ for epoch in range(st_epoch,Flags.epoch):
                 save_image(gen_imgs.data[:25],  os.path.join(test_dir,"train_%d.png") % batches_done, nrow=5, normalize=True)
 
 
-    running_g_loss += g_loss.item()
-    running_d_loss += d_loss.item()
-    running_rec_loss += reconstruction_loss.item()
+            running_g_loss += g_loss.item()
+            running_d_loss += d_loss.item()
+            running_rec_loss += reconstruction_loss.item()
+            iteration_count += 1
 
     with torch.set_grad_enabled(False):
         validation_loss = 0.0
@@ -432,7 +453,7 @@ for epoch in range(st_epoch,Flags.epoch):
 
                 # Loss measures generator's ability to fool the discriminator
                 reconstruction_loss = criterion(Yval, gen_imgs)
-                g_loss += reconstruction_loss
+                g_loss += (Flags.mse_lambda * reconstruction_loss)
 
                 # ---------------------
                 #
@@ -484,6 +505,7 @@ for epoch in range(st_epoch,Flags.epoch):
     'rec_loss': running_rec_loss / num_train_batches,
     'd_loss': running_d_loss / num_train_batches,
     'g_loss': running_g_loss / num_train_batches,
+    'iteration': iteration_count,
     'val_rec_loss': val_rec_loss,
     'val_d_loss': val_d_loss,
     'val_g_loss': val_g_loss,
@@ -500,6 +522,7 @@ for epoch in range(st_epoch,Flags.epoch):
         'rec_loss': running_rec_loss / num_train_batches,
         'd_loss': running_d_loss / num_train_batches,
         'g_loss': running_g_loss / num_train_batches,
+        'iteration': iteration_count,
         'val_rec_loss': val_rec_loss,
         'val_d_loss': val_d_loss,
         'val_g_loss': val_g_loss,
@@ -509,6 +532,8 @@ for epoch in range(st_epoch,Flags.epoch):
 
     end_timing_epoch = time.time()
     logger.info("Epoch %i runtime: %.3f"% (epoch+1, end_timing_epoch - start_timing_epoch))
+    if iteration_count > Flags.max_iteration:
+                break
 
 # # test loop
 # model.eval()

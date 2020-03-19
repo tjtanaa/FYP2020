@@ -50,6 +50,12 @@ np.random.seed(0)
 # - log
 # load_from_ckpt: input the directory path to the model
 
+# 512
+# D:\\Github\\FYP2020\\tecogan_video_data/TDKNLRGAN/01-20-2020=16-59-08
+
+# 256
+# D:\\Github\\FYP2020\\tecogan_video_data\\TDKNLRGAN\\02-03-2020=09-14-31
+
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
 parser.add_argument('--model', default="TDKNLRGAN", type=str, help='the path to save the dataset')
@@ -60,7 +66,7 @@ parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_
 parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\test_sequence", help='the path to save the dataset')
 # parser.add_argument('--input_dir', default=".", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data/TDKNLRGAN/01-20-2020=16-59-08", type=str, help='ckpt model directory')
+parser.add_argument('--load_from_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\TDKNLRGAN\\02-03-2020=09-14-31", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
 parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -270,6 +276,38 @@ if not(os.path.exists(test_dir)):
 np.random.seed(st_epoch)
 
 logger.info(cur_time)
+
+
+def get_girl_frames(test_dir):
+    for k, fname in enumerate(os.listdir(test_dir)):
+        if fname.find('.png') != -1:
+            # print("read image: ", image_path)
+            input_image_path = os.path.join(test_dir, fname)
+            gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+            # print('input_image_path: ', input_image_path)
+            # print("gt_image_path: ", gt_image_path)
+            # read current image
+            input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+            gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+            h,w,c = input_image.shape
+            # print(input_image.shape)
+            # if w >3840-1:
+            #     # do not load 2k videos
+            #     break
+            input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
+            gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
+            # print(img_yuv.shape)
+            y_input, _, _ = cv2.split(input_yuv_image)
+            y_gt, _, _ = cv2.split(gt_yuv_image)
+            # convert (H,W) to (1,H,W,1)
+            input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
+            gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
+            block_size = 256
+            for h_ind in range(0,h//block_size-1):
+                for w_ind in range(0,w//block_size-1):
+                    yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
+
+
 
 
 from torch.utils import data

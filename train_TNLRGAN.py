@@ -1,6 +1,12 @@
+#----------------------- Description -----------------------------------------
+#   The model is trained with Relativistic GAN loss and L1 reconstruction loss
+
+
+
+
 import torch
 import torch.nn as nn
-from lib.model import TNLRGAN_G, TNLRGAN_D, TDNLRGAN_G, TDNLRGAN_D, TDKNLRGAN_G, TDKNLRGAN_D
+from lib.model import TNLRGAN_G, TNLRGAN_D, TDNLRGAN_G, TDNLRGAN_D, TDKNLRGAN_G, TDKNLRGAN_D, SRGAN_G, SRGAN_D
 from torchvision.utils import save_image
 from torch.autograd import Variable
 # from lib import load_dataset
@@ -49,24 +55,31 @@ np.random.seed(0)
 # - test output
 # - log
 # load_from_ckpt: input the directory path to the model
-
+# ../content/drive/My Drive/FYP/TDKNLRGAN/01-20-2020=16-59-08
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="TDKNLRGAN", type=str, help='the path to save the dataset')
+parser.add_argument('--model', default="TNLRGAN", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=100, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-# parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-# parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-parser.add_argument('--input_dir', default=".", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_ckpt', default="../content/drive/My Drive/FYP/TDKNLRGAN/01-20-2020=16-59-08", type=str, help='ckpt model directory')
+parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
+# parser.add_argument('--input_dir', default=".", type=str, help='dataset directory')
+# parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
+parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
 parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
+parser.add_argument("--adv_coeff", type=float, default=0.999, help="coefficient of adversarial loss")
+parser.add_argument("--rec_coeff", type=float, default=0.999, help="coefficient of reconstruction loss")
 parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic average GAN instead of standard")
+parser.add_argument("--tseq_length", type=int, default=11, help="interval between image sampling")
+parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
+parser.add_argument('--qp', default=37, type=int, help='scene duration')
+parser.add_argument('--channel', default=1, type=int, help='scene duration')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
-parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
+parser.add_argument("--img_size", type=int, default=256, help="interval between image sampling")
+parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 
 Flags = parser.parse_args()
 Flags.rel_avg_gan = True
@@ -146,6 +159,7 @@ print("device: ", device)
 best_model_loss = [999999, 99999, 99999] # d, g, rec
 batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
+iteration_count = 0
 # number of input channel
 C = 1
 print("model: ",  Flags.model)
@@ -156,14 +170,17 @@ if Flags.model == 'RGAN':
     discriminator = RGAN_D(C,C).to(device)
 elif Flags.model == 'TNLRGAN':
     generator = TNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length).to(device)
-    discriminator = TNLRGAN_D(C,C,img_size=512).to(device)
+    # discriminator = TNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+    discriminator = SRGAN_D(input_shape=(C, Flags.img_size, Flags.img_size)).to(device)
 elif Flags.model == 'TDNLRGAN':
     generator = TDNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length).to(device)
-    discriminator = TDNLRGAN_D(C,C,img_size=512).to(device)
+    # discriminator = TDNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+    discriminator = SRGAN_D(input_shape=(C, Flags.img_size, Flags.img_size)).to(device)
 
 elif Flags.model == 'TDKNLRGAN':
     generator = TDKNLRGAN_G(C,C,Flags.tseq_length>0, Flags.tseq_length,device=device).to(device)
-    discriminator = TDKNLRGAN_D(C,C,img_size=512).to(device)
+    # discriminator = TDKNLRGAN_D(C,C,img_size=Flags.img_size).to(device)
+    discriminator = SRGAN_D(input_shape=(C, Flags.img_size, Flags.img_size)).to(device)
 
 criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
 # criterion = nn.MSELoss()
@@ -198,6 +215,7 @@ if Flags.load_from_ckpt != "":
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     # best_model_loss = checkpoint['val_loss']
+    iteration_count = checkpoint['iteration']
     best_model_loss[0] = checkpoint['val_d_loss']
     best_model_loss[1] = checkpoint['val_g_loss']
     best_model_loss[2] = checkpoint['val_rec_loss']
@@ -277,8 +295,16 @@ from torch.utils import data
 from lib.dataloader import HDF5Dataset
 from torch.utils.data.sampler import SubsetRandomSampler
 
+if 'drive' in Flags.input_dir:
+    input_dir = '.'
+else:
+    save_dir = os.path.join(Flags.input_dir, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
+    # input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
+    input_dir = os.path.join(os.path.join(save_dir, 'TNLRGAN'), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
 
-dataset = HDF5Dataset(Flags.input_dir, recursive=False, load_data=False, 
+print(input_dir)
+
+dataset = HDF5Dataset(input_dir, recursive=False, load_data=False, 
    data_cache_size=128, transform=None)
 
 shuffle_dataset = True
@@ -291,7 +317,7 @@ if shuffle_dataset :
 # indices = np.arange(N)
 # np.random.shuffle(indices)
 
-train_indices = indices[: int(dataset_size * 0.7)]
+train_indices = indices[: int(dataset_size * 0.1)]
 val_indices = indices[int(dataset_size * 0.7): int(dataset_size * 0.9)]
 test_indices = indices[int(dataset_size * 0.9):]
 
@@ -309,6 +335,8 @@ Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTen
 
 
 for epoch in range(st_epoch,Flags.epoch):
+    if iteration_count > Flags.max_iteration:
+        break
     start_timing_epoch = time.time()
     running_g_loss = 0.0
     running_d_loss = 0.0
@@ -318,10 +346,16 @@ for epoch in range(st_epoch,Flags.epoch):
     val_rec_loss = 0.0
     num_train_batches = 0
     for m, (X,Y) in enumerate(train_loader):
+        if iteration_count > Flags.max_iteration:
+            break
+
         # here comes your training loop
         train_length = len(Y)
         num_train_batches += train_length
         for i in range(train_length):
+            if iteration_count > Flags.max_iteration:
+                break
+
 
             # ------------------------------------
             #
@@ -363,7 +397,7 @@ for epoch in range(st_epoch,Flags.epoch):
 
             # Loss measures generator's ability to fool the discriminator
             reconstruction_loss = criterion(Ytrain, gen_imgs)
-            g_loss += reconstruction_loss
+            g_loss = Flags.adv_coeff * g_loss + Flags.rec_coeff * reconstruction_loss 
 
 
             g_loss.backward()
@@ -407,9 +441,10 @@ for epoch in range(st_epoch,Flags.epoch):
                 save_image(gen_imgs.data[:25],  os.path.join(test_dir,"train_%d.png") % batches_done, nrow=5, normalize=True)
 
 
-    running_g_loss += g_loss.item()
-    running_d_loss += d_loss.item()
-    running_rec_loss += reconstruction_loss.item()
+            running_g_loss += g_loss.item()
+            running_d_loss += d_loss.item()
+            running_rec_loss += reconstruction_loss.item()
+            iteration_count += 1
 
     with torch.set_grad_enabled(False):
         validation_loss = 0.0
@@ -456,7 +491,7 @@ for epoch in range(st_epoch,Flags.epoch):
 
                 # Loss measures generator's ability to fool the discriminator
                 reconstruction_loss = criterion(Yval, gen_imgs)
-                g_loss += reconstruction_loss
+                g_loss = Flags.adv_coeff * g_loss + Flags.rec_coeff * reconstruction_loss 
 
                 # ---------------------
                 #
@@ -511,10 +546,11 @@ for epoch in range(st_epoch,Flags.epoch):
     'val_rec_loss': val_rec_loss,
     'val_d_loss': val_d_loss,
     'val_g_loss': val_g_loss,
+    'iteration': iteration_count,
     }, os.path.join(model_dir, 'ckpt_model.pth'))
 
     # save best model
-    if((val_d_loss < best_model_loss[0]) and (val_g_loss < best_model_loss[1]) and (val_rec_loss < best_model_loss[2])):
+    if((val_rec_loss < best_model_loss[2])):
         torch.save({
         'epoch': epoch,
         'generator_state_dict': generator.state_dict(),
@@ -527,12 +563,16 @@ for epoch in range(st_epoch,Flags.epoch):
         'val_rec_loss': val_rec_loss,
         'val_d_loss': val_d_loss,
         'val_g_loss': val_g_loss,
+        'iteration': iteration_count,
         }, os.path.join(model_dir, 'best_model.pth'))
         best_model_loss = [val_d_loss, val_g_loss, val_rec_loss]
-        running_loss = 0.0
+        
 
     end_timing_epoch = time.time()
     logger.info("Epoch %i runtime: %.3f"% (epoch+1, end_timing_epoch - start_timing_epoch))
+    if iteration_count > Flags.max_iteration:
+        break
+
 
 # # test loop
 # model.eval()

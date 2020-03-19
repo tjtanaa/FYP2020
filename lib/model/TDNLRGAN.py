@@ -123,6 +123,7 @@ class TDNLRGAN_G(nn.Module):
             # out = torch.cat([out, out1], dim=1)
             out = out + out1
             out = self.deconv8(out)
+        out = out + x
         return out
 
 

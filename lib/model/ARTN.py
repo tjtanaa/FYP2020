@@ -1,11 +1,11 @@
 import torch
 import torch.nn.functional as F
-from .blocks import inception_block, BasicConv2d
+from .blocks import InceptionBlock, BasicConv2d
 
-class temporal_branch(torch.nn.Module):
+class TemporalBranch(torch.nn.Module):
 
     def __init__(self, in_channels, channel_size, conv_block=None):
-        super(temporal_branch, self).__init__()
+        super(TemporalBranch, self).__init__()
         if conv_block is None:
             conv_block = BasicConv2d
         self.conv1 = conv_block(in_channels, channel_size, kernel_size=7, stride = 1, padding =3)
@@ -23,11 +23,11 @@ class ARTN(torch.nn.Module):
     def __init__(self, in_channels, out_channels, conv_block=None):
         super(ARTN, self).__init__()
         # print("in_channels, ", in_channels, "\t", "channel_size: ",out_channels)
-        self.pre_branch = temporal_branch(in_channels, 32)
-        self.cur_branch = temporal_branch(in_channels, 64)
-        self.post_branch = temporal_branch(in_channels, 32)
-        self.inception_block1 = inception_block(128)
-        self.inception_block2 = inception_block(64)
+        self.pre_branch = TemporalBranch(in_channels, 32)
+        self.cur_branch = TemporalBranch(in_channels, 64)
+        self.post_branch = TemporalBranch(in_channels, 32)
+        self.inception_block1 = InceptionBlock(128)
+        self.inception_block2 = InceptionBlock(64)
         self.conv5 = BasicConv2d(64, out_channels, kernel_size=5, stride = 1, padding =2)
 
     def forward(self, x):

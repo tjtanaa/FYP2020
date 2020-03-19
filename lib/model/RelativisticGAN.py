@@ -66,6 +66,7 @@ class RGAN_G(nn.Module):
         # out = torch.cat([out, out1], dim=1)
         out = out + out1
         out = self.deconv8(out)
+        out = x + out
         return out
 
 
@@ -88,7 +89,7 @@ class RGAN_D(nn.Module):
         # )
 
         # # The height and width of downsampled image
-        # ds_size = img_size // 2 ** 4
+        ds_size = img_size // 2 ** 4
         # self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, 1))
 
         def discriminator_block(in_filters, out_filters, bn=True):
@@ -103,7 +104,7 @@ class RGAN_D(nn.Module):
             *discriminator_block(256, 512),
         )
         self.conv5 = nn.Conv2d(512, out_channels, kernel_size=4,stride=1,padding=0)
-        self.fc = nn.Linear(out_channels * 5 ** 2, 1)
+        self.fc = nn.Linear(out_channels * 13 ** 2, 1)
         self.sig = nn.Sigmoid()
 
     def forward(self, img):
@@ -114,6 +115,8 @@ class RGAN_D(nn.Module):
         out = self.model(img)
         out = self.conv5(out)
         out = out.view(out.shape[0], -1)
+        # print(out.shape)
+        # exit()
         validity = self.sig(self.fc(out))
 
         return validity

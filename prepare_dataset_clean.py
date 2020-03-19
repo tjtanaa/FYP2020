@@ -484,7 +484,9 @@ def prepare_test_frames(input_video_path=None,output_dir=None , verbose=True):
     video_name = split_name[-1]
     output_video_path = os.path.join(output_dir, video_name.split('.')[0])
     print('Video name: ', video_name)
-    cmd = ['ffmpeg', '-i', input_video_path, '-r', "1/1", '{}%03d.png'.format(output_video_path)]
+    cmd = ['ffmpeg', '-i', input_video_path, '-vframes', str(100), '{}%04d.png'.format(output_video_path), '-threads', str(4)]
+    
+    # '-r', "1/1",
     print(cmd)
     subprocess.call(cmd)    
 
@@ -659,6 +661,7 @@ if __name__ == '__main__':
             # generate the testframes data of GT videos
             prepare_meta_data(GT_video_dir)
             prepare_test_frames(GT_video_dir, hr_test_frames_dir)
+            
 
     if Flags.process == 9:
         for GT_video_path in test_video_path_list:
@@ -685,13 +688,14 @@ if __name__ == '__main__':
                     continue
                 resolution = '{}x{}'.format(int(video_width), int(video_height))
                 # compress the video by a factor of 4
-                compress_videos(input_video_path=GT_video_path, 
-                                output_video_path=compressed_video_path, 
-                                resolution = resolution, 
-                                video_bitrate=str(int(video_bitrate)),
-                                vcodec =Flags.vcodec,
-                                qp = str(Flags.qp))
+                # compress_videos(input_video_path=GT_video_path, 
+                #                 output_video_path=compressed_video_path, 
+                #                 resolution = resolution, 
+                #                 video_bitrate=str(int(video_bitrate)),
+                #                 vcodec =Flags.vcodec,
+                #                 qp = str(Flags.qp))
                 prepare_test_frames(compressed_video_path, lr_test_frames_dir)
+                
 
 
 
