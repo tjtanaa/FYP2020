@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from lib.model import RGAN_G, RGAN_D
+from lib.model import NLRGAN_G, NLRGAN_D
 from torchvision.utils import save_image
 from torch.autograd import Variable
 # from lib import load_dataset
@@ -52,7 +52,7 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="RGAN", type=str, help='the path to save the dataset')
+parser.add_argument('--model', default="NLRGAN", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
 parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
@@ -61,18 +61,11 @@ parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
+parser.add_argument("--lr", type=float, default=0.0005, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic average GAN instead of standard")
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
-parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
-parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
-parser.add_argument('--qp', default=37, type=int, help='scene duration')
-parser.add_argument('--channel', default=1, type=int, help='scene duration')
-parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
-parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
-parser.add_argument("--mse_lambda", type=float, default=0.9, help="interval between image sampling")
 
 Flags = parser.parse_args()
 Flags.rel_avg_gan = True
@@ -152,7 +145,6 @@ print("device: ", device)
 best_model_loss = [999999, 99999, 99999] # d, g, rec
 batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
-iteration_count = 0
 # number of input channel
 C = 1
 
@@ -161,9 +153,12 @@ C = 1
 if Flags.model == 'RGAN':
     generator = RGAN_G(C,C).to(device)
     discriminator = RGAN_D(C,C).to(device)
+elif Flags.model == 'NLRGAN':
+    generator = NLRGAN_G(C,C).to(device)
+    discriminator = NLRGAN_D(C,C).to(device)
 
-criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
-# criterion = nn.MSELoss()
+# criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
+criterion = nn.MSELoss()
 
 # Loss function
 adversarial_loss = torch.nn.BCEWithLogitsLoss().to(device)
@@ -174,9 +169,16 @@ if(Flags.model == 'RGAN'):
     #                                 {'params': generator.base.parameters()},
     #                                 {'params': generator.last.parameters(), 'lr': Flags.lr * 0.1},
     #                                 ], lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr/4, betas=(Flags.b1, Flags.b2))
+    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
     optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-
+elif(Flags.model == 'NLRGAN'):
+    # # Optimizers
+    # optimizer_G = torch.optim.Adam([
+    #                                 {'params': generator.base.parameters()},
+    #                                 {'params': generator.last.parameters(), 'lr': Flags.lr * 0.1},
+    #                                 ], lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+    optimizer_G = torch.optim.Adam(generator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+    optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
 
 # if the checkpoint dir is not null refers to load checkpoint
 if Flags.load_from_ckpt != "":
@@ -190,7 +192,6 @@ if Flags.load_from_ckpt != "":
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
     # best_model_loss = checkpoint['val_loss']
-    iteration_count = checkpoint['iteration']
     best_model_loss[0] = checkpoint['val_d_loss']
     best_model_loss[1] = checkpoint['val_g_loss']
     best_model_loss[2] = checkpoint['val_rec_loss']
@@ -264,13 +265,6 @@ if not(os.path.exists(test_dir)):
 np.random.seed(st_epoch)
 
 logger.info(cur_time)
-
-
-from torch.utils import data
-from lib.dataloader import HDF5Dataset
-from torch.utils.data.sampler import SubsetRandomSampler
-
-Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
 # test loop
 model.eval()

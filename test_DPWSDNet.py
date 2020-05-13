@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from lib.model import DPWSDNet, Pixel_Net, Wavelet_Net
+from lib.model import DPWSDNet
 # from lib import load_dataset
 from torchvision.utils import save_image
 from torch.autograd import Variable
@@ -51,10 +51,6 @@ np.random.seed(0)
 # - test output
 # - log
 # load_from_ckpt: input the directory path to the model
-# Wavelet Net
-# D:\\Github\\FYP2020\\tecogan_video_data\\WaveletNet\\02-25-2020=15-44-34
-# Pixel Net
-# D:\\Github\\FYP2020\\tecogan_video_data\\PixelNet\\02-26-2020=16-35-21
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
@@ -64,15 +60,12 @@ parser.add_argument('--max_iteration', default=100000, type=int, help='number of
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
 parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
 parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\tecogan_video_data\\girl_frames", type=str, help='output and log directory')
 # parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_pixel_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\PixelNet\\02-26-2020=16-35-21", type=str, help='ckpt model directory')
-parser.add_argument('--load_from_wavelet_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\WaveletNet\\02-25-2020=15-44-34", type=str, help='ckpt model directory')
+parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.001, help="adam: learning rate")
+parser.add_argument("--lr", type=float, default=0.1, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
-parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
@@ -121,50 +114,34 @@ C = Flags.channel
 # create model
 
 if Flags.model == 'DPWSDNet':
-    pix_net = Pixel_Net(C, C, P = Flags.depth).to(device)
-    # print(summary(model, (C, 256, 256)))
-    wave_net = Wavelet_Net(C, C, P = Flags.depth).to(device)
-    # print(summary(model, (C, 256, 256)))    
+    model = DPWSDNet(C, C, P = Flags.depth).to(device)
+    print(summary(model, (C, 256, 256)))
 
 
 # optimizer = optim.SGD([
 #     {'params': model.base.parameters()}
 # ], lr=Flags.lr, momentum = 0.9)
 
-# optimizer = torch.optim.SGD(model.parameters(), lr=Flags.lr, momentum=0.9, dampening=0, weight_decay=0.0001, nesterov=True)
-# optimizer = torch.optim.Adam(model.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
+optimizer = torch.optim.SGD(model.parameters(), lr=Flags.lr, momentum=0.9, dampening=0, weight_decay=0.0001, nesterov=True)
 
-# scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=2000, gamma=0.1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=2000, gamma=0.1)
 
 # criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
 criterion = nn.MSELoss()
 
 # if the checkpoint dir is not null refers to load checkpoint
-if Flags.load_from_pixel_ckpt != "":
-    summary_dir = Flags.load_from_pixel_ckpt
-    checkpoint = torch.load(os.path.join(Flags.load_from_pixel_ckpt, 'model/ckpt_model.pth'))
+if Flags.load_from_ckpt != "":
+    summary_dir = Flags.load_from_ckpt
+    checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/ckpt_model.pth'))
     # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
-    pix_net.load_state_dict(checkpoint['model_state_dict'])
-    # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
-    # scheduler = checkpoint['scheduler']
+    scheduler = checkpoint['scheduler']
     best_model_loss = checkpoint['val_loss']
     iteration_count = checkpoint['iteration']
-    pix_net.eval()
-    # override training output, continue training
-if Flags.load_from_wavelet_ckpt != "":
-    summary_dir = Flags.load_from_wavelet_ckpt
-    checkpoint = torch.load(os.path.join(Flags.load_from_wavelet_ckpt, 'model/ckpt_model.pth'))
-    # checkpoint = torch.load(os.path.join(Flags.load_from_ckpt, 'model/best_model.pth'))
-    wave_net.load_state_dict(checkpoint['model_state_dict'])
-    # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    st_epoch = checkpoint['epoch']
-    # loss = checkpoint['loss']
-    # scheduler = checkpoint['scheduler']
-    best_model_loss = checkpoint['val_loss']
-    iteration_count = checkpoint['iteration']
-    wave_net.eval()
+    model.train()
     # override training output, continue training
 else:
     summary_dir = os.path.join(Flags.output_dir, Flags.model)
@@ -216,145 +193,93 @@ logger.info(cur_time)
 logger.info(Flags)
 # exit()
 
-
-# # load the test_dir image
-# # generator
-def get_girl_frames(test_dir):
-    for k, fname in enumerate(os.listdir(test_dir)):
-        if fname.find('.png') != -1:
-            # print("read image: ", image_path)
-            input_image_path = os.path.join(test_dir, fname)
-            gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
-            # print('input_image_path: ', input_image_path)
-            # print("gt_image_path: ", gt_image_path)
-            # read current image
-            input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
-            gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
-            h,w,c = input_image.shape
-            # print(input_image.shape)
-            # if w >3840-1:
-            #     # do not load 2k videos
-            #     break
-            input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
-            gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
-            # print(img_yuv.shape)
-            y_input, _, _ = cv2.split(input_yuv_image)
-            y_gt, _, _ = cv2.split(gt_yuv_image)
-            # convert (H,W) to (1,H,W,1)
-            input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
-            gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
-            yield input_image, gt_image
-
-# def get_girl_frames(test_dir):
-#     for k, fname in enumerate(os.listdir(test_dir)):
-#         if fname.find('.png') != -1:
-#             # print("read image: ", image_path)
-#             input_image_path = os.path.join(test_dir, fname)
-#             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
-#             # print('input_image_path: ', input_image_path)
-#             # print("gt_image_path: ", gt_image_path)
-#             # read current image
-#             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
-#             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
-#             h,w,c = input_image.shape
-#             # print(input_image.shape)
-#             # if w >3840-1:
-#             #     # do not load 2k videos
-#             #     break
-#             input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
-#             gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
-#             # print(img_yuv.shape)
-#             y_input, _, _ = cv2.split(input_yuv_image)
-#             y_gt, _, _ = cv2.split(gt_yuv_image)
-#             # convert (H,W) to (1,H,W,1)
-#             input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
-#             gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
-#             block_size = 256
-#             for h_ind in range(0,h//block_size-1):
-#                 for w_ind in range(0,w//block_size-1):
-#                     yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
-
-
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
-# get_girl_frames(Flags.test_dir)
-
-start_timing_epoch = time.time()
-running_g_loss = 0.0
-running_d_loss = 0.0
-running_rec_loss = 0.0
-val_g_loss = 0.0
-val_d_loss = 0.0
-val_rec_loss = 0.0
-num_train_batches = 0
-avg_psnr = 0.0
-avg_psnr_model = 0.0
-avg_ssim = 0.0
-avg_ssim_model = 0.0
+# test loop
+model.eval()
 with torch.set_grad_enabled(False):
-    num_val_batches = 0
-    for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
-        X = Tensor(X)
-        Y = Tensor(Y)
-        val_length = len(Y)
-        num_val_batches += val_length
-        # here comes your validation loop
+    test_loss = 0.0
+    avg_predicted_psnr = 0.0
+    avg_input_psnr = 0.0
+    avg_predicted_ssim = 0.0
+    avg_input_ssim = 0.0
+    count = 0
+    better_count = 0
+    for k in range(len(test_indices)//2-1):
+        filename = os.path.join(test_dir, "test_batch_best_%i.png"%(k))
+        tindices = test_indices[2*k: 2*(k+1)] 
+        Xtest = torch.from_numpy(X[tindices,:,:,:]).float().to(device)
+        Ytest = torch.from_numpy(Y[tindices,:,:,:]).float().to(device)
+        # [N x C x H x W]
+        test_outputs = model(Xtest)
 
-        # ------------------------------------
-        #
-        #   Train Generator
-        #
-        #-------------------------------------
+        # print(test_outputs * 255)
+        # exit()
+        np_images = test_outputs.cpu().numpy()
 
-        Xval = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-        Yval = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-        wave_outputs = wave_net(Xval)
-        pix_outputs = pix_net(Xval)
-        val_outputs = (wave_outputs + pix_outputs)/2
-        # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
-        reconstruction_loss = criterion(val_outputs, Yval)
-        cur_img1 = np.transpose(Xval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
-        pred_img1 = np.maximum(np.minimum(np.transpose(val_outputs[0].detach().cpu().numpy(), [1,2,0]), 1.0), 0.0).astype(np.float32)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
-        gt_img1 = np.transpose(Yval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
+        # residual
+        cur_img1 = np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+        pred_mask1 = np.transpose(np_images[0], [1,2,0])
+        pred_img1 = pred_mask1  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+        gt_img1 = np.transpose(Ytest[0].cpu().numpy(), [1,2,0])
+
+        cur_img2 = np.transpose(Xtest[1].cpu().numpy(), [1,2,0])
+        pred_mask2 = np.transpose(np_images[1], [1,2,0])
+        pred_img2 = pred_mask2 #+ np.transpose(Xtest[1].cpu().numpy(), [1,2,0])
+        gt_img2 = np.transpose(Ytest[1].cpu().numpy(), [1,2,0])
 
         # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
         # Stats of Predicted Image
-        ssim_ = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
 
-        ssim_model = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
-        # ssim_model = pytorch_ssim.ssim(Yval, val_outputs)
-        # ssim = pytorch_ssim.ssim(Xval, val_outputs)
-        # logger.info("ssim ", ssim)
-        avg_ssim_model = avg_ssim_model + ssim_model
-        avg_ssim = avg_ssim + ssim_
+        ssim1 = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
+        psnr1 = psnr(gt_img1, pred_img1)
+        ssim2 = np.mean(np.mean(ssim(gt_img2, pred_img2, full=True,multichannel=True)))
+        psnr2 = psnr(gt_img2, pred_img2)
+        avg_predicted_psnr += (psnr1 + psnr2)
+        avg_predicted_ssim += (ssim1 + ssim2)
+        count += 2
+        print("PREDICTED: ssim1 ", ssim1, "\t psnr1: ", psnr1, "\t ssim2 ", ssim2, "\t psnr2: ", psnr2)
+        ppsnr1 = psnr1
+        ppsnr2 = psnr2
 
-        
-        y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
-        x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
-        x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
-        psnr_ = psnr(y,x_input)
-        psnr_model = psnr(y,x)
+        # Stats of Input Image
+        ssim1 = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+        psnr1 = psnr(gt_img1, cur_img1)
+        ssim2 = np.mean(np.mean(ssim(gt_img2, cur_img2, full=True,multichannel=True)))
+        psnr2 = psnr(gt_img2, cur_img2)
+        avg_input_psnr += (psnr1 + psnr2)
+        avg_input_ssim += (ssim1 + ssim2)
+        print("INPUT ssim1 ", ssim1, "\t psnr1: ", psnr1, "\t ssim2 ", ssim2, "\t psnr2: ", psnr2)
+        ipsnr1 = psnr1
+        ipsnr2 = psnr2
 
-        avg_psnr = avg_psnr + psnr_
-        avg_psnr_model = avg_psnr_model + psnr_model
-        logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr_ , psnr_model))
-        save_image(val_outputs.data[:25],  os.path.join(test_dir,"test_girl_%d.png") % (k), nrow=5, normalize=True)
-
-        val_rec_loss += reconstruction_loss.item()
-
-            
-    val_rec_loss /= num_val_batches
-    val_g_loss /= num_val_batches
-    val_d_loss /= num_val_batches
-    avg_psnr /= num_val_batches
-    avg_psnr_model /= num_val_batches
-    avg_ssim /= num_val_batches
-    avg_ssim_model /= num_val_batches
-
-    logger.info("[testRec loss: %.5e][testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
-        % ( val_rec_loss, avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
+        if(ipsnr1 < psnr1):
+            better_count += 1
+        if(ipsnr2 < psnr2):
+            better_count += 1
 
 
-end_timing_epoch = time.time()
-logger.info("Epoch %i runtime: %.3f"% (1, end_timing_epoch - start_timing_epoch))
+        img_pair1 = np.hstack(([cur_img1, pred_mask1, pred_img1, gt_img1])) * 255
+        img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
+        display_img = np.vstack([img_pair1, img_pair2])
+        # print(pred_mask1.shape)
+        # print(pred_img1.shape)
+        # print(gt_img1.shape)
+        # ipdb.set_trace()
+        # print(display_img.shape)
+        # cv2.imshow('sample image', display_img.astype(np.uint8))
+        # cv2.waitKey(0) # waits until a key is pressed
+        # cv2.destroyAllWindows()
+        cv2.imwrite(filename, display_img.astype(np.uint8)) 
+#         
+        # exit()
+            # test_dir
 
+        t_loss = criterion(test_outputs, Ytest)
+        test_loss += t_loss.item()
+    print(Flags.model, " avg_input_psnr: ", avg_input_psnr/count , " avg_predicted_psnr: ", avg_predicted_psnr/count, \
+            " avg_input_ssim: ", avg_input_ssim/count , " avg_predicted_ssim: ", avg_predicted_ssim/count, \
+            " better count: ", better_count)
+
+test_loss /= ((len(test_indices)//2-1)*2)
+logger.info('Test loss: %.5f' % (test_loss))

@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from lib.model import DPWSDNet, Pixel_Net, Wavelet_Net
+from lib.model import ARTN, ARCNN, FastARCNN, VRCNN
 # from lib import load_dataset
 from torchvision.utils import save_image
 from torch.autograd import Variable
@@ -16,7 +16,6 @@ from skimage.measure import compare_ssim as ssim
 # import ipdb
 from lib import MyLogger
 import h5py
-from torchsummary import summary
 
 '''
     Command
@@ -54,8 +53,8 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="WaveletNet", type=str, help='the path to save the dataset')
-parser.add_argument('--epoch', default=10, type=int, help='number of training epochs')
+parser.add_argument('--model', default="ARCNN", type=str, help='the path to save the dataset')
+parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
 parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
@@ -64,14 +63,12 @@ parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument("--lr", type=float, default=0.001, help="adam: learning rate")
+parser.add_argument("--lr", type=float, default=5e-4, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
-parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
 parser.add_argument('--channel', default=1, type=int, help='scene duration')
-parser.add_argument('--depth', default=19, type=int, help='depth')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
 
 Flags = parser.parse_args()
@@ -114,25 +111,17 @@ iteration_count = 0 # starting iteration
 C = Flags.channel
 # create model
 
-if Flags.model == 'DPWSDNet':
-    model = DPWSDNet(C, C, P = Flags.depth).to(device)
-    print(summary(model, (C, 256, 256)))
-elif Flags.model == 'PixelNet':
-    model = Pixel_Net(C, C, P = Flags.depth).to(device)
-    print(summary(model, (C, 256, 256)))
-elif Flags.model == 'WaveletNet':
-    model = Wavelet_Net(C, C, P = Flags.depth).to(device)
-    print(summary(model, (C, 256, 256)))    
+if Flags.model == 'ARCNN':
+    model = ARCNN(C, C).to(device)
+elif Flags.model == 'FastARCNN':
+    model = FastARCNN(C, C).to(device)
 
 
-# optimizer = optim.SGD([
-#     {'params': model.base.parameters()}
-# ], lr=Flags.lr, momentum = 0.9)
+optimizer = optim.Adam([
+    {'params': model.base.parameters()},
+    {'params': model.last.parameters(), 'lr': Flags.lr * 0.1},
+], lr=Flags.lr)
 
-# optimizer = torch.optim.SGD(model.parameters(), lr=Flags.lr, momentum=0.9, dampening=0, weight_decay=0.0001, nesterov=True)
-optimizer = torch.optim.Adam(model.parameters(), lr=Flags.lr, betas=(Flags.b1, Flags.b2))
-
-# scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=2000, gamma=0.1)
 
 # criterion = nn.L1Loss(size_average=None, reduce=None, reduction='mean')
 criterion = nn.MSELoss()
@@ -146,7 +135,6 @@ if Flags.load_from_ckpt != "":
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
     st_epoch = checkpoint['epoch']
     # loss = checkpoint['loss']
-    # scheduler = checkpoint['scheduler']
     best_model_loss = checkpoint['val_loss']
     iteration_count = checkpoint['iteration']
     model.train()
@@ -201,7 +189,13 @@ logger.info(cur_time)
 logger.info(Flags)
 # exit()
 
+from torch.utils import data
+from lib.dataloader import HDF5Dataset
+from torch.utils.data.sampler import SubsetRandomSampler
+
+
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+
 
 
 # test loop
