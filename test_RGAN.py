@@ -72,15 +72,15 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="RGANn", type=str, help='the path to save the dataset')
+parser.add_argument('--model', default="RGAN", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\tecogan_video_data\\girl_frames", type=str, help='output and log directory')
+parser.add_argument('--input_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='output and log directory')
+parser.add_argument('--test_dir', default="/home/tan/tjtanaa/tjtanaa/DeepVideoPrior/data/artifact_removal/send/blur_003", type=str, help='output and log directory')
 # parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\RGANn\\01-30-2020=01-49-41", type=str, help='ckpt model directory')
+parser.add_argument('--load_from_ckpt', default="/media/data3/tjtanaa/tecogan_video_data/RGAN/04-30-2020=14-39-42", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
 parser.add_argument("--lr", type=float, default=0.0004, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -90,7 +90,7 @@ parser.add_argument("--rel_avg_gan", action="store_true", help="relativistic ave
 parser.add_argument("--tseq_length", type=int, default=11, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
-parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument('--channel', default=3, type=int, help='scene duration')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
 parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument("--mse_lambda", type=float, default=1, help="interval between image sampling")
@@ -187,7 +187,7 @@ batch_size = Flags.mini_batch
 st_epoch = 0 # starting epoch
 iteration_count = 0
 # number of input channel
-C = 1
+C = Flags.channel
 
 # create model
 
@@ -304,6 +304,38 @@ np.random.seed(st_epoch)
 
 logger.info(cur_time)
 
+# # load the test_dir image
+# # generator
+# def get_girl_frames(test_dir):
+
+#     for k, fname in enumerate(os.listdir(test_dir)):
+#         if fname.find('.png') != -1:
+#             # print("read image: ", image_path)
+#             input_image_path = os.path.join(test_dir, fname)
+#             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+#             # print('input_image_path: ', input_image_path)
+#             # print("gt_image_path: ", gt_image_path)
+#             # read current image
+#             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+#             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+#             h,w,c = input_image.shape
+#             # print(input_image.shape)
+#             # if w >3840-1:
+#             #     # do not load 2k videos
+#             #     break
+#             input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
+#             gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
+#             # print(img_yuv.shape)
+#             y_input, _, _ = cv2.split(input_yuv_image)
+#             y_gt, _, _ = cv2.split(gt_yuv_image)
+#             # convert (H,W) to (1,H,W,1)
+#             input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
+#             gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
+#             block_size = 256
+#             for h_ind in range(0,h//block_size-1):
+#                 for w_ind in range(0,w//block_size-1):
+#                     yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
+
 # load the test_dir image
 # generator
 def get_girl_frames(test_dir):
@@ -337,6 +369,28 @@ def get_girl_frames(test_dir):
                     yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
 
 
+
+def get_blur_frames(test_dir):
+    # fname_list = ['col_high_0097.png', 'col_high_0098.png', 'col_high_0099.png', 'col_high_0100.png', 'col_high_0101.png']
+    for k, fname in enumerate(os.listdir(test_dir)):
+    # for k, fname in enumerate(fname_list):
+        # print(fname)
+        if fname.find('.png') != -1:
+            # print("read image: ", image_path)
+            print("read file: ", fname)
+            input_image_path = os.path.join(test_dir, fname)
+            gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+            # print('input_image_path: ', input_image_path)
+            # print("gt_image_path: ", gt_image_path)
+            # read current image
+            input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+            gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+            input_image = cv2.resize(input_image, (512,512), interpolation = cv2.INTER_AREA)
+            # gt_image = cv2.resize(gt_image, (512,512), interpolation = cv2.INTER_AREA)
+
+            print("input_image.size ", input_image.shape)
+            yield input_image, gt_image, 'blur_003', fname
+
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
 # get_girl_frames(Flags.test_dir)
@@ -349,18 +403,27 @@ val_g_loss = 0.0
 val_d_loss = 0.0
 val_rec_loss = 0.0
 num_train_batches = 0
-avg_psnr = 0.0
-avg_psnr_model = 0.0
-avg_ssim = 0.0
-avg_ssim_model = 0.0
+# avg_psnr = 0.0
+# avg_psnr_model = 0.0
+# avg_ssim = 0.0
+# avg_ssim_model = 0.0
+avg_predicted_psnr = 0.0
+avg_input_psnr = 0.0
+avg_predicted_ssim = 0.0
+avg_input_ssim = 0.0
+count = 0
 count = 0
 better_count = 0
 with torch.set_grad_enabled(False):
     validation_loss = 0.0
     num_val_batches = 0
-    for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
+
+    for k, (X, Y, folder_name, fname) in enumerate(get_blur_frames(Flags.test_dir)):
         val_length = len(Y)
         num_val_batches += val_length
+    # for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
+    #     val_length = len(Y)
+    #     num_val_batches += val_length
         # here comes your validation loop
 
         # ------------------------------------
@@ -368,81 +431,161 @@ with torch.set_grad_enabled(False):
         #   Train Generator
         #
         #-------------------------------------
-        X = Tensor(X)
-        Y = Tensor(Y)
+
+        X = Tensor(X).unsqueeze(0)
+        Y = Tensor(Y).unsqueeze(0)
 
         Xtest = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
         Ytest = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-        # print(Xtrain.shape)
-        # exit()
+        test_outputs = generator(Xtest)
 
-        # Configure input
-        real_imgs = Ytest
+        # X = Tensor(X)
+        # Y = Tensor(Y)
 
-        # Adversarial ground truths
-        valid = Variable(Tensor(Xtest.shape[0], 1).fill_(1.0), requires_grad=False)
-        fake = Variable(Tensor(Ytest.shape[0], 1).fill_(0.0), requires_grad=False)
+        # Xtest = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+        # Ytest = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+        # # print(Xtrain.shape)
+        # # exit()
+
+        # # Configure input
+        # real_imgs = Ytest
+
+        # # Adversarial ground truths
+        # valid = Variable(Tensor(Xtest.shape[0], 1).fill_(1.0), requires_grad=False)
+        # fake = Variable(Tensor(Ytest.shape[0], 1).fill_(0.0), requires_grad=False)
 
         # zero the parameter gradients
-        optimizer_G.zero_grad()
+        # optimizer_G.zero_grad()
 
         # Generate a batch of images
-        gen_imgs = generator(Xtest)
+        # gen_imgs = generator(Xtest)
 
-        real_pred = discriminator(real_imgs).detach()
-        fake_pred = discriminator(gen_imgs)
+        # real_pred = discriminator(real_imgs).detach()
+        # fake_pred = discriminator(gen_imgs)
 
-        if Flags.rel_avg_gan:
-            g_loss = adversarial_loss(fake_pred - real_pred.mean(0, keepdim=True), valid)
-        else:
-            g_loss = adversarial_loss(fake_pred - real_pred, valid)
+        # if Flags.rel_avg_gan:
+        #     g_loss = adversarial_loss(fake_pred - real_pred.mean(0, keepdim=True), valid)
+        # else:
+        #     g_loss = adversarial_loss(fake_pred - real_pred, valid)
 
-        # Loss measures generator's ability to fool the discriminator
-        reconstruction_loss = criterion(Ytest, gen_imgs)
-        g_loss = (Flags.mse_lambda * reconstruction_loss) + (Flags.rec_lambda * g_loss)
+        # # Loss measures generator's ability to fool the discriminator
+        # reconstruction_loss = criterion(Ytest, gen_imgs)
+        # g_loss = (Flags.mse_lambda * reconstruction_loss) + (Flags.rec_lambda * g_loss)
 
-        # ---------------------
-        #
-        #  Train Discriminator
-        #
-        # ---------------------
+        # # ---------------------
+        # #
+        # #  Train Discriminator
+        # #
+        # # ---------------------
 
-        optimizer_D.zero_grad()
+        # optimizer_D.zero_grad()
 
-        # Predict validity
-        real_pred = discriminator(real_imgs)
-        fake_pred = discriminator(gen_imgs.detach())
+        # # Predict validity
+        # real_pred = discriminator(real_imgs)
+        # fake_pred = discriminator(gen_imgs.detach())
 
-        if Flags.rel_avg_gan:
-            real_loss = adversarial_loss(real_pred - fake_pred.mean(0, keepdim=True), valid)
-            fake_loss = adversarial_loss(fake_pred - real_pred.mean(0, keepdim=True), fake)
-        else:
-            real_loss = adversarial_loss(real_pred - fake_pred, valid)
-            fake_loss = adversarial_loss(fake_pred - real_pred, fake)
+        # if Flags.rel_avg_gan:
+        #     real_loss = adversarial_loss(real_pred - fake_pred.mean(0, keepdim=True), valid)
+        #     fake_loss = adversarial_loss(fake_pred - real_pred.mean(0, keepdim=True), fake)
+        # else:
+        #     real_loss = adversarial_loss(real_pred - fake_pred, valid)
+        #     fake_loss = adversarial_loss(fake_pred - real_pred, fake)
 
-        d_loss = (real_loss + fake_loss) / 2
+        # d_loss = (real_loss + fake_loss) / 2
 
 
-        np_images = gen_imgs.cpu().numpy()
+        # np_images = gen_imgs.cpu().numpy()
+
+        # N, _, _, _ = np_images.shape
+        # try:
+    #     for n in range(N):
+    #         filename = os.path.join(test_dir, "test_batch_best_%i.png"%(count))
+    #         print(filename)
+    #         # residual
+    #         cur_img1 = np.transpose(Xtest[n].cpu().numpy(), [1,2,0])
+    #         pred_mask1 = np.transpose(np_images[n], [1,2,0])
+    #         pred_img1 = np.maximum(np.minimum(pred_mask1, 1.0), 0.0)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+    #         gt_img1 = np.transpose(Ytest[n].cpu().numpy(), [1,2,0])
+
+    #         # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
+    #         # Stats of Predicted Image
+
+    #         ssim1 = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
+    #         psnr1 = psnr(gt_img1, pred_img1)
+    #         avg_psnr_model += (psnr1 )
+    #         avg_ssim_model += (ssim1 )
+    #         count += 1
+
+    #         # Stats of Input Image
+    #         ssim2 = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+    #         psnr2 = psnr(gt_img1, cur_img1)
+    #         if (np.abs(psnr2 - 100) < 1e-6):
+    #             continue
+    #         avg_psnr += (psnr2)
+    #         avg_ssim += (ssim2)
+    #         print("issim: ", ssim2,  "\t pssim: ", ssim1, "\t ipsnr: ", psnr2,  "\t ppsnr: ", psnr1)
+    #         logger.info("PSNR= Original %.5f\t Predicted: %.5f\t SSIM= Original %.5f\t Predicted: %.5f \n"%(psnr2,psnr1, ssim2, ssim1))
+            
+    #         if(psnr2 < psnr1):
+    #             better_count += 1
+
+    #         img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
+    #         # img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
+    #         display_img = np.vstack([img_pair1])
+    #         # print(pred_mask1.shape)
+    #         # print(pred_img1.shape)
+    #         # print(gt_img1.shape)
+    #         # ipdb.set_trace()
+    #         # print(display_img.shape)
+    #         # cv2.imshow('sample image', display_img.astype(np.uint8))
+    #         # cv2.waitKey(0) # waits until a key is pressed
+    #         # cv2.destroyAllWindows()
+    #         cv2.imwrite(filename, display_img.astype(np.uint8)) 
+    #     # val_rec_loss += reconstruction_loss.item()
+    #     # val_g_loss += g_loss.item()
+    #     # val_d_loss += d_loss.item()
+    # # val_rec_loss /= num_val_batches
+    # # val_g_loss /= num_val_batches
+    # # val_d_loss /= num_val_batches
+
+    # avg_psnr /= num_val_batches
+    # avg_psnr_model /= num_val_batches
+    # avg_ssim /= num_val_batches
+    # avg_ssim_model /= num_val_batches
+
+    # # logger.info("[testRec loss: %.5e][testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
+    # #     % ( val_rec_loss, avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
+    # logger.info("[testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
+    #     % (avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
+        np_images = test_outputs.cpu().numpy()
 
         N, _, _, _ = np_images.shape
         # try:
         for n in range(N):
-            filename = os.path.join(test_dir, "test_batch_best_%i.png"%(count))
-            print(filename)
+            # print(test_dir)
+            write_to_folder = os.path.join(test_dir + '/test_imgs' , folder_name)
+            if not(os.path.exists(write_to_folder)):
+                os.makedirs(write_to_folder)
+            # filename = os.path.join(test_dir, os.path.join("test_batch_best_%i.png"%(count))
+            filename = os.path.join(write_to_folder, fname)
+            print("OUtput path: ", filename)
             # residual
             cur_img1 = np.transpose(Xtest[n].cpu().numpy(), [1,2,0])
+            cur_img1 = cv2.resize(cur_img1, (640,360), interpolation = cv2.INTER_AREA)
             pred_mask1 = np.transpose(np_images[n], [1,2,0])
+            pred_mask1 = cv2.resize(pred_mask1, (640,360), interpolation = cv2.INTER_AREA)
+            # print("pred_mask1.shape: ", pred_mask1.shape)
             pred_img1 = np.maximum(np.minimum(pred_mask1, 1.0), 0.0)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+            # print("pred_img1.shape: ", pred_img1.shape)
             gt_img1 = np.transpose(Ytest[n].cpu().numpy(), [1,2,0])
-
+            # print("gt_img1.shape: ", gt_img1.shape)
             # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
             # Stats of Predicted Image
 
             ssim1 = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
             psnr1 = psnr(gt_img1, pred_img1)
-            avg_psnr_model += (psnr1 )
-            avg_ssim_model += (ssim1 )
+            avg_predicted_psnr += (psnr1 )
+            avg_predicted_ssim += (ssim1 )
             count += 1
 
             # Stats of Input Image
@@ -450,17 +593,19 @@ with torch.set_grad_enabled(False):
             psnr2 = psnr(gt_img1, cur_img1)
             if (np.abs(psnr2 - 100) < 1e-6):
                 continue
-            avg_psnr += (psnr2)
-            avg_ssim += (ssim2)
+            avg_input_psnr += (psnr2)
+            avg_input_ssim += (ssim2)
             print("issim: ", ssim2,  "\t pssim: ", ssim1, "\t ipsnr: ", psnr2,  "\t ppsnr: ", psnr1)
             logger.info("PSNR= Original %.5f\t Predicted: %.5f\t SSIM= Original %.5f\t Predicted: %.5f \n"%(psnr2,psnr1, ssim2, ssim1))
-            
+
             if(psnr2 < psnr1):
                 better_count += 1
 
-            img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
+            # img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
             # img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
-            display_img = np.vstack([img_pair1])
+            # display_img = np.vstack([img_pair1])
+            display_img = np.vstack([pred_img1]) * 255
+            display_img = np.maximum(np.minimum(display_img, 255.0), 0.0)
             # print(pred_mask1.shape)
             # print(pred_img1.shape)
             # print(gt_img1.shape)
@@ -470,21 +615,21 @@ with torch.set_grad_enabled(False):
             # cv2.waitKey(0) # waits until a key is pressed
             # cv2.destroyAllWindows()
             cv2.imwrite(filename, display_img.astype(np.uint8)) 
-        val_rec_loss += reconstruction_loss.item()
-        val_g_loss += g_loss.item()
-        val_d_loss += d_loss.item()
-    val_rec_loss /= num_val_batches
-    val_g_loss /= num_val_batches
-    val_d_loss /= num_val_batches
+        # except:
+        #     pass
 
-    avg_psnr /= num_val_batches
-    avg_psnr_model /= num_val_batches
-    avg_ssim /= num_val_batches
-    avg_ssim_model /= num_val_batches
+        # val_rec_loss += reconstruction_loss.item()
+            
+    # val_rec_loss /= num_val_batches
+    # val_g_loss /= num_val_batches
+    # val_d_loss /= num_val_batches
 
-    logger.info("[testRec loss: %.5e][testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
-        % ( val_rec_loss, avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
-
+    logger.info("Test: [vRec loss: %.5e]" 
+        % (val_rec_loss))
+running_loss = 0.0
+print(Flags.model, " avg_input_psnr: ", avg_input_psnr/count , " avg_predicted_psnr: ", avg_predicted_psnr/count, \
+        " avg_input_ssim: ", avg_input_ssim/count , " avg_predicted_ssim: ", avg_predicted_ssim/count, \
+        " better count: ", better_count," count: ", count)
 
 end_timing_epoch = time.time()
 logger.info("Epoch %i runtime: %.3f"% (1, end_timing_epoch - start_timing_epoch))

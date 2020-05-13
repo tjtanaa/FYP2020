@@ -69,7 +69,8 @@ class ConvAttentionBlock(torch.nn.Module):
 
     def forward(self, x):
         output = self.layers(x)
-        output = torch.nn.functional.tanh(output) * x
+        # output = torch.nn.functional.tanh(output) * x
+        output = torch.nn.functional.softmax(output) * x
         return output
 
 

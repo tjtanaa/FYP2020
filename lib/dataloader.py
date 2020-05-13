@@ -5,6 +5,10 @@ import numpy as np
 from pathlib import Path
 import torch
 from torch.utils import data
+import os
+import cv2
+from PIL import Image
+import random
 # import ipdb
 
 class HDF5Dataset(data.Dataset):
@@ -127,3 +131,134 @@ class HDF5Dataset(data.Dataset):
         # get new cache_idx assigned by _load_data_info
         cache_idx = self.get_data_infos(type)[i]['cache_idx']
         return self.data_cache[fp][cache_idx]
+
+# class MyDataset(torch.utils.Dataset):
+#     def __init__(self):
+#         self.data_files = os.listdir('data_dir')
+#         sort(self.data_files)
+
+#     def __getindex__(self, idx):
+#         return load_file(self.data_files[idx])
+
+#     def __len__(self):
+#         return len(self.data_files)
+
+
+# dset = MyDataset()
+# loader = torch.utils.DataLoader(dset, num_workers=8)
+
+class TecoGANDataset(data.Dataset):
+    def __init__(self, data_root: str, codec:str, qp: int, seq_len:int, crop_size:int, transform=None):
+        self.data_root = data_root
+        self.lr_dir = os.path.join(self.data_root, "train_compressed_video_frames_"  + codec +  "_" + "qp" + str(qp))
+        self.hr_dir = os.path.join(self.data_root, "train_video_frames" )
+        self.items = [] # should be  N by sequence
+        self.scene_folder_list = []
+        for scene_folder in os.listdir(self.lr_dir):
+            # print(scene_folder)
+            self.scene_folder_list.append(scene_folder)
+        
+        self.scene_folder_list = sorted(self.scene_folder_list, key = lambda k: int(k.split("_")[-1]))
+        # print(self.scene_folder_list)
+        for scene_folder in self.scene_folder_list:
+            images_list = os.listdir(os.path.join(self.lr_dir, scene_folder))
+            image_prefix = "col_high_"
+            for n in range(len(images_list) - seq_len):
+                item_list = []
+                for i in range(seq_len):
+                    img_file_name = "col_high_%04d.png" % (i)
+                    item_list.append(os.path.join(scene_folder, img_file_name))
+                self.items.append(item_list)
+
+        self.qp = qp
+        self.codec = codec
+        self.crop_size = crop_size
+        # self.loader = loader
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.items)
+
+    def image_loader(self, dirpath, file_list, transformation_index = None, rotation=0):
+        assert 0 <= rotation <=15
+        # print("rotate by " , rotation)
+        output_list = []
+        h = -1
+        w = -1
+        c = -1
+        # print("transformation_index: ", transformation_index)
+        for img_file in file_list:
+            img_file_path = os.path.join(dirpath, img_file)
+            img_pil = Image.open(img_file_path)
+            if  not(transformation_index == -1):
+                # print("transpose")
+                img_pil = img_pil.transpose(transformation_index)
+            if abs(int(rotation)) > 0:
+                img_pil = img_pil.rotate(rotation)
+            img_np = np.asarray(img_pil)
+            # img_np = np.asarray(cv2.imread(img_file_path))
+            h,w,c = img_np.shape
+            output_list.append(img_np)
+        return np.asarray(output_list), (h,w,c)
+
+    def __getitem__(self, item):
+        item_list = self.items[item]
+
+        # flip and rotate
+        transformation_index_list = [-1, Image.FLIP_LEFT_RIGHT, Image.FLIP_TOP_BOTTOM]
+        # print(transformation_index_list)
+        transformation_index = random.choice(transformation_index_list)
+        # rotation_angle = np.random.randint(low=0,high=15)
+        rotation_angle = 0
+        image, img_size = self.image_loader(self.lr_dir, item_list, transformation_index, rotation_angle)
+        label, label_size = self.image_loader(self.hr_dir, item_list, transformation_index, rotation_angle)
+        # print(image.shape)
+        # print(img_size)
+        # print(np.transpose(image, (0,3,1,2)).shape)
+
+        # crop the image
+        # create a valid index
+        h,w,c = img_size
+        h_max = h // self.crop_size
+        w_max = w // self.crop_size
+
+        valid_h = np.random.randint(low=0, high=h_max)
+        valid_w = np.random.randint(low=0, high=w_max)
+        start_h = valid_h * self.crop_size
+        end_h = start_h + self.crop_size
+        start_w = valid_w * self.crop_size
+        end_w = start_w + self.crop_size
+        image = image[:,start_h:end_h, start_w:end_w, :]
+        label = label[:,start_h:end_h, start_w:end_w, :]
+        image = np.transpose(image, (0,3,1,2)) / 255.0
+        label = np.transpose(label, (0,3,1,2)) / 255.0
+        # filename = "image_" + str(item) + '.png'
+        # cv2.imwrite(filename, image[0])
+
+        return image, label
+
+
+if __name__ == "__main__":
+    data_root = "/media/data3/tjtanaa/tecogan_video_data"
+    codec = "libx264"
+    qp = "37"
+    seq_len = 5
+    crop_size = 512
+    dataset = TecoGANDataset(data_root, codec, qp, seq_len, crop_size)
+    dataset[0]
+
+
+# def get_local_dataloaders(local_data_root: str, batch_size: int = 8, transform: Callable = None,
+#                           test_ratio: float = 0.1, num_workers: int = 8) -> Dict[str, torch.utils.data.DataLoader]:
+#     # Local training
+#     local_items = list_items_local(os.path.join(local_data_root, "images"))
+#     dataset = ImageDataset(local_data_root, local_items, transform=transform)
+
+#     # Split using consistent hashing
+#     train_indices, test_indices = consistent_train_test_split(local_items, test_ratio)
+#     return {
+#         "train": torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=torch.utils.data.SubsetRandomSampler(train_indices),
+#                                              num_workers=num_workers),
+#         "test": torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=torch.utils.data.SubsetRandomSampler(test_indices),
+#                                             num_workers=num_workers)
+#     }

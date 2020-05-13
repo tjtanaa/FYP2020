@@ -4,7 +4,7 @@ import argparse
 import youtube_dl
 import json
 
-from lib.data import video
+# from lib.data import video
 import subprocess
 
 import torch
@@ -44,7 +44,7 @@ from lib.preprocess_data import *
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--start_id', default=2000, type=int, help='starting scene index')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
-parser.add_argument('--disk_path', default="D:\\Github\\FYP2020\\tecogan_video_data", help='the path to save the dataset')
+parser.add_argument('--disk_path', default="/media/data3/tjtanaa/tecogan_video_data", help='the path to save the dataset')
 parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\test_sequence", help='the path to save the dataset')
 # parser.add_argument('--disk_path', default="../content/drive/My Drive/FYP/tecogan_video_data", help='the path to save the dataset')
 parser.add_argument('--summary_dir', default="", help='the path to save the log')
@@ -453,6 +453,7 @@ def prepare_meta_data(input_video_path=None, verbose=True):
         print("output_dir: ", output_dir, '\t output_file: ', json_name)
     # input_video_path = os.path.join(input_dir, video_name)
     input_json_path = os.path.join(output_dir, json_name)
+    # print("input_json_path: ", input_json_path)
     input_json_path =  input_json_path[:2] + os.path.sep + input_json_path[2:]
 
     cmd = ['ffprobe', '-v', 'quiet', \
@@ -463,9 +464,11 @@ def prepare_meta_data(input_video_path=None, verbose=True):
 
     meta_data_json = json.loads(meta_data.decode('utf-8'))
     print(meta_data_json)
-    print("Bitrate of {} : {}".format(video_name, meta_data_json["streams"][0]["bit_rate"]))
+    # print(meta_data_json["streams"][0])
+    print("Bitrate of {} : {}".format(video_name, meta_data_json["format"]["bit_rate"]))
     # exit()
-    with open(input_json_path, "w+") as outfile:
+
+    with open(input_json_path[2:], "w") as outfile:
         json.dump(meta_data_json, outfile, indent=4)
         print("Obtained information from a valid input video: %s > %s"%(input_video_path, input_json_path))
 
@@ -585,7 +588,7 @@ if __name__ == '__main__':
         print("GT_video_path: ", GT_video_path)
         with open(json_file,'r') as f:
             meta_data_json = json.load(f)
-            video_bitrate = float(int(meta_data_json["streams"][0]["bit_rate"]))
+            video_bitrate = float(int(meta_data_json["format"]["bit_rate"]))
             video_width = float(int(meta_data_json["streams"][0]["width"]))
             video_height = float(int(meta_data_json["streams"][0]["height"]))
             # if video_width >= 3840:
@@ -625,76 +628,76 @@ if __name__ == '__main__':
         out_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
         split_hdf5(save_dir, out_dir, model=Flags.model,tseq=11)
 
-    # process to prepare test sequence
-    # define the directory of the test sequence UHD
-    if Flags.vcodec == 'libx264':
-        hr_test_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'original')
-        hr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'test_frames')
-        lr_test_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'qp'+str(Flags.qp))
-        lr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'test_frames_qp'+str(Flags.qp))
-    if Flags.vcodec == 'libx265':
-        hr_test_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'original')
-        hr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'test_frames')
-        lr_test_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'qp'+str(Flags.qp))
-        lr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'test_frames_qp'+str(Flags.qp))
-    if not(os.path.exists(hr_test_dir)):
-        raise FileNotFoundError
-    if not(os.path.exists(hr_test_frames_dir)):
-        os.makedirs(hr_test_frames_dir)
-    if not(os.path.exists(lr_test_dir)):
-        os.makedirs(lr_test_dir)
-    if not(os.path.exists(lr_test_frames_dir)):
-        os.makedirs(lr_test_frames_dir)
+    # # process to prepare test sequence
+    # # define the directory of the test sequence UHD
+    # if Flags.vcodec == 'libx264':
+    #     hr_test_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'original')
+    #     hr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'test_frames')
+    #     lr_test_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'qp'+str(Flags.qp))
+    #     lr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "AVC"), 'test_frames_qp'+str(Flags.qp))
+    # if Flags.vcodec == 'libx265':
+    #     hr_test_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'original')
+    #     hr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'test_frames')
+    #     lr_test_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'qp'+str(Flags.qp))
+    #     lr_test_frames_dir = os.path.join(os.path.join(Flags.test_dir, "HEVC"), 'test_frames_qp'+str(Flags.qp))
+    # if not(os.path.exists(hr_test_dir)):
+    #     raise FileNotFoundError
+    # if not(os.path.exists(hr_test_frames_dir)):
+    #     os.makedirs(hr_test_frames_dir)
+    # if not(os.path.exists(lr_test_dir)):
+    #     os.makedirs(lr_test_dir)
+    # if not(os.path.exists(lr_test_frames_dir)):
+    #     os.makedirs(lr_test_frames_dir)
 
-    test_video_path_list = []
-    # get the subfolders in the video_analysis folder
+    # test_video_path_list = []
+    # # get the subfolders in the video_analysis folder
 
-    for video in os.listdir(hr_test_dir):
-        video_path = os.path.join(hr_test_dir, video)
-        if os.path.isfile(video_path) and (video.split('.')[-1] in supported_video_extention):
-            test_video_path_list.append(video_path)
-    print(test_video_path_list)
+    # for video in os.listdir(hr_test_dir):
+    #     video_path = os.path.join(hr_test_dir, video)
+    #     if os.path.isfile(video_path) and (video.split('.')[-1] in supported_video_extention):
+    #         test_video_path_list.append(video_path)
+    # print(test_video_path_list)
 
-    if Flags.process == 8:
-        # # generate the test frames
-        for GT_video_dir in test_video_path_list:
-            # generate the testframes data of GT videos
-            prepare_meta_data(GT_video_dir)
-            prepare_test_frames(GT_video_dir, hr_test_frames_dir)
+    # if Flags.process == 8:
+    #     # # generate the test frames
+    #     for GT_video_dir in test_video_path_list:
+    #         # generate the testframes data of GT videos
+    #         prepare_meta_data(GT_video_dir)
+    #         prepare_test_frames(GT_video_dir, hr_test_frames_dir)
             
 
-    if Flags.process == 9:
-        for GT_video_path in test_video_path_list:
-            extension = GT_video_path.split('.')[-1]
-            json_file = GT_video_path.replace(extension, 'json')
-            compressed_video_path = GT_video_path.replace(hr_test_dir, lr_test_dir)
-            print("compressed_video_path: ", compressed_video_path)
-            print("GT_video_path: ", GT_video_path)
-            with open(json_file,'r') as f:
-                meta_data_json = json.load(f)
-                video_bitrate = float(int(meta_data_json["streams"][0]["bit_rate"]))
-                video_width = float(int(meta_data_json["streams"][0]["width"]))
-                video_height = float(int(meta_data_json["streams"][0]["height"]))
-                # if video_width >= 3840:
-                #     video_bitrate = 3000000 # 3Mbps
-                # elif video_width >= 1920:
-                #     video_bitrate = 3000000 # 3Mbps
-                # elif video_width > 1280:
-                #     video_bitrate = 1500000 # 1.5Mbps
-                # else:
-                #     print("Skipped")
-                #     continue
-                if video_width > 1980:
-                    continue
-                resolution = '{}x{}'.format(int(video_width), int(video_height))
-                # compress the video by a factor of 4
-                # compress_videos(input_video_path=GT_video_path, 
-                #                 output_video_path=compressed_video_path, 
-                #                 resolution = resolution, 
-                #                 video_bitrate=str(int(video_bitrate)),
-                #                 vcodec =Flags.vcodec,
-                #                 qp = str(Flags.qp))
-                prepare_test_frames(compressed_video_path, lr_test_frames_dir)
+    # if Flags.process == 9:
+    #     for GT_video_path in test_video_path_list:
+    #         extension = GT_video_path.split('.')[-1]
+    #         json_file = GT_video_path.replace(extension, 'json')
+    #         compressed_video_path = GT_video_path.replace(hr_test_dir, lr_test_dir)
+    #         print("compressed_video_path: ", compressed_video_path)
+    #         print("GT_video_path: ", GT_video_path)
+    #         with open(json_file,'r') as f:
+    #             meta_data_json = json.load(f)
+    #             video_bitrate = float(int(meta_data_json["streams"][0]["bit_rate"]))
+    #             video_width = float(int(meta_data_json["streams"][0]["width"]))
+    #             video_height = float(int(meta_data_json["streams"][0]["height"]))
+    #             # if video_width >= 3840:
+    #             #     video_bitrate = 3000000 # 3Mbps
+    #             # elif video_width >= 1920:
+    #             #     video_bitrate = 3000000 # 3Mbps
+    #             # elif video_width > 1280:
+    #             #     video_bitrate = 1500000 # 1.5Mbps
+    #             # else:
+    #             #     print("Skipped")
+    #             #     continue
+    #             if video_width > 1980:
+    #                 continue
+    #             resolution = '{}x{}'.format(int(video_width), int(video_height))
+    #             # compress the video by a factor of 4
+    #             # compress_videos(input_video_path=GT_video_path, 
+    #             #                 output_video_path=compressed_video_path, 
+    #             #                 resolution = resolution, 
+    #             #                 video_bitrate=str(int(video_bitrate)),
+    #             #                 vcodec =Flags.vcodec,
+    #             #                 qp = str(Flags.qp))
+    #             prepare_test_frames(compressed_video_path, lr_test_frames_dir)
                 
 
 

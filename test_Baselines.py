@@ -75,19 +75,19 @@ parser.add_argument('--model', default="ARCNN", type=str, help='the path to save
 parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\tecogan_video_data\\girl_frames", type=str, help='output and log directory')
-# parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
+parser.add_argument('--input_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='output and log directory')
+# parser.add_argument('--test_dir', default="/home/tan/tjtanaa/tjtanaa/DeepVideoPrior/data/denoising", type=str, help='output and log directory')
+parser.add_argument('--test_dir', default="/home/tan/tjtanaa/tjtanaa/DeepVideoPrior/data/artifact_removal/send/blur_000", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\ARCNN\\01-28-2020=15-25-51", type=str, help='ckpt model directory')
+parser.add_argument('--load_from_ckpt', default="/media/data3/tjtanaa/tecogan_video_data/ARCNN/04-13-2020=17-14-18", type=str, help='ckpt model directory')
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
 parser.add_argument("--lr", type=float, default=5e-4, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
-parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument('--channel', default=3, type=int, help='scene duration')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
 
 
@@ -315,11 +315,96 @@ logger.info(cur_time)
 #             gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
 #             yield input_image, gt_image
             
-def get_girl_frames(test_dir):
+# def get_girl_frames(test_dir):
 
+#     for k, fname in enumerate(os.listdir(test_dir)):
+#         if fname.find('.png') != -1:
+#             # print("read image: ", image_path)
+#             input_image_path = os.path.join(test_dir, fname)
+#             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+#             # print('input_image_path: ', input_image_path)
+#             # print("gt_image_path: ", gt_image_path)
+#             # read current image
+#             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+#             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+#             h,w,c = input_image.shape
+#             # print(input_image.shape)
+#             # if w >3840-1:
+#             #     # do not load 2k videos
+#             #     break
+#             input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
+#             gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
+#             # print(img_yuv.shape)
+#             y_input, _, _ = cv2.split(input_yuv_image)
+#             y_gt, _, _ = cv2.split(gt_yuv_image)
+#             # convert (H,W) to (1,H,W,1)
+#             input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
+#             gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
+#             block_size = 256
+#             for h_ind in range(0,h//block_size-1):
+#                 for w_ind in range(0,w//block_size-1):
+#                     yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
+
+
+# def get_girl_frames(test_dir):
+#     fname_list = ['col_high_0097.png', 'col_high_0098.png', 'col_high_0099.png', 'col_high_0100.png', 'col_high_0101.png']
+#     # for k, fname in enumerate(os.listdir(test_dir)):
+#     for k, fname in enumerate(fname_list):
+#         if fname.find('.png') != -1 and fname.find('col_hi') != -1 :
+#             # print("read image: ", image_path)
+#             print("read file: ", fname)
+#             input_image_path = os.path.join(test_dir, fname)
+#             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+#             # print('input_image_path: ', input_image_path)
+#             # print("gt_image_path: ", gt_image_path)
+#             # read current image
+#             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+#             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+#             print("input_image.size ", input_image.shape)
+#             yield input_image, gt_image, 'image_girl', fname
+          
+
+def get_test_frames(lr_dir, hr_dir):
+    for i, subfolder in enumerate(os.listdir(lr_dir)):
+        for k, fname in enumerate(os.listdir(os.path.join(lr_dir, subfolder))):
+            if fname.find('.png') != -1:
+                # print("read image: ", image_path)
+                input_image_path = os.path.join(os.path.join(lr_dir, subfolder), fname)
+                gt_image_path = os.path.join(os.path.join(hr_dir, subfolder), fname)
+                print('input_image_path: ', input_image_path)
+                print("gt_image_path: ", gt_image_path)
+                # # read current image
+                input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+                gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+                yield input_image, gt_image , subfolder, fname
+                # h,w,c = input_image.shape
+                # # print(input_image.shape)
+                # # if w >3840-1:
+                # #     # do not load 2k videos
+                # #     break
+                # input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
+                # gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
+                # # print(img_yuv.shape)
+                # y_input, _, _ = cv2.split(input_yuv_image)
+                # y_gt, _, _ = cv2.split(gt_yuv_image)
+                # # convert (H,W) to (1,H,W,1)
+                # input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
+                # gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
+                # block_size = 256
+                # for h_ind in range(0,h//block_size-1):
+                #     for w_ind in range(0,w//block_size-1):
+                #         yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
+
+# get_test_frames('/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs/test/test_265_37', '/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs/test/test_sharp')
+
+def get_blur_frames(test_dir):
+    # fname_list = ['col_high_0097.png', 'col_high_0098.png', 'col_high_0099.png', 'col_high_0100.png', 'col_high_0101.png']
     for k, fname in enumerate(os.listdir(test_dir)):
+    # for k, fname in enumerate(fname_list):
+        # print(fname)
         if fname.find('.png') != -1:
             # print("read image: ", image_path)
+            print("read file: ", fname)
             input_image_path = os.path.join(test_dir, fname)
             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
             # print('input_image_path: ', input_image_path)
@@ -327,23 +412,8 @@ def get_girl_frames(test_dir):
             # read current image
             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
-            h,w,c = input_image.shape
-            # print(input_image.shape)
-            # if w >3840-1:
-            #     # do not load 2k videos
-            #     break
-            input_yuv_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2YUV)
-            gt_yuv_image = cv2.cvtColor(gt_image, cv2.COLOR_RGB2YUV)
-            # print(img_yuv.shape)
-            y_input, _, _ = cv2.split(input_yuv_image)
-            y_gt, _, _ = cv2.split(gt_yuv_image)
-            # convert (H,W) to (1,H,W,1)
-            input_image = np.expand_dims(np.expand_dims(y_input, axis=2), axis=0)
-            gt_image = np.expand_dims(np.expand_dims(y_gt, axis=2),axis=0)
-            block_size = 256
-            for h_ind in range(0,h//block_size-1):
-                for w_ind in range(0,w//block_size-1):
-                    yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
+            print("input_image.size ", input_image.shape)
+            yield input_image, gt_image, 'blur_000', fname
 
 
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
@@ -359,7 +429,10 @@ start_timing_epoch = time.time()
 with torch.set_grad_enabled(False):
     num_val_batches = 0
     val_rec_loss = 0.0
-    for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
+    # for k, (X, Y, folder_name, fname) in enumerate(get_test_frames('/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs/test/test_265_37', '/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs/test/test_sharp')):
+    # for k, (X, Y, folder_name, fname) in enumerate(get_test_frames('/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs2/val/val_265_37', '/home/tan/tjtanaa/tjtanaa/VidArt/dataset/test_imgs2/val/val_sharp')):
+    # for k, (X, Y, folder_name, fname) in enumerate(get_girl_frames(Flags.test_dir)):
+    for k, (X, Y, folder_name, fname) in enumerate(get_blur_frames(Flags.test_dir)):
         val_length = len(Y)
         num_val_batches += val_length
 
@@ -370,8 +443,8 @@ with torch.set_grad_enabled(False):
         #   Train Generator
         #
         #-------------------------------------
-        X = Tensor(X)
-        Y = Tensor(Y)
+        X = Tensor(X).unsqueeze(0)
+        Y = Tensor(Y).unsqueeze(0)
 
         Xtest = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
         Ytest = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
@@ -393,8 +466,13 @@ with torch.set_grad_enabled(False):
         N, _, _, _ = np_images.shape
         # try:
         for n in range(N):
-            filename = os.path.join(test_dir, "test_batch_best_%i.png"%(count))
-            print(filename)
+            # print(test_dir)
+            write_to_folder = os.path.join(test_dir + '/test_imgs' , folder_name)
+            if not(os.path.exists(write_to_folder)):
+                os.makedirs(write_to_folder)
+            # filename = os.path.join(test_dir, os.path.join("test_batch_best_%i.png"%(count))
+            filename = os.path.join(write_to_folder, fname)
+            print("OUtput path: ", filename)
             # residual
             cur_img1 = np.transpose(Xtest[n].cpu().numpy(), [1,2,0])
             pred_mask1 = np.transpose(np_images[n], [1,2,0])
@@ -423,9 +501,10 @@ with torch.set_grad_enabled(False):
             if(psnr2 < psnr1):
                 better_count += 1
 
-            img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
+            # img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
             # img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
-            display_img = np.vstack([img_pair1])
+            # display_img = np.vstack([img_pair1])
+            display_img = np.vstack([pred_img1]) * 255
             display_img = np.maximum(np.minimum(display_img, 255.0), 0.0)
             # print(pred_mask1.shape)
             # print(pred_img1.shape)

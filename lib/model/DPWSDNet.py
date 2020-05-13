@@ -12,10 +12,19 @@ class Pixel_Net(nn.Module):
         super(Pixel_Net, self).__init__()
         self.up = pixel_up_shuffle
         self.down = pixel_down_shuffle
+
+        self.conv_block_list = []
+        for i in range(P):
+            if i == 0:
+                self.conv_block_list.append(BasicConv2d(in_channels*4, 64, kernel_size=3, stride = 1, padding =1))
+                self.conv_block_list.append(nn.ReLU())
+            else:
+                self.conv_block_list.append(BasicConv2d(64, 64, kernel_size=3, stride = 1, padding =1))
+                self.conv_block_list.append(nn.ReLU())
+
         self.base = nn.Sequential(
-            nn.Conv2d(in_channels*4, 64, kernel_size=3, stride = 1, padding = 1),
-            *[BasicConv2d(64, 64, kernel_size=3, stride = 1, padding =1) for _ in range(P)],
-            nn.Conv2d(64, out_channels, kernel_size=3, stride = 1, padding = 1)
+            *self.conv_block_list,
+            nn.Conv2d(64, out_channels*4, kernel_size=3, stride = 1, padding = 1)
         )
 
     #     self._initialize_weights()
@@ -36,10 +45,19 @@ class Wavelet_Net(nn.Module):
         super(Wavelet_Net, self).__init__()
         self.dwt = DWT()
         self.iwt = IWT()
+
+        self.conv_block_list = []
+        for i in range(P):
+            if i == 0:
+                self.conv_block_list.append(BasicConv2d(in_channels*4, 64, kernel_size=3, stride = 1, padding =1))
+                self.conv_block_list.append(nn.ReLU())
+            else:
+                self.conv_block_list.append(BasicConv2d(64, 64, kernel_size=3, stride = 1, padding =1))
+                self.conv_block_list.append(nn.ReLU())
+
         self.base = nn.Sequential(
-            nn.Conv2d(in_channels*4, 64, kernel_size=3, stride = 1, padding = 1),
-            *[BasicConv2d(64, 64, kernel_size=3, stride = 1, padding =1) for _ in range(P)],
-            nn.Conv2d(64, out_channels, kernel_size=3, stride = 1, padding = 1)
+            *self.conv_block_list,
+            nn.Conv2d(64, out_channels*4, kernel_size=3, stride = 1, padding = 1)
         )
 
     #     self._initialize_weights()

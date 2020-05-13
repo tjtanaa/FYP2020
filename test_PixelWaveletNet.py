@@ -58,16 +58,19 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="PixelNet", type=str, help='the path to save the dataset')
+parser.add_argument('--model', default="DPWSDNet", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=10, type=int, help='number of training epochs')
 parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
-parser.add_argument('--test_dir', default="D:\\Github\\FYP2020\\tecogan_video_data\\girl_frames", type=str, help='output and log directory')
+parser.add_argument('--input_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='output and log directory')
+parser.add_argument('--test_dir', default="/home/tan/tjtanaa/tjtanaa/DeepVideoPrior/data/artifact_removal/send/blur_000", type=str, help='output and log directory')
 # parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
-parser.add_argument('--load_from_ckpt', default="D:\\Github\\FYP2020\\tecogan_video_data\\PixelNet\\02-26-2020=16-35-21", type=str, help='ckpt model directory')
+# parser.add_argument('--load_from_ckpt', default="/media/data3/tjtanaa/tecogan_video_data/PixelNet/04-16-2020=11-59-26", type=str, help='ckpt model directory')
+# parser.add_argument('--load_from_ckpt', default="/media/data3/tjtanaa/tecogan_video_data/WaveletNet/05-07-2020=00-05-14", type=str, help='ckpt model directory')
+parser.add_argument('--load_from_ckpt', default="/media/data3/tjtanaa/tecogan_video_data/DPWSDNet/05-07-2020=22-00-20", type=str, help='ckpt model directory')
+
 parser.add_argument('--duration', default=120, type=int, help='scene duration')
 parser.add_argument("--lr", type=float, default=0.001, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -75,7 +78,7 @@ parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of firs
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
-parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument('--channel', default=3, type=int, help='scene duration')
 parser.add_argument('--depth', default=19, type=int, help='depth')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
 
@@ -120,7 +123,7 @@ C = Flags.channel
 # create model
 
 if Flags.model == 'DPWSDNet':
-    # model = DPWSDNet(C, C, P = Flags.depth).to(device)
+    model = DPWSDNet(C, C, P = Flags.depth).to(device)
     print(summary(model, (C, 256, 256)))
 elif Flags.model == 'PixelNet':
     model = Pixel_Net(C, C, P = Flags.depth).to(device)
@@ -265,6 +268,46 @@ def get_girl_frames(test_dir):
                     yield input_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:], gt_image[:,h_ind*block_size : (h_ind+1)*block_size, w_ind*block_size: (w_ind+1)*block_size,:]
 
 
+# def get_blur_frames(test_dir):
+#     # fname_list = ['col_high_0097.png', 'col_high_0098.png', 'col_high_0099.png', 'col_high_0100.png', 'col_high_0101.png']
+#     for k, fname in enumerate(os.listdir(test_dir)):
+#     # for k, fname in enumerate(fname_list):
+#         # print(fname)
+#         if fname.find('.png') != -1:
+#             # print("read image: ", image_path)
+#             print("read file: ", fname)
+#             input_image_path = os.path.join(test_dir, fname)
+#             gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+#             # print('input_image_path: ', input_image_path)
+#             # print("gt_image_path: ", gt_image_path)
+#             # read current image
+#             input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+#             gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+#             input_image = cv2.resize(input_image, (512,512), interpolation = cv2.INTER_AREA)
+#             # gt_image = cv2.resize(gt_image, (512,512), interpolation = cv2.INTER_AREA)
+
+#             print("input_image.size ", input_image.shape)
+#             yield input_image, gt_image, 'blur_000', fname
+
+def get_blur_frames(test_dir):
+    # fname_list = ['col_high_0097.png', 'col_high_0098.png', 'col_high_0099.png', 'col_high_0100.png', 'col_high_0101.png']
+    for k, fname in enumerate(os.listdir(test_dir)):
+    # for k, fname in enumerate(fname_list):
+        # print(fname)
+        if fname.find('.png') != -1:
+            # print("read image: ", image_path)
+            print("read file: ", fname)
+            input_image_path = os.path.join(test_dir, fname)
+            gt_image_path = os.path.join(os.path.join(test_dir, 'gt'), fname)
+            # print('input_image_path: ', input_image_path)
+            # print("gt_image_path: ", gt_image_path)
+            # read current image
+            input_image = cv2.imread(input_image_path, cv2.IMREAD_UNCHANGED)
+            gt_image = cv2.imread(gt_image_path, cv2.IMREAD_UNCHANGED)
+            print("input_image.size ", input_image.shape)
+            yield input_image, gt_image, 'blur_000', fname
+
+
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
 # get_girl_frames(Flags.test_dir)
@@ -277,17 +320,28 @@ val_g_loss = 0.0
 val_d_loss = 0.0
 val_rec_loss = 0.0
 num_train_batches = 0
-avg_psnr = 0.0
-avg_psnr_model = 0.0
-avg_ssim = 0.0
-avg_ssim_model = 0.0
+# avg_psnr = 0.0
+# avg_psnr_model = 0.0
+# avg_ssim = 0.0
+# avg_ssim_model = 0.0
+avg_predicted_psnr = 0.0
+avg_input_psnr = 0.0
+avg_predicted_ssim = 0.0
+avg_input_ssim = 0.0
+count = 0
+better_count = 0
 with torch.set_grad_enabled(False):
     num_val_batches = 0
-    for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
-        X = Tensor(X)
-        Y = Tensor(Y)
+    
+    for k, (X, Y, folder_name, fname) in enumerate(get_blur_frames(Flags.test_dir)):
         val_length = len(Y)
         num_val_batches += val_length
+
+    # for k, (X,Y) in enumerate(get_girl_frames(Flags.test_dir)):
+    #     X = Tensor(X)
+    #     Y = Tensor(Y)
+    #     val_length = len(Y)
+    #     num_val_batches += val_length
         # here comes your validation loop
 
         # ------------------------------------
@@ -295,54 +349,130 @@ with torch.set_grad_enabled(False):
         #   Train Generator
         #
         #-------------------------------------
+        X = Tensor(X).unsqueeze(0)
+        Y = Tensor(Y).unsqueeze(0)
 
-        Xval = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-        Yval = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-        val_outputs = model(Xval)
-        # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
-        # residual
-        cur_img1 = np.transpose(Xval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
-        pred_img1 = np.maximum(np.minimum(np.transpose(val_outputs[0].detach().cpu().numpy(), [1,2,0]), 1.0), 0.0).astype(np.float32)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
-        gt_img1 = np.transpose(Yval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
+        Xtest = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+        Ytest = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+        test_outputs = model(Xtest)
+        np_images = test_outputs.cpu().numpy()
 
-        # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
-        # Stats of Predicted Image
-        ssim_ = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+        N, _, _, _ = np_images.shape
+        # try:
+        for n in range(N):
+            # print(test_dir)
+            write_to_folder = os.path.join(test_dir + '/test_imgs' , folder_name)
+            if not(os.path.exists(write_to_folder)):
+                os.makedirs(write_to_folder)
+            # filename = os.path.join(test_dir, os.path.join("test_batch_best_%i.png"%(count))
+            filename = os.path.join(write_to_folder, fname)
+            print("Output path: ", filename)
+            # residual
+            cur_img1 = np.transpose(Xtest[n].cpu().numpy(), [1,2,0])
+            pred_mask1 = np.transpose(np_images[n], [1,2,0])
+            pred_img1 = np.maximum(np.minimum(pred_mask1, 1.0), 0.0)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+            gt_img1 = np.transpose(Ytest[n].cpu().numpy(), [1,2,0])
 
-        ssim_model = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
+            # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
+            # Stats of Predicted Image
 
-        reconstruction_loss = criterion(val_outputs, Yval)
-        # ssim_model = pytorch_ssim.ssim(Yval, val_outputs)
-        # ssim = pytorch_ssim.ssim(Xval, val_outputs)
-        # logger.info("ssim ", ssim)
-        avg_ssim_model = avg_ssim_model + ssim_model
-        avg_ssim = avg_ssim + ssim_
+            ssim1 = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
+            psnr1 = psnr(gt_img1, pred_img1)
+            avg_predicted_psnr += (psnr1 )
+            avg_predicted_ssim += (ssim1 )
+            count += 1
+
+            # Stats of Input Image
+            ssim2 = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+            psnr2 = psnr(gt_img1, cur_img1)
+            if (np.abs(psnr2 - 100) < 1e-6):
+                continue
+            avg_input_psnr += (psnr2)
+            avg_input_ssim += (ssim2)
+            print("issim: ", ssim2,  "\t pssim: ", ssim1, "\t ipsnr: ", psnr2,  "\t ppsnr: ", psnr1)
+            logger.info("PSNR= Original %.5f\t Predicted: %.5f\t SSIM= Original %.5f\t Predicted: %.5f \n"%(psnr2,psnr1, ssim2, ssim1))
+
+            if(psnr2 < psnr1):
+                better_count += 1
+
+            # img_pair1 = np.hstack(([cur_img1, pred_img1, gt_img1])) * 255
+            # img_pair2 = np.hstack(([cur_img2, pred_mask2, pred_img2, gt_img2])) * 255
+            # display_img = np.vstack([img_pair1])
+            display_img = np.vstack([pred_img1]) * 255
+            display_img = np.maximum(np.minimum(display_img, 255.0), 0.0)
+            # print(pred_mask1.shape)
+            # print(pred_img1.shape)
+            # print(gt_img1.shape)
+            # ipdb.set_trace()
+            # print(display_img.shape)
+            # cv2.imshow('sample image', display_img.astype(np.uint8))
+            # cv2.waitKey(0) # waits until a key is pressed
+            # cv2.destroyAllWindows()
+            cv2.imwrite(filename, display_img.astype(np.uint8)) 
+        # except:
+        #     pass
+
+        # val_rec_loss += reconstruction_loss.item()
+            
+    # val_rec_loss /= num_val_batches
+    # val_g_loss /= num_val_batches
+    # val_d_loss /= num_val_batches
+
+    logger.info("Test: [vRec loss: %.5e]" 
+        % (val_rec_loss))
+running_loss = 0.0
+print(Flags.model, " avg_input_psnr: ", avg_input_psnr/count , " avg_predicted_psnr: ", avg_predicted_psnr/count, \
+        " avg_input_ssim: ", avg_input_ssim/count , " avg_predicted_ssim: ", avg_predicted_ssim/count, \
+        " better count: ", better_count," count: ", count)
+logger.info("Mode:%s Better: %.3f avgPSNR= Original %.5f \t Predicted: %.5f\n avgSSIM= Original %.5f \t Predicted: %.5f \n"%(Flags.model, float(better_count/count), float(avg_input_psnr/count), float(avg_predicted_psnr/count), float(avg_input_ssim/count), avg_predicted_ssim/count))
+
+    #     # Xval = (X[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+    #     # Yval = (Y[:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+    #     # val_outputs = model(Xval)
+    #     # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
+    #     # residual
+    #     cur_img1 = np.transpose(Xval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
+    #     pred_img1 = np.maximum(np.minimum(np.transpose(val_outputs[0].detach().cpu().numpy(), [1,2,0]), 1.0), 0.0).astype(np.float32)  #+ np.transpose(Xtest[0].cpu().numpy(), [1,2,0])
+    #     gt_img1 = np.transpose(Yval[0].cpu().numpy(), [1,2,0]).astype(np.float32)
+
+    #     # print("test_outputs size ", test_outputs.shape, "\t Ytest size ", Ytest.shape)
+    #     # Stats of Predicted Image
+    #     ssim_ = np.mean(np.mean(ssim(gt_img1, cur_img1, full=True,multichannel=True)))
+
+    #     ssim_model = np.mean(np.mean(ssim(gt_img1, pred_img1, full=True,multichannel=True)))
+
+    #     reconstruction_loss = criterion(val_outputs, Yval)
+    #     # ssim_model = pytorch_ssim.ssim(Yval, val_outputs)
+    #     # ssim = pytorch_ssim.ssim(Xval, val_outputs)
+    #     # logger.info("ssim ", ssim)
+    #     avg_ssim_model = avg_ssim_model + ssim_model
+    #     avg_ssim = avg_ssim + ssim_
 
         
-        y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
-        x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
-        x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
-        psnr_ = psnr(y,x_input)
-        psnr_model = psnr(y,x)
+    #     y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
+    #     x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
+    #     x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
+    #     psnr_ = psnr(y,x_input)
+    #     psnr_model = psnr(y,x)
 
-        avg_psnr = avg_psnr + psnr_
-        avg_psnr_model = avg_psnr_model + psnr_model
-        logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr_ , psnr_model))
-        save_image(val_outputs.data[:25],  os.path.join(test_dir,"test_girl_%d.png") % (k), nrow=5, normalize=True)
+    #     avg_psnr = avg_psnr + psnr_
+    #     avg_psnr_model = avg_psnr_model + psnr_model
+    #     logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr_ , psnr_model))
+    #     save_image(val_outputs.data[:25],  os.path.join(test_dir,"test_girl_%d.png") % (k), nrow=5, normalize=True)
 
-        val_rec_loss += reconstruction_loss.item()
+    #     val_rec_loss += reconstruction_loss.item()
 
             
-    val_rec_loss /= num_val_batches
-    val_g_loss /= num_val_batches
-    val_d_loss /= num_val_batches
-    avg_psnr /= num_val_batches
-    avg_psnr_model /= num_val_batches
-    avg_ssim /= num_val_batches
-    avg_ssim_model /= num_val_batches
+    # val_rec_loss /= num_val_batches
+    # val_g_loss /= num_val_batches
+    # val_d_loss /= num_val_batches
+    # avg_psnr /= num_val_batches
+    # avg_psnr_model /= num_val_batches
+    # avg_ssim /= num_val_batches
+    # avg_ssim_model /= num_val_batches
 
-    logger.info("[testRec loss: %.5e][testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
-        % ( val_rec_loss, avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
+    # logger.info("[testRec loss: %.5e][testPsnr loss: %.5f][testPsnrModel loss: %.5f][testSsim loss: %.5f][testSsimModel loss: %.5f]" 
+    #     % ( val_rec_loss, avg_psnr, avg_psnr_model, avg_ssim, avg_ssim_model))
 
 
 end_timing_epoch = time.time()

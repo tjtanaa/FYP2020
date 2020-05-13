@@ -3,7 +3,7 @@ from .ARTN import ARTN
 from .ARCNN import ARCNN
 from .FastARCNN import FastARCNN
 from .VRCNN import VRCNN
-from .ConvAttentionCNN import ConvAttentionCNN
+from .ConvAttentionCNN import ConvAttentionCNN, TemporalConvAttentionCNN
 from .RelativisticGAN import RGAN_G, RGAN_D
 from .NLRGAN import NLRGAN_G, NLRGAN_D
 from .TNLRGAN import TNLRGAN_G, TNLRGAN_D

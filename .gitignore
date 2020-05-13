@@ -9,3 +9,4 @@ log/*
 test_sequence/*
 lib/model/__pycache__/*
 lib/__pycache__/*
+lib/data/__pycache__/*

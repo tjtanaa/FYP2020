@@ -104,7 +104,7 @@ class RGAN_D(nn.Module):
             *discriminator_block(256, 512),
         )
         self.conv5 = nn.Conv2d(512, out_channels, kernel_size=4,stride=1,padding=0)
-        self.fc = nn.Linear(out_channels * 13 ** 2, 1)
+        self.fc = nn.Linear(out_channels * 2523// out_channels, 1)
         self.sig = nn.Sigmoid()
 
     def forward(self, img):

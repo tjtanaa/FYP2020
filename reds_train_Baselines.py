@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from lib.model import ARTN, ARCNN, FastARCNN, VRCNN
-from lib.model import ConvAttentionCNN
 # from lib import load_dataset
 from torchvision.utils import save_image
 from torch.autograd import Variable
@@ -18,7 +17,14 @@ from skimage.measure import compare_ssim as ssim
 from lib import MyLogger
 import h5py
 
-from torchsummary import summary
+import sys
+import os.path as osp
+import math
+import torchvision.utils
+
+# sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
+from lib.data import create_dataloader, create_dataset  # noqa: E402
+
 '''
     Command
 
@@ -55,14 +61,12 @@ np.random.seed(0)
 
 parser = argparse.ArgumentParser(description='Process parameters.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # parser = argparse.ArgumentParser()
-parser.add_argument('--model', default="ConvAttentionCNN", type=str, help='the path to save the dataset')
+parser.add_argument('--model', default="ARCNN", type=str, help='the path to save the dataset')
 parser.add_argument('--epoch', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--max_iteration', default=100000, type=int, help='number of training epochs')
 parser.add_argument('--mini_batch', default=32, type=int, help='mini_batch size')
-parser.add_argument('--input_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='dataset directory')
-parser.add_argument('--output_dir', default="/media/data3/tjtanaa/tecogan_video_data", type=str, help='dataset directory')
-# parser.add_argument('--input_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='dataset directory')
-# parser.add_argument('--output_dir', default="D:\\Github\\FYP2020\\tecogan_video_data", type=str, help='output and log directory')
+parser.add_argument('--input_dir', default="./model/REDS", type=str, help='dataset directory')
+parser.add_argument('--output_dir', default="./model/REDS", type=str, help='output and log directory')
 # parser.add_argument('--input_dir', default="../content/drive/My Drive/FYP", type=str, help='dataset directory')
 # parser.add_argument('--output_dir', default="../content/drive/My Drive/FYP", type=str, help='output and log directory')
 parser.add_argument('--load_from_ckpt', default="", type=str, help='ckpt model directory')
@@ -72,10 +76,77 @@ parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first 
 parser.add_argument("--tseq_length", type=int, default=3, help="interval between image sampling")
 parser.add_argument('--vcodec', default="libx265", help='the path to save the dataset')
 parser.add_argument('--qp', default=37, type=int, help='scene duration')
-parser.add_argument('--channel', default=1, type=int, help='scene duration')
+parser.add_argument('--channel', default=3, type=int, help='scene duration')
 parser.add_argument("--sample_interval", type=int, default=30, help="interval between image sampling")
 
 Flags = parser.parse_args()
+
+dataset_name = 'REDS'  # REDS | Vimeo90K | DIV2K800_sub
+opt = {}
+opt['dist'] = False
+opt['gpu_ids'] = [0]
+if dataset_name == 'REDS':
+    opt['name'] = 'test_REDS'
+    # opt['dataroot_GT'] = '../../datasets/REDS/train_sharp_wval.lmdb'
+    # opt['dataroot_LQ'] = '../../datasets/REDS/train_sharp_bicubic_wval.lmdb'
+    opt['dataroot_GT'] = '/media/data3/tjtanaa/REDS/train_sharp_wval.lmdb'
+    opt['dataroot_LQ'] = '/media/data3/tjtanaa/REDS/train_blur_comp_wval.lmdb'
+    opt['mode'] = 'REDS'
+    opt['N_frames'] = 5
+    opt['phase'] = 'train'
+    opt['use_shuffle'] = True
+    opt['n_workers'] = 8
+    opt['batch_size'] = 32
+    opt['GT_size'] = 256
+    # opt['LQ_size'] = 64
+    opt['LQ_size'] = 256
+    opt['scale'] = 4
+    opt['use_flip'] = True
+    opt['use_rot'] = True
+    opt['interval_list'] = [1]
+    opt['random_reverse'] = False
+    opt['border_mode'] = False
+    opt['cache_keys'] = None
+    opt['data_type'] = 'lmdb'  # img | lmdb | mc
+elif dataset_name == 'Vimeo90K':
+    opt['name'] = 'test_Vimeo90K'
+    opt['dataroot_GT'] = '../../datasets/vimeo90k/vimeo90k_train_GT.lmdb'
+    opt['dataroot_LQ'] = '../../datasets/vimeo90k/vimeo90k_train_LR7frames.lmdb'
+    opt['mode'] = 'Vimeo90K'
+    opt['N_frames'] = 7
+    opt['phase'] = 'train'
+    opt['use_shuffle'] = True
+    opt['n_workers'] = 8
+    opt['batch_size'] = 16
+    opt['GT_size'] = 256
+    opt['LQ_size'] = 64
+    opt['scale'] = 4
+    opt['use_flip'] = True
+    opt['use_rot'] = True
+    opt['interval_list'] = [1]
+    opt['random_reverse'] = False
+    opt['border_mode'] = False
+    opt['cache_keys'] = None
+    opt['data_type'] = 'lmdb'  # img | lmdb | mc
+elif dataset_name == 'DIV2K800_sub':
+    opt['name'] = 'DIV2K800'
+    opt['dataroot_GT'] = '../../datasets/DIV2K/DIV2K800_sub.lmdb'
+    opt['dataroot_LQ'] = '../../datasets/DIV2K/DIV2K800_sub_bicLRx4.lmdb'
+    opt['mode'] = 'LQGT'
+    opt['phase'] = 'train'
+    opt['use_shuffle'] = True
+    opt['n_workers'] = 8
+    opt['batch_size'] = 16
+    opt['GT_size'] = 128
+    opt['scale'] = 4
+    opt['use_flip'] = True
+    opt['use_rot'] = True
+    opt['color'] = 'RGB'
+    opt['data_type'] = 'lmdb'  # img | lmdb
+else:
+    raise ValueError('Please implement by yourself.')   
+
+
 
 def psnr(img1, img2):
     size = img1.shape
@@ -119,9 +190,7 @@ if Flags.model == 'ARCNN':
     model = ARCNN(C, C).to(device)
 elif Flags.model == 'FastARCNN':
     model = FastARCNN(C, C).to(device)
-elif Flags.model == 'ConvAttentionCNN':
-    model = ConvAttentionCNN(C, C).to(device)
-    print(summary(model, (C, 256,256)))
+
 
 optimizer = optim.Adam([
     {'params': model.base.parameters()},
@@ -193,44 +262,14 @@ np.random.seed(st_epoch)
 logger = MyLogger(log_dir, cur_time).getLogger()
 logger.info(cur_time)
 logger.info(Flags)
-# exit()
 
-from torch.utils import data
-from lib.dataloader import HDF5Dataset
-from torch.utils.data.sampler import SubsetRandomSampler
+train_set = create_dataset(opt)
+train_loader = create_dataloader(train_set, opt, opt, None)
 
-if 'drive' in Flags.input_dir:
-    input_dir = '.'
-else:
-    save_dir = os.path.join(Flags.input_dir, "dataset_{}_qp{}".format(Flags.vcodec,Flags.qp))
-    # input_dir = os.path.join(os.path.join(save_dir, Flags.model), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp)))
-    input_dir = os.path.join(os.path.join(save_dir, 'ARCNN'), '{}_qp{}'.format(Flags.vcodec,str(Flags.qp))) + '/Subset'
-
-dataset = HDF5Dataset(input_dir, recursive=False, load_data=False, 
-   data_cache_size=100, transform=None)
-shuffle_dataset = True
-# Creating data indices for training and validation and test splits:
-dataset_size = len(dataset)
-indices = list(range(dataset_size))
-if shuffle_dataset :
-    np.random.seed(0)
-    np.random.shuffle(indices)
-# indices = np.arange(N)
-# np.random.shuffle(indices)
-
-train_indices = indices[: int(dataset_size * 0.7)]
-val_indices = indices[int(dataset_size * 0.7): int(dataset_size * 0.9)]
-test_indices = indices[int(dataset_size * 0.9):]
-# Creating PT data samplers and loaders:
-train_sampler = SubsetRandomSampler(train_indices)
-valid_sampler = SubsetRandomSampler(val_indices)
-
-train_loader_params = {'batch_size': 100, 'num_workers': 6,'sampler': train_sampler}
-validation_loader_params = {'batch_size': 20, 'num_workers': 6,'sampler': valid_sampler}
-
-train_loader = data.DataLoader(dataset, **train_loader_params)
-validation_loader = data.DataLoader(dataset, **validation_loader_params)
-
+# for i, train_data in enumerate(train_loader):
+#     X = train_data['LQs'][0,0,0,0,0]
+#     print(X)
+#     exit()
 
 Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
@@ -246,92 +285,85 @@ for epoch in range(st_epoch,Flags.epoch):
     val_d_loss = 0.0
     val_rec_loss = 0.0
     num_train_batches = 0
-    for m, (X,Y) in enumerate(train_loader):
+    for m, train_data in enumerate(train_loader):
         if iteration_count > Flags.max_iteration:
-                break
+            break
         # here comes your training loop
-        train_length = len(Y)
-        num_train_batches += train_length
-        for i in range(train_length):
-            if iteration_count > Flags.max_iteration:
-                break
+        X = train_data['LQs']
+        Y = train_data['GT']
+        num_train_batches += 1
 
-            Xtrain = (X[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-            Ytrain = (Y[i,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-            # print(Xtrain.shape)
-            # print(Ytrain.shape)
-            # exit()
-            # zero the parameter gradients
-            optimizer.zero_grad()
+        Xtrain = X[:,opt['N_frames']//2+1,:,:,:].float().to(device)
+        Ytrain = Y.float().to(device)
+        # print(Xtrain.shape)
+        # print(Ytrain.shape)
+        # exit()
+        # zero the parameter gradients
+        optimizer.zero_grad()
 
-            # forward + backward + optimize
-            # print("forward")
-            outputs = model(Xtrain)
-            # print("loss")
-            reconstruction_loss = criterion(outputs, Ytrain)
-            # print("backward")
-            reconstruction_loss.backward()
-            # print("optimize")
-            optimizer.step()
+        # forward + backward + optimize
+        # print("forward")
+        outputs = model(Xtrain)
+        # print("loss")
+        reconstruction_loss = criterion(outputs, Ytrain)
+        # print("backward")
+        reconstruction_loss.backward()
+        # print("optimize")
+        optimizer.step()
 
-
-            logger.info(
-                "[Epoch %d/%d] [Batch %d/%d] [Rec loss: %.5e]"
-                % (epoch, Flags.epoch, m, len(train_loader), reconstruction_loss.item())
-            )
-
-            batches_done = epoch * len(train_loader) + m + i 
-
-            if batches_done % Flags.sample_interval == 0:
-                y = np.transpose(Ytrain[0].detach().cpu().numpy(), [1,2,0])
-                x = np.transpose((outputs[0].detach()).cpu().numpy(), [1,2,0])
-                x_input = np.transpose((Xtrain[0].detach()).cpu().numpy(), [1,2,0])
-                logger.info("Training: input_psnr: %.5f \t train_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
-                save_image(outputs.data[:25],  os.path.join(test_dir,"train_%d.png") % batches_done, nrow=5, normalize=True)
+        if num_train_batches % Flags.sample_interval == 0:
+            y = np.transpose(Ytrain[0].detach().cpu().numpy(), [1,2,0])
+            x = np.transpose((outputs[0].detach()).cpu().numpy(), [1,2,0])
+            x_input = np.transpose((Xtrain[0].detach()).cpu().numpy(), [1,2,0])
+            logger.info("Training: input_psnr: %.5f \t train_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
+            save_image(outputs.data[:25],  os.path.join(test_dir,"train_%d.png") % num_train_batches, nrow=5, normalize=True)
 
 
-            # running_g_loss += g_loss.item()
-            # running_d_loss += d_loss.item()
-            running_rec_loss += reconstruction_loss.item()
-            iteration_count += 1
+        # running_g_loss += g_loss.item()
+        # running_d_loss += d_loss.item()
+        running_rec_loss += reconstruction_loss.item()
+        iteration_count += 1
 
-    with torch.set_grad_enabled(False):
-        num_val_batches = 0
-        for k, (X,Y) in enumerate(validation_loader):
-            val_length = len(Y)
-            num_val_batches += val_length
-            for j in range(val_length):
-                # here comes your validation loop
+        logger.info("[Epoch %d/%d] [tRec loss: %.5e]" 
+            % (epoch, Flags.epoch, running_rec_loss / num_train_batches))
 
-                # ------------------------------------
-                #
-                #   Train Generator
-                #
-                #-------------------------------------
+    # with torch.set_grad_enabled(False):
+    #     num_val_batches = 0
+    #     for k, (X,Y) in enumerate(validation_loader):
+    #         val_length = len(Y)
+    #         num_val_batches += val_length
+    #         for j in range(val_length):
+    #             # here comes your validation loop
 
-                Xval = (X[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-                Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
-                val_outputs = model(Xval)
-                # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
-                reconstruction_loss = criterion(val_outputs, Yval)
-                ssim = pytorch_ssim.ssim(Yval, val_outputs)
-                logger.info("ssim ", ssim)
+    #             # ------------------------------------
+    #             #
+    #             #   Train Generator
+    #             #
+    #             #-------------------------------------
 
-                if(j == 0):
-                    y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
-                    x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
-                    x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
-                    logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
-                    save_image(val_outputs.data[:25],  os.path.join(test_dir,"val_%d_%d.png") % (epoch, j), nrow=5, normalize=True)
+    #             Xval = (X[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+    #             Yval = (Y[j,:,:,:,:].permute([0, 3, 1, 2])/255.0).float().to(device)
+    #             val_outputs = model(Xval)
+    #             # print("Xval[1] size ", Xval[1].shape, "val_outputs size ", val_outputs.shape)
+    #             reconstruction_loss = criterion(val_outputs, Yval)
+    #             ssim = pytorch_ssim.ssim(Yval, val_outputs)
+    #             logger.info("ssim ", ssim)
 
-                val_rec_loss += reconstruction_loss.item()
+    #             if(j == 0):
+    #                 y = np.transpose(Yval[0].detach().cpu().numpy(), [1,2,0])
+    #                 x = np.transpose((val_outputs[0].detach()).cpu().numpy(), [1,2,0])
+    #                 x_input = np.transpose((Xval[0].detach()).cpu().numpy(), [1,2,0])
+    #                 logger.info("Validation: input_psnr: %.5f \t val_psnr: %.5f"%(psnr(y,x_input), psnr(y,x)))
+    #                 save_image(val_outputs.data[:25],  os.path.join(test_dir,"val_%d_%d.png") % (epoch, j), nrow=5, normalize=True)
+
+    #             val_rec_loss += reconstruction_loss.item()
                 
-        val_rec_loss /= num_val_batches
-        val_g_loss /= num_val_batches
-        val_d_loss /= num_val_batches
+    #     val_rec_loss /= num_val_batches
+    #     val_g_loss /= num_val_batches
+    #     val_d_loss /= num_val_batches
 
-        logger.info("[Epoch %d/%d] [tRec loss: %.5e][vRec loss: %.5e]" 
-            % (epoch, Flags.epoch, running_rec_loss / num_train_batches, val_rec_loss))
+        # logger.info("[Epoch %d/%d] [tRec loss: %.5e][vRec loss: %.5e]" 
+        #     % (epoch, Flags.epoch, running_rec_loss / num_train_batches, val_rec_loss))
 
 
     # save checkpoint
